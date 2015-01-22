@@ -1,0 +1,2 @@
+# LeagueSharp.Loader
+Experimental Loader
