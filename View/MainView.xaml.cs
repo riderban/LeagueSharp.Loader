@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// Profile.cs is part of LeagueSharp.Loader.
+// MainView.xaml.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,26 @@
 
 #endregion
 
-namespace LeagueSharp.Loader.Model
+namespace LeagueSharp.Loader.View
 {
-    internal class Profile {}
+    #region
+
+    using LeagueSharp.Loader.ViewModel;
+
+    #endregion
+
+    /// <summary>
+    ///     Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow
+    {
+        /// <summary>
+        ///     Initializes a new instance of the MainWindow class.
+        /// </summary>
+        public MainWindow()
+        {
+            InitializeComponent();
+            Closing += (s, e) => ViewModelLocator.Cleanup();
+        }
+    }
 }

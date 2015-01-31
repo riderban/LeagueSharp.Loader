@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="LeagueSharp.Loader.View.DatabaseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ignore="http://www.ignore.com"
+             mc:Ignorable="d ignore"
+             DataContext="{Binding Database, Source={StaticResource Locator}}" d:DesignWidth="935.623"
+             d:DesignHeight="598.922">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <TabControl Margin="10">
+            <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1">
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Database}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name"
+                                            Binding="{Binding Name}"
+                                            Width="SizeToCells" MinWidth="150" />
+                        <DataGridTextColumn Header="Rating"
+                                            Binding="{Binding Rating}"
+                                            Width="SizeToCells" MinWidth="100" />
+                        <DataGridTextColumn Header="Type"
+                                            Binding="{Binding Type}"
+                                            Width="SizeToCells" MinWidth="80" />
+                        <DataGridTextColumn Header="Version"
+                                            Binding="{Binding Verion}"
+                                            Width="SizeToCells" MinWidth="80" />
+                        <DataGridTextColumn Header="Author"
+                                            Binding="{Binding Author}"
+                                            Width="SizeToCells" MinWidth="100" />
+                        <DataGridTextColumn Header="Location"
+                                            Binding="{Binding Location}"
+                                            Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </TabControl>
+
+    </Grid>
+</UserControl>

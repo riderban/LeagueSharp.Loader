@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// MainViewModel.cs is part of LeagueSharp.Loader.
+// DatabaseViewModel.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,46 +22,50 @@ namespace LeagueSharp.Loader.ViewModel
 {
     #region
 
-    using System.Windows;
+    using System.Collections.ObjectModel;
     using GalaSoft.MvvmLight;
-    using LeagueSharp.Loader.View;
+    using LeagueSharp.Loader.Model;
+    using LeagueSharp.Loader.Model.Service;
 
     #endregion
 
-    public class MainViewModel : ViewModelBase
+    /// <summary>
+    ///     This class contains properties that a View can data bind to.
+    ///     <para>
+    ///         See http://www.galasoft.ch/mvvm
+    ///     </para>
+    /// </summary>
+    public class DatabaseViewModel : ViewModelBase
     {
         /// <summary>
-        ///     The <see cref="CurrentView" /> property's name.
+        ///     The <see cref="Database" /> property's name.
         /// </summary>
-        public const string CurrentViewPropertyName = "CurrentView";
+        public const string DatabasePropertyName = "Database";
 
-        private FrameworkElement _currentView;
+        private ObservableCollection<LeagueSharpAssembly> _database;
 
-        /// <summary>
-        ///     Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel()
+        public DatabaseViewModel(IDataService dataService)
         {
-            CurrentView = new DatabaseView();
+            dataService.GetAssemblyDatabase((list, exception) => { Database = list; });
         }
 
         /// <summary>
-        ///     Sets and gets the CurrentView property.
+        ///     Sets and gets the Database property.
         ///     Changes to that property's value raise the PropertyChanged event.
         /// </summary>
-        public FrameworkElement CurrentView
+        public ObservableCollection<LeagueSharpAssembly> Database
         {
-            get { return _currentView; }
+            get { return _database; }
 
             set
             {
-                if (_currentView == value)
+                if (_database == value)
                 {
                     return;
                 }
 
-                _currentView = value;
-                RaisePropertyChanged(() => CurrentView);
+                _database = value;
+                RaisePropertyChanged(() => Database);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// Profile.cs is part of LeagueSharp.Loader.
+// DatabaseView.xaml.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,19 @@
 
 #endregion
 
-namespace LeagueSharp.Loader.Model
+namespace LeagueSharp.Loader.View
 {
-    internal class Profile {}
+    /// <summary>
+    ///     Description for DatabaseView.
+    /// </summary>
+    public partial class DatabaseView
+    {
+        /// <summary>
+        ///     Initializes a new instance of the DatabaseView class.
+        /// </summary>
+        public DatabaseView()
+        {
+            InitializeComponent();
+        }
+    }
 }
