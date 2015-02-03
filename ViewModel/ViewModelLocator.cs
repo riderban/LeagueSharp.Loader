@@ -46,11 +46,12 @@ namespace LeagueSharp.Loader.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<IDataService, DataService>();
+                SimpleIoc.Default.Register<IDataService, AssemblyDatabaseService>();
             }
 
-            SimpleIoc.Default.Register<DatabaseViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<DatabaseViewModel>();
+            SimpleIoc.Default.Register<AppBarViewModel>();
         }
 
         /// <summary>
@@ -62,11 +63,19 @@ namespace LeagueSharp.Loader.ViewModel
         }
 
         /// <summary>
-        ///     Gets the Main property.
+        ///     Gets the Database property.
         /// </summary>
         public DatabaseViewModel Database
         {
             get { return ServiceLocator.Current.GetInstance<DatabaseViewModel>(); }
+        }
+
+        /// <summary>
+        ///     Gets the AppBar property.
+        /// </summary>
+        public AppBarViewModel AppBar
+        {
+            get { return ServiceLocator.Current.GetInstance<AppBarViewModel>(); }
         }
 
         /// <summary>

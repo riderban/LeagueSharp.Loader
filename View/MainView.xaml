@@ -6,10 +6,13 @@
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:Ignore="http://www.ignore.com"
                       mc:Ignorable="d Ignore"
-                      Height="675"
-                      Width="929"
+                      Height="700"
+                      Width="1000"
                       Title="LeagueSharp"
                       SaveWindowPosition="True"
+                      LeftWindowCommandsOverlayBehavior="Always"
+                      RightWindowCommandsOverlayBehavior="Always"
+                      WindowButtonCommandsOverlayBehavior="Always"
                       GlowBrush="{DynamicResource AccentColorBrush}"
                       DataContext="{Binding Main, Source={StaticResource Locator}}">
 
@@ -21,17 +24,126 @@
         </ResourceDictionary>
     </Window.Resources>
 
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+
+            <Controls:Flyout
+                Header="Support is too Easy"
+                Position="Right"
+                Width="500"
+                IsOpen="False"
+                Background="{DynamicResource AccentColorBrush}">
+                <Label Content="HELLO WORLD" />
+            </Controls:Flyout>
+            <!--Background="{DynamicResource AccentColorBrush}"-->
+            <Controls:Flyout Position="Bottom"
+                             CloseButtonVisibility="Collapsed"
+                             TitleVisibility="Collapsed"
+                             IsPinned="True"
+                             IsOpen="True"
+                             Height="150">
+                <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0,1,0,0">
+                    <ContentControl Content="{Binding CurrentAppBarView}" Margin="0,0,0,0" />
+                </Border>
+            </Controls:Flyout>
+
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+
+            <Button Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="14"
+                               Height="14"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                        Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_text}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="News" />
+                </StackPanel>
+            </Button>
+
+            <Button Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="14"
+                               Height="14"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                            Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush
+                                Stretch="Fill"
+                                Visual="{StaticResource appbar_layer}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Database" />
+                </StackPanel>
+            </Button>
+
+            <Button Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="14"
+                               Height="14"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                            Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush
+                                Stretch="Fill"
+                                Visual="{StaticResource appbar_layer}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Assemblies" />
+                </StackPanel>
+            </Button>
+
+            <Button Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="14"
+                               Height="14"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, 
+                        Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{StaticResource appbar_refresh}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Status" />
+                </StackPanel>
+            </Button>
+
+            <Button Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="14"
+                               Height="14"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, 
+                        Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{StaticResource appbar_cog}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Settings" />
+                </StackPanel>
+            </Button>
+
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
     <Grid>
-        <ContentControl Content="{Binding CurrentView}" Margin="0,60,0,0" />
-        <Button Content="News" HorizontalAlignment="Left" Width="100" Height="40" VerticalAlignment="Top"
-                Margin="325,10,0,0" />
-        <Button Content="Database" HorizontalAlignment="Left" Width="100" Height="40" VerticalAlignment="Top"
-                Margin="10,10,0,0" />
-        <Button Content="Assemblies" HorizontalAlignment="Left" Width="100" Height="40" VerticalAlignment="Top"
-                Margin="115,10,0,0" />
-        <Button Content="Update" HorizontalAlignment="Left" Width="100" Height="40" VerticalAlignment="Top"
-                Margin="325,10,0,0" />
-        <Button Content="Settings" HorizontalAlignment="Left" Width="100" Height="40" VerticalAlignment="Top"
-                Margin="220,10,0,0" />
+        <ContentControl Content="{Binding CurrentView}" Margin="0,0,0,0" />
     </Grid>
 </Controls:MetroWindow>

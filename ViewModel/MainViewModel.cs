@@ -35,6 +35,12 @@ namespace LeagueSharp.Loader.ViewModel
         /// </summary>
         public const string CurrentViewPropertyName = "CurrentView";
 
+        /// <summary>
+        ///     The <see cref="CurrentAppBarView" /> property's name.
+        /// </summary>
+        public const string CurrentAppBarViewPropertyName = "CurrentAppBarView";
+
+        private FrameworkElement _currentAppBarViewElement;
         private FrameworkElement _currentView;
 
         /// <summary>
@@ -43,6 +49,27 @@ namespace LeagueSharp.Loader.ViewModel
         public MainViewModel()
         {
             CurrentView = new DatabaseView();
+            CurrentAppBarView = new AppBarView();
+        }
+
+        /// <summary>
+        ///     Sets and gets the CurrentAppBarView property.
+        ///     Changes to that property's value raise the PropertyChanged event.
+        /// </summary>
+        public FrameworkElement CurrentAppBarView
+        {
+            get { return _currentAppBarViewElement; }
+
+            set
+            {
+                if (_currentAppBarViewElement == value)
+                {
+                    return;
+                }
+
+                _currentAppBarViewElement = value;
+                RaisePropertyChanged(() => CurrentAppBarView);
+            }
         }
 
         /// <summary>

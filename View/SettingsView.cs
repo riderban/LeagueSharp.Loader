@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// SettingsView.xaml.cs is part of LeagueSharp.Loader.
+// SettingsView.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

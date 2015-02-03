@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// AssembliesView.xaml.cs is part of LeagueSharp.Loader.
+// AssemblyType.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,19 +18,13 @@
 
 #endregion
 
-namespace LeagueSharp.Loader.View
+namespace LeagueSharp.Loader.Model
 {
-    /// <summary>
-    ///     Description for AssembliesView.
-    /// </summary>
-    public partial class AssembliesView
+    public enum AssemblyType
     {
-        /// <summary>
-        ///     Initializes a new instance of the AssembliesView class.
-        /// </summary>
-        public AssembliesView()
-        {
-            InitializeComponent();
-        }
+        Executable,
+        Library,
+        Champion,
+        Utility
     }
 }

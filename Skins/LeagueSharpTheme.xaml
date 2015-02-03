@@ -4,14 +4,14 @@
                     xmlns:Mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     Mc:Ignorable="Options">
 
-    <Color x:Key="HighlightColor">#FF799100</Color>
-    <Color x:Key="AccentColor">#184247</Color>
+    <Color x:Key="HighlightColor">#A4C9C3</Color>
+    <Color x:Key="AccentColor">#1C7869</Color>
     <!--60%-->
-    <Color x:Key="AccentColor2">#184247</Color>
+    <Color x:Key="AccentColor2">#1C7869</Color>
     <!--40%-->
-    <Color x:Key="AccentColor3">#184247</Color>
+    <Color x:Key="AccentColor3">#1C7869</Color>
     <!--20%-->
-    <Color x:Key="AccentColor4">#184247</Color>
+    <Color x:Key="AccentColor4">#1C7869</Color>
 
     <Color x:Key="IdealForegroundColor">White</Color>
 

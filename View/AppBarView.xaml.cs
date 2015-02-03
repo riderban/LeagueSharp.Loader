@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// App.xaml.cs is part of LeagueSharp.Loader.
+// AppBarView.xaml.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,22 +18,19 @@
 
 #endregion
 
-namespace LeagueSharp.Loader
+namespace LeagueSharp.Loader.View
 {
-    #region
-
-    using GalaSoft.MvvmLight.Threading;
-
-    #endregion
-
     /// <summary>
-    ///     Interaction logic for App.xaml
+    ///     Description for AppBarView.
     /// </summary>
-    public partial class App
+    public partial class AppBarView
     {
-        static App()
+        /// <summary>
+        ///     Initializes a new instance of the AppBarView class.
+        /// </summary>
+        public AppBarView()
         {
-            DispatcherHelper.Initialize();
+            InitializeComponent();
         }
     }
 }

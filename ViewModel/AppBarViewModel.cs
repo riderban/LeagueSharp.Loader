@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// MainView.xaml.cs is part of LeagueSharp.Loader.
+// AppBarViewModel.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,26 +18,19 @@
 
 #endregion
 
-namespace LeagueSharp.Loader.View
+namespace LeagueSharp.Loader.ViewModel
 {
     #region
 
-    using LeagueSharp.Loader.ViewModel;
+    using GalaSoft.MvvmLight;
 
     #endregion
 
     /// <summary>
-    ///     Interaction logic for MainWindow.xaml
+    ///     This class contains properties that a View can data bind to.
+    ///     <para>
+    ///         See http://www.galasoft.ch/mvvm
+    ///     </para>
     /// </summary>
-    public partial class MainWindow
-    {
-        /// <summary>
-        ///     Initializes a new instance of the MainWindow class.
-        /// </summary>
-        public MainWindow()
-        {
-            InitializeComponent();
-            Closing += (s, e) => ViewModelLocator.Cleanup();
-        }
-    }
+    public class AppBarViewModel : ViewModelBase {}
 }

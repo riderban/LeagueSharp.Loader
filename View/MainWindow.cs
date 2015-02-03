@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// DatabaseView.xaml.cs is part of LeagueSharp.Loader.
+// MainWindow.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,17 +20,24 @@
 
 namespace LeagueSharp.Loader.View
 {
+    #region
+
+    using LeagueSharp.Loader.ViewModel;
+
+    #endregion
+
     /// <summary>
-    ///     Description for DatabaseView.
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class DatabaseView
+    public partial class MainWindow
     {
         /// <summary>
-        ///     Initializes a new instance of the DatabaseView class.
+        ///     Initializes a new instance of the MainWindow class.
         /// </summary>
-        public DatabaseView()
+        public MainWindow()
         {
             InitializeComponent();
+            Closing += (s, e) => ViewModelLocator.Cleanup();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// NewsView.xaml.cs is part of LeagueSharp.Loader.
+// App.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,19 +18,22 @@
 
 #endregion
 
-namespace LeagueSharp.Loader.View
+namespace LeagueSharp.Loader
 {
+    #region
+
+    using GalaSoft.MvvmLight.Threading;
+
+    #endregion
+
     /// <summary>
-    ///     Description for NewsView.
+    ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class NewsView
+    public partial class App
     {
-        /// <summary>
-        ///     Initializes a new instance of the NewsView class.
-        /// </summary>
-        public NewsView()
+        static App()
         {
-            InitializeComponent();
+            DispatcherHelper.Initialize();
         }
     }
 }

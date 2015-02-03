@@ -20,34 +20,42 @@
 
 namespace LeagueSharp.Loader.Model
 {
+    #region
+
     using System.Collections.Generic;
-    using System.Windows.Documents;
+
+    #endregion
 
     public class LeagueSharpAssembly
     {
+        public LeagueSharpAssembly()
+        {
+            State = AssemblyState.Unknown;
+            Tags = new List<Tag>();
+            Versions = new List<AssemblyVersion>();
+        }
+
         public string Name { get; set; }
         public int Rating { get; set; }
-        public object Type { get; set; }
-        public string Verion { get; set; }
+
+        public string ImageRating
+        {
+            get { return "Rating" + Rating + ".png"; }
+        }
+
+        public AssemblyState State { get; set; }
+        public AssemblyType Type { get; set; }
+        public int Version { get; set; }
+
+        public AssemblyVersion CurrentVersion
+        {
+            get { return Versions[Version]; }
+            set { Version = Versions.IndexOf(value); }
+        }
+
+        public List<AssemblyVersion> Versions { get; set; }
         public string Author { get; set; }
         public string Location { get; set; }
         public List<Tag> Tags { get; set; }
-
-        public LeagueSharpAssembly()
-        {
-            Tags = new List<Tag>();
-        }
-    }
-
-    public enum AssemblyType
-    {
-        Executable,
-        Library
-    }
-
-    public class Tag
-    {
-        public string Name { get; set; }
-        public List<LeagueSharpAssembly> Assemblies { get; set; }
     }
 }

@@ -30,6 +30,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,6 +54,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>packages\MvvmLightLibs.5.0.2.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -69,7 +74,8 @@
     <Reference Include="LibGit2Sharp">
       <HintPath>packages\LibGit2Sharp.0.20.2.0\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro">
+    <Reference Include="MahApps.Metro, Version=1.0.1.39, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\MahApps.Metro.1.0.1-ALPHA039\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis">
@@ -137,13 +143,18 @@
     <Compile Include="Core\LSUriScheme.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="Model\AssemblyState.cs" />
+    <Compile Include="Model\AssemblyType.cs" />
+    <Compile Include="Model\AssemblyVersion.cs" />
     <Compile Include="Model\Config.cs" />
     <Compile Include="Model\DataItem.cs" />
-    <Compile Include="Model\Service\DataService.cs" />
+    <Compile Include="Model\Service\AssemblyDatabaseService.cs" />
     <Compile Include="Model\Service\IDataService.cs" />
     <Compile Include="Model\LeagueSharpAssembly.cs" />
     <Compile Include="Model\Log.cs" />
     <Compile Include="Model\Profile.cs" />
+    <Compile Include="Model\Tag.cs" />
+    <Compile Include="ViewModel\AppBarViewModel.cs" />
     <Compile Include="ViewModel\DatabaseViewModel.cs" />
     <Compile Include="ViewModel\InstallerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -153,21 +164,33 @@
     <Compile Include="ViewModel\Settings\MenuConfigViewModel.cs" />
     <Compile Include="ViewModel\UpdaterViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\NewsView.xaml.cs">
+    <Compile Include="View\AppBarView.xaml.cs">
+      <DependentUpon>AppBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewsView.cs">
       <DependentUpon>NewsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SettingsView.xaml.cs">
+    <Compile Include="View\SettingsView.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UpdateView.xaml.cs">
+    <Compile Include="View\UpdateView.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Properties\DesignTimeResources1.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Skins\ColorTheme.xaml">
+    <Page Include="Skins\LeagueSharpTheme.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AppBarView.xaml">
+      <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AssembliesView.xaml">
@@ -182,17 +205,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="App.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\AssembliesView.xaml.cs">
+    <Compile Include="View\AssembliesView.cs">
       <DependentUpon>AssembliesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DatabaseView.xaml.cs">
+    <Compile Include="View\DatabaseView.cs">
       <DependentUpon>DatabaseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MainView.xaml.cs">
+    <Compile Include="View\MainWindow.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

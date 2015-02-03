@@ -1,7 +1,7 @@
 ﻿#region LICENSE
 
 // Copyright 2015-2015 LeagueSharp.Loader
-// UpdateView.xaml.cs is part of LeagueSharp.Loader.
+// AssemblyState.cs is part of LeagueSharp.Loader.
 // 
 // LeagueSharp.Loader is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,19 +18,16 @@
 
 #endregion
 
-namespace LeagueSharp.Loader.View
+namespace LeagueSharp.Loader.Model
 {
-    /// <summary>
-    ///     Description for UpdateView.
-    /// </summary>
-    public partial class UpdateView
+    public enum AssemblyState
     {
-        /// <summary>
-        ///     Initializes a new instance of the UpdateView class.
-        /// </summary>
-        public UpdateView()
-        {
-            InitializeComponent();
-        }
+        Unknown,
+        Ready,
+        Injected,
+        Queue,
+        Downloading,
+        Compiling,
+        CompilingError
     }
 }
