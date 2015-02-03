@@ -17,7 +17,8 @@
     </UserControl.Resources>
 
     <Grid>
-        <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Margin="10,10,0,0"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle Width="25" Height="25">
                 <Rectangle.Fill>
                     <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_refresh}" />

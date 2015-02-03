@@ -35,7 +35,7 @@
                 Background="{DynamicResource AccentColorBrush}">
                 <Label Content="HELLO WORLD" />
             </Controls:Flyout>
-            <!--Background="{DynamicResource AccentColorBrush}"-->
+
             <Controls:Flyout Position="Bottom"
                              CloseButtonVisibility="Collapsed"
                              TitleVisibility="Collapsed"
@@ -57,11 +57,11 @@
             <Button Cursor="Hand">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="14"
-                               Height="14"
+                               Height="16"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
                         Path=Foreground}">
                         <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_text}" />
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_news}" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                     <TextBlock Margin="4 0 0 0"
@@ -79,7 +79,7 @@
                         <Rectangle.OpacityMask>
                             <VisualBrush
                                 Stretch="Fill"
-                                Visual="{StaticResource appbar_layer}" />
+                                Visual="{StaticResource appbar_database}" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                     <TextBlock Margin="4 0 0 0"
@@ -90,14 +90,14 @@
 
             <Button Cursor="Hand">
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="14"
-                               Height="14"
+                    <Rectangle Width="18"
+                               Height="15"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
                             Path=Foreground}">
                         <Rectangle.OpacityMask>
                             <VisualBrush
                                 Stretch="Fill"
-                                Visual="{StaticResource appbar_layer}" />
+                                Visual="{StaticResource appbar_assembly}" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                     <TextBlock Margin="4 0 0 0"
@@ -108,13 +108,13 @@
 
             <Button Cursor="Hand">
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="14"
+                    <Rectangle Width="18"
                                Height="14"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, 
                         Path=Foreground}">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill"
-                                         Visual="{StaticResource appbar_refresh}" />
+                                         Visual="{StaticResource appbar_social_twitter_retweet}" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                     <TextBlock Margin="4 0 0 0"

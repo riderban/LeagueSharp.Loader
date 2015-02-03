@@ -74,9 +74,9 @@
     <Reference Include="LibGit2Sharp">
       <HintPath>packages\LibGit2Sharp.0.20.2.0\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.0.1.39, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MahApps.Metro, Version=1.0.1.40, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\MahApps.Metro.1.0.1-ALPHA039\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>packages\MahApps.Metro.1.0.1-ALPHA040\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis">
       <HintPath>packages\Microsoft.CodeAnalysis.Common.1.0.0.0-beta2\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
@@ -115,7 +115,7 @@
       <HintPath>packages\System.Reflection.Metadata.1.0.17-beta\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.1.0.1-ALPHA039\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>packages\MahApps.Metro.1.0.1-ALPHA040\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -143,17 +143,19 @@
     <Compile Include="Core\LSUriScheme.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Design\DesignDataService.cs" />
-    <Compile Include="Model\AssemblyState.cs" />
-    <Compile Include="Model\AssemblyType.cs" />
-    <Compile Include="Model\AssemblyVersion.cs" />
-    <Compile Include="Model\Config.cs" />
-    <Compile Include="Model\DataItem.cs" />
+    <Compile Include="Model\Assembly\AssemblyState.cs" />
+    <Compile Include="Model\Assembly\AssemblyType.cs" />
+    <Compile Include="Model\Assembly\AssemblyVersion.cs" />
+    <Compile Include="Model\Settings\Config.cs" />
+    <Compile Include="Model\Log\LogItem.cs" />
+    <Compile Include="Model\Log\LogLevel.cs" />
+    <Compile Include="Model\Log\Logs.cs" />
     <Compile Include="Model\Service\AssemblyDatabaseService.cs" />
     <Compile Include="Model\Service\IDataService.cs" />
-    <Compile Include="Model\LeagueSharpAssembly.cs" />
-    <Compile Include="Model\Log.cs" />
-    <Compile Include="Model\Profile.cs" />
-    <Compile Include="Model\Tag.cs" />
+    <Compile Include="Model\Assembly\LeagueSharpAssembly.cs" />
+    <Compile Include="Model\Log\Log.cs" />
+    <Compile Include="Model\Settings\Profile.cs" />
+    <Compile Include="Model\Settings\Tag.cs" />
     <Compile Include="ViewModel\AppBarViewModel.cs" />
     <Compile Include="ViewModel\DatabaseViewModel.cs" />
     <Compile Include="ViewModel\InstallerViewModel.cs" />
@@ -164,7 +166,7 @@
     <Compile Include="ViewModel\Settings\MenuConfigViewModel.cs" />
     <Compile Include="ViewModel\UpdaterViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\AppBarView.xaml.cs">
+    <Compile Include="View\AppBarView.cs">
       <DependentUpon>AppBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NewsView.cs">
@@ -180,10 +182,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
-    </Page>
-    <Page Include="Resources\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Skins\LeagueSharpTheme.xaml">
       <SubType>Designer</SubType>
@@ -260,7 +258,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -276,12 +273,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\WindowsIcons-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
