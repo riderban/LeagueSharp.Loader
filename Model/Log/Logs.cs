@@ -1,7 +1,9 @@
+using GalaSoft.MvvmLight;
+
 namespace LeagueSharp.Loader.Model.Log
 {
-    internal static class Logs
+    internal class Logs : ObservableObject
     {
-        public static Log MainLog = new Log();
+        public static Log Main = new Log();
     }
 }
