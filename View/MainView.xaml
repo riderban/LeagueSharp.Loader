@@ -40,11 +40,10 @@
                              CloseButtonVisibility="Collapsed"
                              TitleVisibility="Collapsed"
                              IsPinned="True"
-                             IsOpen="True"
+                             IsOpen="False"
                              Height="150">
-                <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0,1,0,0">
-                    <ContentControl Content="{Binding CurrentAppBarView}" Margin="0,0,0,0" />
-                </Border>
+
+                <ContentControl Content="{Binding CurrentAppBarView}" Margin="0,0,0,0" />
             </Controls:Flyout>
 
         </Controls:FlyoutsControl>
@@ -106,7 +105,7 @@
                 </StackPanel>
             </Button>
 
-            <Button Cursor="Hand">
+            <Button Cursor="Hand" Command="{Binding UpdateCommand, Mode=OneWay}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="18"
                                Height="14"
@@ -119,7 +118,7 @@
                     </Rectangle>
                     <TextBlock Margin="4 0 0 0"
                                VerticalAlignment="Center"
-                               Text="Status" />
+                               Text="Update" />
                 </StackPanel>
             </Button>
 
@@ -144,6 +143,14 @@
     </Controls:MetroWindow.RightWindowCommands>
 
     <Grid>
+        <ProgressBar DataContext="{Binding ProgressController}"
+                     Margin="120,-23,520,0" VerticalAlignment="Top" Height="15"
+                     Background="{DynamicResource ControlBackgroundBrush}"
+                     Visibility="{Binding Visibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Maximum="{Binding Max, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Minimum="{Binding Min, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     IsHitTestVisible="False" />
         <ContentControl Content="{Binding CurrentView}" Margin="0,0,0,0" />
     </Grid>
 </Controls:MetroWindow>

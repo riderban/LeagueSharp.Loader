@@ -1,16 +1,7 @@
-﻿#region
-
-using LeagueSharp.Loader.ViewModel;
-
-#endregion
+﻿using LeagueSharp.Loader.ViewModel;
 
 namespace LeagueSharp.Loader.View
 {
-
-    #region
-
-    #endregion
-
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>

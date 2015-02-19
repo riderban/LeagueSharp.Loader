@@ -1,32 +1,21 @@
-﻿#region
-
+﻿using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using LeagueSharp.Loader.Core.Compiler;
+using LeagueSharp.Loader.Model.Assembly;
+using LeagueSharp.Loader.Model.Settings;
 using LeagueSharp.Loader.View;
-
-#endregion
+using Microsoft.Practices.ServiceLocation;
 
 namespace LeagueSharp.Loader.ViewModel
 {
-
-    #region
-
-    #endregion
-
-    public class MainViewModel : ViewModelBase
+    internal class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        ///     The <see cref="CurrentView" /> property's name.
-        /// </summary>
-        public const string CurrentViewPropertyName = "CurrentView";
-
-        /// <summary>
-        ///     The <see cref="CurrentAppBarView" /> property's name.
-        /// </summary>
-        public const string CurrentAppBarViewPropertyName = "CurrentAppBarView";
-
         private FrameworkElement _currentAppBarViewElement;
         private FrameworkElement _currentView;
+        private ProgressController _progressController;
+        private RelayCommand _updateCommand;
 
         /// <summary>
         ///     Initializes a new instance of the MainViewModel class.
@@ -35,6 +24,7 @@ namespace LeagueSharp.Loader.ViewModel
         {
             CurrentView = new DatabaseView();
             CurrentAppBarView = new AppBarView();
+            ProgressController = new ProgressController();
         }
 
         /// <summary>
@@ -44,17 +34,7 @@ namespace LeagueSharp.Loader.ViewModel
         public FrameworkElement CurrentAppBarView
         {
             get { return _currentAppBarViewElement; }
-
-            set
-            {
-                if (_currentAppBarViewElement == value)
-                {
-                    return;
-                }
-
-                _currentAppBarViewElement = value;
-                RaisePropertyChanged(() => CurrentAppBarView);
-            }
+            set { Set(() => CurrentAppBarView, ref _currentAppBarViewElement, value); }
         }
 
         /// <summary>
@@ -64,16 +44,53 @@ namespace LeagueSharp.Loader.ViewModel
         public FrameworkElement CurrentView
         {
             get { return _currentView; }
+            set { Set(() => CurrentView, ref _currentView, value); }
+        }
 
-            set
+        /// <summary>
+        ///     Sets and gets the ProgressController property.
+        ///     Changes to that property's value raise the PropertyChanged event.
+        /// </summary>
+        public ProgressController ProgressController
+        {
+            get { return _progressController; }
+            set { Set(() => ProgressController, ref _progressController, value); }
+        }
+
+        /// <summary>
+        ///     Gets the UpdateCommand.
+        /// </summary>
+        public RelayCommand UpdateCommand
+        {
+            get
             {
-                if (_currentView == value)
-                {
-                    return;
-                }
+                return _updateCommand
+                       ?? (_updateCommand = new RelayCommand(
+                           () =>
+                           {
+                               Task.Factory.StartNew(() =>
+                               {
+                                   var assemblies = ServiceLocator.Current.GetInstance<DatabaseViewModel>().Database;
+                                   if (ProgressController.Start(0, 0, assemblies.Count))
+                                   {
+                                       foreach (var assembly in assemblies)
+                                       {
+                                           assembly.State = AssemblyState.Queue;
+                                       }
 
-                _currentView = value;
-                RaisePropertyChanged(() => CurrentView);
+                                       Parallel.ForEach(assemblies, new ParallelOptions {MaxDegreeOfParallelism = 5},
+                                           (assembly, state) =>
+                                           {
+                                               assembly.State = AssemblyState.Compiling;
+                                               RoslynCompiler.Compile(assembly.Project);
+                                               assembly.State = AssemblyState.Ready;
+                                               ProgressController.Value++;
+                                           });
+
+                                       ProgressController.Stop();
+                                   }
+                               });
+                           }));
             }
         }
     }

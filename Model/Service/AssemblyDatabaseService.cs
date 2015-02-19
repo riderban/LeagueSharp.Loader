@@ -1,86 +1,96 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Threading;
 using LeagueSharp.Loader.Model.Assembly;
+using LeagueSharp.Loader.ViewModel;
 using LibGit2Sharp;
-
-#endregion
+using Microsoft.Practices.ServiceLocation;
 
 namespace LeagueSharp.Loader.Model.Service
 {
-
-    #region
-
-    #endregion
-
-    public class AssemblyDatabaseService : IDataService
+    internal class AssemblyDatabaseService : IDataService
     {
+        private const string Root = @"C:\Users\h3h3\AppData\Roaming\LeagueSharp\Repositories";
+
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
-            var supportVersions = new List<AssemblyVersion>();
-            var commonVersions = new List<AssemblyVersion>();
+            // TODO: call webservice & cache data <-------------------------------------------------- q.q.q.q.q.q.q.q.q.q.q.q.q
+            var assemblies = new ObservableCollection<LeagueSharpAssembly>();
 
-            if (Repository.IsValid(@"D:\GitHub\LeagueSharp"))
+            Task.Factory.StartNew(() =>
             {
-                using (var repo = new Repository(@"D:\GitHub\LeagueSharp"))
+                var progress = ServiceLocator.Current.GetInstance<MainViewModel>().ProgressController;
+                if (progress.Start(0, 0, Directory.EnumerateFiles(Root, "*.csproj", SearchOption.AllDirectories).Count()))
                 {
-                    var commits = repo.Head.Commits.ToList();
-                    for (var i = 0; i < commits.Count; i++)
+                    Parallel.ForEach(Directory.EnumerateDirectories(Root), dir =>
                     {
-                        supportVersions.Add(
+                        var asm = CreateAssembly(Path.Combine(dir, "trunk"));
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            foreach (var assembly in asm)
+                            {
+                                assemblies.Add(assembly);
+                                progress.Value++;
+                            }
+                        });
+                    });
+
+                    progress.Stop();
+                }
+            });
+
+            callback(assemblies, null);
+        }
+
+        private static IEnumerable<LeagueSharpAssembly> CreateAssembly(string repoPath)
+        {
+            var assemblies = new List<LeagueSharpAssembly>();
+
+            if (Repository.IsValid(repoPath))
+            {
+                var location = "";
+                var author = "";
+                var versions = new List<AssemblyVersion>();
+
+                using (var repo = new Repository(repoPath))
+                {
+                    location = repo.Network.Remotes.First().Url;
+                    author = location.Split('/')[3];
+
+                    var commits = repo.Head.Commits.ToList();
+                    var id = commits.Count;
+                    foreach (var commit in commits)
+                    {
+                        versions.Add(
                             new AssemblyVersion
                             {
-                                Id = commits.Count - i,
-                                Date = commits[i].Committer.When,
-                                Message = commits[i].MessageShort
+                                Id = id--,
+                                Date = commit.Committer.When,
+                                Message = commit.MessageShort
                             });
                     }
                 }
 
-                using (var repo = new Repository(@"D:\GitHub\LeagueSharpCommon"))
+                foreach (var project in Directory.EnumerateFiles(repoPath, "*.csproj", SearchOption.AllDirectories))
                 {
-                    var commits = repo.Head.Commits.ToList();
-                    for (var i = 0; i < commits.Count; i++)
+                    assemblies.Add(new LeagueSharpAssembly
                     {
-                        commonVersions.Add(
-                            new AssemblyVersion
-                            {
-                                Id = commits.Count - i,
-                                Date = commits[i].Committer.When,
-                                Message = commits[i].MessageShort
-                            });
-                    }
+                        Type = AssemblyType.Executable,
+                        State = AssemblyState.Ready,
+                        Name = Path.GetFileNameWithoutExtension(project),
+                        Location = location,
+                        Author = author,
+                        Project = project,
+                        Versions = versions
+                    });
                 }
             }
 
-            // TODO: call webservice & cache data
-            callback(
-                new ObservableCollection<LeagueSharpAssembly>
-                {
-                    new LeagueSharpAssembly
-                    {
-                        Name = "LeagueSharp.Common",
-                        Rating = 5,
-                        Type = AssemblyType.Library,
-                        Version = 0,
-                        Author = "LeagueSharp",
-                        Location = "https://github.com/LeagueSharp/LeagueSharp.Common",
-                        Versions = commonVersions
-                    },
-                    new LeagueSharpAssembly
-                    {
-                        Name = "Support is too Easy",
-                        Rating = 5,
-                        Type = AssemblyType.Champion,
-                        Version = 0,
-                        Author = "h3h3",
-                        Location = "https://github.com/h3h3/LeagueSharp",
-                        Versions = supportVersions
-                    }
-                }, null);
+            return assemblies;
         }
     }
 }

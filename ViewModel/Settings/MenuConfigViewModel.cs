@@ -1,6 +1,8 @@
-﻿namespace LeagueSharp.Loader.ViewModel.Settings
+﻿using GalaSoft.MvvmLight;
+
+namespace LeagueSharp.Loader.ViewModel.Settings
 {
-    internal class MenuConfigViewModel
+    internal class MenuConfigViewModel : ViewModelBase
     {
     }
 }

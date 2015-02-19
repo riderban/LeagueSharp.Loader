@@ -1,12 +1,8 @@
-#region
-
 using GalaSoft.MvvmLight;
-
-#endregion
 
 namespace LeagueSharp.Loader.Model.Log
 {
-    public class LogItem : ObservableObject
+    internal class LogItem : ObservableObject
     {
         private LogLevel _level;
         private string _message;
@@ -18,16 +14,16 @@ namespace LeagueSharp.Loader.Model.Log
             set { Set(() => Level, ref _level, value); }
         }
 
-        public string Source
-        {
-            get { return _source; }
-            set { Set(() => Source, ref _source, value); }
-        }
-
         public string Message
         {
             get { return _message; }
             set { Set(() => Message, ref _message, value); }
+        }
+
+        public string Source
+        {
+            get { return _source; }
+            set { Set(() => Source, ref _source, value); }
         }
     }
 }

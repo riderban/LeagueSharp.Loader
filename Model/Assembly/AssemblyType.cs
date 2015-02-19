@@ -1,7 +1,8 @@
 ﻿namespace LeagueSharp.Loader.Model.Assembly
 {
-    public enum AssemblyType
+    internal enum AssemblyType
     {
+        Unknown,
         Executable,
         Library,
         Champion,

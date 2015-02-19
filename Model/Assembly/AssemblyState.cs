@@ -1,6 +1,6 @@
 ﻿namespace LeagueSharp.Loader.Model.Assembly
 {
-    public enum AssemblyState
+    internal enum AssemblyState
     {
         Unknown,
         Ready,

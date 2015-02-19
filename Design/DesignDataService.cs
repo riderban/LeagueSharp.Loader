@@ -1,21 +1,12 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Service;
 
-#endregion
-
 namespace LeagueSharp.Loader.Design
 {
-
-    #region
-
-    #endregion
-
-    public class DesignDataService : IDataService
+    internal class DesignDataService : IDataService
     {
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
@@ -30,7 +21,11 @@ namespace LeagueSharp.Loader.Design
                         Version = 0,
                         Author = "h3h3",
                         Location = "https://github.com/h3h3/LeagueSharp",
-                        Versions = new List<AssemblyVersion>()
+                        Versions =
+                            new List<AssemblyVersion>
+                            {
+                                new AssemblyVersion {Id = 1, Color = "Green", Date = DateTime.Now, Message = "Message"}
+                            }
                     }
                 }, null);
         }

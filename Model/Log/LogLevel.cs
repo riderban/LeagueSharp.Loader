@@ -1,6 +1,6 @@
 namespace LeagueSharp.Loader.Model.Log
 {
-    public enum LogLevel
+    internal enum LogLevel
     {
         None,
         Fatal,

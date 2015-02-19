@@ -1,25 +1,16 @@
-﻿#region
-
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using LeagueSharp.Loader.Design;
 using LeagueSharp.Loader.Model.Service;
 using Microsoft.Practices.ServiceLocation;
 
-#endregion
-
 namespace LeagueSharp.Loader.ViewModel
 {
-
-    #region
-
-    #endregion
-
     /// <summary>
     ///     This class contains static references to all the view models in the
     ///     application and provides an entry point for the bindings.
     /// </summary>
-    public class ViewModelLocator
+    internal class ViewModelLocator
     {
         static ViewModelLocator()
         {
@@ -40,11 +31,11 @@ namespace LeagueSharp.Loader.ViewModel
         }
 
         /// <summary>
-        ///     Gets the Main property.
+        ///     Gets the AppBar property.
         /// </summary>
-        public MainViewModel Main
+        public AppBarViewModel AppBar
         {
-            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
+            get { return ServiceLocator.Current.GetInstance<AppBarViewModel>(); }
         }
 
         /// <summary>
@@ -56,11 +47,11 @@ namespace LeagueSharp.Loader.ViewModel
         }
 
         /// <summary>
-        ///     Gets the AppBar property.
+        ///     Gets the Main property.
         /// </summary>
-        public AppBarViewModel AppBar
+        public MainViewModel Main
         {
-            get { return ServiceLocator.Current.GetInstance<AppBarViewModel>(); }
+            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
         }
 
         /// <summary>

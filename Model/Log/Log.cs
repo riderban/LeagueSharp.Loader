@@ -1,13 +1,9 @@
-﻿#region
-
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
-
-#endregion
 
 namespace LeagueSharp.Loader.Model.Log
 {
-    public class Log : ObservableObject
+    internal class Log : ObservableObject
     {
         private ObservableCollection<LogItem> _items = new ObservableCollection<LogItem>();
 

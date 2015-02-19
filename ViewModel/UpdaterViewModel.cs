@@ -1,6 +1,8 @@
-﻿namespace LeagueSharp.Loader.ViewModel
+﻿using GalaSoft.MvvmLight;
+
+namespace LeagueSharp.Loader.ViewModel
 {
-    internal class UpdaterViewModel
+    internal class UpdaterViewModel : ViewModelBase
     {
     }
 }

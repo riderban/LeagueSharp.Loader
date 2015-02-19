@@ -1,11 +1,11 @@
-﻿#region
-
-using GalaSoft.MvvmLight.Threading;
-
-#endregion
+﻿using GalaSoft.MvvmLight.Threading;
 
 namespace LeagueSharp.Loader
 {
+
+    #region
+
+    #endregion
 
     #region
 
