@@ -5,7 +5,7 @@ using GalaSoft.MvvmLight;
 namespace LeagueSharp.Loader.Model.Settings
 {
     [XmlType(AnonymousType = true)]
-    public class ConfigSettings : ObservableObject
+    internal class ConfigSettings : ObservableObject
     {
         private ObservableCollection<GameSettings> _gameSettings;
 

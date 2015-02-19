@@ -4,7 +4,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LeagueSharp.Loader.Core.Compiler;
 using LeagueSharp.Loader.Model.Assembly;
-using LeagueSharp.Loader.Model.Settings;
+using LeagueSharp.Loader.Model.Service;
 using LeagueSharp.Loader.View;
 using Microsoft.Practices.ServiceLocation;
 

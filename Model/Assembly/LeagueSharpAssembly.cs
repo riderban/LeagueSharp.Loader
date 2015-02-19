@@ -9,6 +9,7 @@ namespace LeagueSharp.Loader.Model.Assembly
         private string _imageRating;
         private string _location;
         private string _name;
+        private string _pathToBinary;
         private string _project;
         private int _rating;
         private AssemblyState _state;
@@ -48,6 +49,12 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _name; }
             set { Set(() => Name, ref _name, value); }
+        }
+
+        public string PathToBinary
+        {
+            get { return _pathToBinary; }
+            set { Set(() => PathToBinary, ref _pathToBinary, value); }
         }
 
         public string Project

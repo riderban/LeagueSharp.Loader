@@ -4,7 +4,7 @@ using LeagueSharp.Loader.Core;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
-    public class HotkeyEntry : ObservableObject
+    internal class HotkeyEntry : ObservableObject
     {
         private string _description;
         private Key _hotkey;

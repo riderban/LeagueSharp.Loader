@@ -93,6 +93,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch
             {
+                // ignored
             }
         }
 

@@ -5,7 +5,7 @@ using GalaSoft.MvvmLight;
 namespace LeagueSharp.Loader.Model.Settings
 {
     [XmlType(AnonymousType = true)]
-    public class Hotkeys : ObservableObject
+    internal class Hotkeys : ObservableObject
     {
         private ObservableCollection<HotkeyEntry> _selectedHotkeys;
 

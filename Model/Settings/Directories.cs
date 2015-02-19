@@ -3,7 +3,7 @@ using System.IO;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
-    public static class Directories
+    internal static class Directories
     {
         public static readonly string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\";
 

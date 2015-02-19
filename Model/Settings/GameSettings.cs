@@ -5,7 +5,7 @@ using LeagueSharp.Loader.Core;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
-    public class GameSettings : ObservableObject
+    internal class GameSettings : ObservableObject
     {
         private string _name;
         private List<string> _posibleValues;

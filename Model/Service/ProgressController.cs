@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using GalaSoft.MvvmLight;
 
-namespace LeagueSharp.Loader.Model.Settings
+namespace LeagueSharp.Loader.Model.Service
 {
     internal class ProgressController : ObservableObject
     {
