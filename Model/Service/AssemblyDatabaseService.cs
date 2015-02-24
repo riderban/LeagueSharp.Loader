@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Threading;
 using LeagueSharp.Loader.Model.Assembly;
+using LeagueSharp.Loader.Model.Settings;
 using LeagueSharp.Loader.ViewModel;
 using LibGit2Sharp;
 using Microsoft.Practices.ServiceLocation;
@@ -14,8 +15,6 @@ namespace LeagueSharp.Loader.Model.Service
 {
     internal class AssemblyDatabaseService : IDataService
     {
-        private const string Root = @"C:\Users\h3h3\AppData\Roaming\LeagueSharp\Repositories";
-
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
             // TODO: call webservice & cache data <-------------------------------------------------- q.q.q.q.q.q.q.q.q.q.q.q.q
@@ -24,9 +23,9 @@ namespace LeagueSharp.Loader.Model.Service
             Task.Factory.StartNew(() =>
             {
                 var progress = ServiceLocator.Current.GetInstance<MainViewModel>().ProgressController;
-                if (progress.Start(0, 0, Directory.EnumerateFiles(Root, "*.csproj", SearchOption.AllDirectories).Count()))
+                if (progress.Start(0, 0, Directory.EnumerateFiles(Directories.RepositoryDir, "*.csproj", SearchOption.AllDirectories).Count()))
                 {
-                    Parallel.ForEach(Directory.EnumerateDirectories(Root), dir =>
+                    Parallel.ForEach(Directory.EnumerateDirectories(Directories.RepositoryDir), dir =>
                     {
                         var asm = CreateAssembly(Path.Combine(dir, "trunk"));
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -79,7 +78,7 @@ namespace LeagueSharp.Loader.Model.Service
                 {
                     assemblies.Add(new LeagueSharpAssembly
                     {
-                        Type = AssemblyType.Executable,
+                        Type = AssemblyType.Unknown,
                         State = AssemblyState.Ready,
                         Name = Path.GetFileNameWithoutExtension(project),
                         Location = location,

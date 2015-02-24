@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GalaSoft.MvvmLight;
+using Microsoft.CodeAnalysis;
 
 namespace LeagueSharp.Loader.Model.Assembly
 {
@@ -14,8 +15,10 @@ namespace LeagueSharp.Loader.Model.Assembly
         private int _rating;
         private AssemblyState _state;
         private AssemblyType _type;
+        private OptimizationLevel _optimization = OptimizationLevel.Release;
         private int _version;
         private List<AssemblyVersion> _versions = new List<AssemblyVersion>();
+        private OutputKind _outputKind = OutputKind.ConsoleApplication;
 
         public string Author
         {
@@ -81,6 +84,12 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Type, ref _type, value); }
         }
 
+        public OptimizationLevel Optimization
+        {
+            get { return _optimization; }
+            set { Set(() => Optimization, ref _optimization, value); }
+        }
+
         public int Version
         {
             get { return _version; }
@@ -91,10 +100,18 @@ namespace LeagueSharp.Loader.Model.Assembly
             }
         }
 
+        
+
         public List<AssemblyVersion> Versions
         {
             get { return _versions; }
             set { Set(() => Versions, ref _versions, value); }
+        }
+
+        public OutputKind OutputKind
+        {
+            get { return _outputKind; }
+            set { Set(() => OutputKind, ref _outputKind, value); }
         }
     }
 }

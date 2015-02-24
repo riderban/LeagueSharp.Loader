@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\LibGit2Sharp.0.22.0-pre20150215193741\build\net40\LibGit2Sharp.props" Condition="Exists('packages\LibGit2Sharp.0.22.0-pre20150215193741\build\net40\LibGit2Sharp.props')" />
+  <Import Project="packages\LibGit2Sharp.0.22.0-pre20150223185624\build\net40\LibGit2Sharp.props" Condition="Exists('packages\LibGit2Sharp.0.22.0-pre20150223185624\build\net40\LibGit2Sharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -32,7 +32,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>cc964464</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>f773992a</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -78,11 +78,11 @@
     </Reference>
     <Reference Include="LibGit2Sharp, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\LibGit2Sharp.0.22.0-pre20150215193741\lib\net40\LibGit2Sharp.dll</HintPath>
+      <HintPath>packages\LibGit2Sharp.0.22.0-pre20150223185624\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.0.1.62, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MahApps.Metro, Version=1.0.1.81, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\MahApps.Metro.1.0.1-ALPHA062\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>packages\MahApps.Metro.1.0.1-ALPHA081\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis">
       <HintPath>packages\Microsoft.CodeAnalysis.Common.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
@@ -101,6 +101,18 @@
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis.Desktop">
       <HintPath>packages\Microsoft.CodeAnalysis.Common.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic">
+      <HintPath>packages\Microsoft.CodeAnalysis.VisualBasic.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.VisualBasic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic.Desktop">
+      <HintPath>packages\Microsoft.CodeAnalysis.VisualBasic.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.VisualBasic.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces">
+      <HintPath>packages\Microsoft.CodeAnalysis.VisualBasic.Workspaces.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces.Desktop">
+      <HintPath>packages\Microsoft.CodeAnalysis.VisualBasic.Workspaces.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.VisualBasic.Workspaces.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis.Workspaces">
       <HintPath>packages\Microsoft.CodeAnalysis.Workspaces.Common.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
@@ -144,7 +156,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\MvvmLightLibs.5.1.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>packages\MahApps.Metro.1.0.1-ALPHA081\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -299,7 +311,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\LibGit2Sharp.0.22.0-pre20150215193741\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\LibGit2Sharp.0.22.0-pre20150215193741\build\net40\LibGit2Sharp.props'))" />
+    <Error Condition="!Exists('packages\LibGit2Sharp.0.22.0-pre20150223185624\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\LibGit2Sharp.0.22.0-pre20150223185624\build\net40\LibGit2Sharp.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

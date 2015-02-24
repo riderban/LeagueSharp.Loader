@@ -82,7 +82,7 @@ namespace LeagueSharp.Loader.ViewModel
                                            (assembly, state) =>
                                            {
                                                assembly.State = AssemblyState.Compiling;
-                                               RoslynCompiler.Compile(assembly.Project);
+                                               RoslynCompiler.Compile(assembly);
                                                assembly.State = AssemblyState.Ready;
                                                ProgressController.Value++;
                                            });

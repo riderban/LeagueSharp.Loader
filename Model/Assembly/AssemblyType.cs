@@ -3,7 +3,6 @@
     internal enum AssemblyType
     {
         Unknown,
-        Executable,
         Library,
         Champion,
         Utility
