@@ -10,7 +10,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
         <ResourceDictionary
             Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
-        <ResourceDictionary Source="LeagueSharpTheme.xaml" />
+        <ResourceDictionary Source="LeagueSharpGreen.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- App Icons -->

@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
+using LeagueSharp.Loader.Core;
+using LeagueSharp.Loader.Core.Compiler;
 using Microsoft.CodeAnalysis;
 
 namespace LeagueSharp.Loader.Model.Assembly
 {
+    [XmlType(AnonymousType = true), Serializable]
     internal class LeagueSharpAssembly : ObservableObject
     {
         private string _author;
@@ -19,6 +24,7 @@ namespace LeagueSharp.Loader.Model.Assembly
         private int _version;
         private List<AssemblyVersion> _versions = new List<AssemblyVersion>();
         private OutputKind _outputKind = OutputKind.ConsoleApplication;
+        private bool _inject;
 
         public string Author
         {
@@ -90,6 +96,12 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Optimization, ref _optimization, value); }
         }
 
+        public bool Inject
+        {
+            get { return _inject; }
+            set { Set(() => Inject, ref _inject, value); }
+        }
+
         public int Version
         {
             get { return _version; }
@@ -99,8 +111,6 @@ namespace LeagueSharp.Loader.Model.Assembly
                 RaisePropertyChanged("CurrentVersion");
             }
         }
-
-        
 
         public List<AssemblyVersion> Versions
         {
@@ -112,6 +122,43 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _outputKind; }
             set { Set(() => OutputKind, ref _outputKind, value); }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var assembly = obj as LeagueSharpAssembly;
+            if (assembly != null)
+            {
+                return assembly.Project == Project;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Project.GetHashCode();
+        }
+
+        public void Update()
+        {
+            if (State == AssemblyState.Downloading)
+            {
+                return;
+            }
+
+            State = AssemblyState.Downloading;
+            State = GitUpdater.Update(this) ? AssemblyState.Ready : AssemblyState.DownloadingError;
+        }
+
+        public void Compile()
+        {
+            if (State == AssemblyState.Compiling)
+            {
+                return;
+            }
+
+            State = AssemblyState.Compiling;
+            State = RoslynCompiler.Compile(this) ? AssemblyState.Ready : AssemblyState.CompilingError;
         }
     }
 }

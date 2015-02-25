@@ -8,5 +8,13 @@
              DataContext="{Binding Database, Source={StaticResource Locator}}" d:DesignWidth="636.61"
              d:DesignHeight="388.379">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid />
 </UserControl>

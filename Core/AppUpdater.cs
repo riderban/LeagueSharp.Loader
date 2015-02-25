@@ -63,7 +63,7 @@ namespace LeagueSharp.Loader.Core
             }
         }
 
-        public static Tuple<bool, bool?, string> UpdateCore(string LeagueOfLegendsFilePath, bool showMessages)
+        public static Tuple<bool, bool?, string> UpdateCore(string leagueOfLegendsFilePath, bool showMessages)
         {
             if (Directory.Exists(Path.Combine(Directories.CurrentDirectory, "iwanttogetbanned")))
             {
@@ -71,7 +71,7 @@ namespace LeagueSharp.Loader.Core
             }
             try
             {
-                var leagueMd5 = Utility.Md5Checksum(LeagueOfLegendsFilePath);
+                var leagueMd5 = Utility.Md5Checksum(leagueOfLegendsFilePath);
                 var wr = WebRequest.Create(string.Format(CoreVersionCheckURL, leagueMd5));
                 wr.Timeout = 4000;
                 wr.Method = WebRequestMethods.Http.Get;

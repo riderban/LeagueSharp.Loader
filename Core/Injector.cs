@@ -116,7 +116,7 @@ namespace LeagueSharp.Loader.Core
                 return;
             }
             injectDLL =
-                Marshal.GetDelegateForFunctionPointer(procAddress, typeof (InjectDLLDelegate)) as InjectDLLDelegate;
+                Marshal.GetDelegateForFunctionPointer(procAddress, typeof(InjectDLLDelegate)) as InjectDLLDelegate;
         }
 
         public static void Pulse()
@@ -163,22 +163,29 @@ namespace LeagueSharp.Loader.Core
 
         public static void LoadAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
         {
-            if (assembly.Type == AssemblyType.Executable && assembly.State == AssemblyState.Ready)
+            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library && assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("load \"{0}\"", assembly.PathToBinary);
-                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
+                var lParam = new COPYDATASTRUCT { cbData = 1, dwData = str.Length * 2 + 2, lpData = str };
                 SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
             }
         }
 
         public static void UnloadAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
         {
-            if (assembly.Type == AssemblyType.Executable && assembly.State == AssemblyState.Ready)
+            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library && assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
-                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
+                var lParam = new COPYDATASTRUCT { cbData = 1, dwData = str.Length * 2 + 2, lpData = str };
                 SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
             }
+        }
+
+        public static void SendLoginCredentials(IntPtr wnd, string user, string passwordHash)
+        {
+            var str = string.Format("LOGIN|{0}|{1}", user, passwordHash);
+            var lParam = new COPYDATASTRUCT { cbData = 2, dwData = str.Length * 2 + 2, lpData = str };
+            SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
         }
 
         public static void SendConfig(IntPtr wnd)
@@ -188,7 +195,7 @@ namespace LeagueSharp.Loader.Core
                 (Config.Instance.Settings.GameSettings[3].SelectedValue == "True") ? "1" : "0",
                 (Config.Instance.Settings.GameSettings[1].SelectedValue == "True") ? "1" : "0",
                 (Config.Instance.Settings.GameSettings[2].SelectedValue == "True") ? "2" : "0");
-            var lParam = new COPYDATASTRUCT {cbData = 2, dwData = str.Length*2 + 2, lpData = str};
+            var lParam = new COPYDATASTRUCT { cbData = 2, dwData = str.Length * 2 + 2, lpData = str };
             SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
         }
 
@@ -201,7 +208,8 @@ namespace LeagueSharp.Loader.Core
         {
             public int cbData;
             public int dwData;
-            [MarshalAs(UnmanagedType.LPWStr)] public string lpData;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string lpData;
         }
     }
 }

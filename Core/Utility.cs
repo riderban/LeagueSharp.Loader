@@ -256,7 +256,7 @@ namespace LeagueSharp.Loader.Core
                     Project = Path.Combine(targetPath, assemblyName + ".csproj"),
                     Author = Config.Instance.Username,
                     Location = targetPath,
-                    Type = AssemblyType.Executable
+                    Type = AssemblyType.Unknown
                 };
             }
             catch (Exception ex)

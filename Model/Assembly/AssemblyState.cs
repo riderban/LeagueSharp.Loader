@@ -7,6 +7,7 @@
         Injected,
         Queue,
         Downloading,
+        DownloadingError,
         Compiling,
         CompilingError
     }

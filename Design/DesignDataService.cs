@@ -17,7 +17,7 @@ namespace LeagueSharp.Loader.Design
                     {
                         Name = "Support is too Easy",
                         Rating = 5,
-                        Type = AssemblyType.Executable,
+                        Type = AssemblyType.Unknown,
                         Version = 0,
                         Author = "h3h3",
                         Location = "https://github.com/h3h3/LeagueSharp",
