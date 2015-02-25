@@ -213,6 +213,7 @@
     <EmbeddedResource Include="Resources\DefaultProject\AssemblyInfo.cs" />
     <EmbeddedResource Include="Resources\DefaultProject\Program.cs" />
     <Compile Include="ViewModel\AppBarViewModel.cs" />
+    <Compile Include="ViewModel\AssembliesViewModel.cs" />
     <Compile Include="ViewModel\DatabaseViewModel.cs" />
     <Compile Include="ViewModel\InstallerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

@@ -6,7 +6,7 @@
              xmlns:ignore="http://www.ignore.com"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d ignore"
-             DataContext="{Binding Database, Source={StaticResource Locator}}" d:DesignWidth="935.623"
+             DataContext="{Binding Assemblies, Source={StaticResource Locator}}" d:DesignWidth="935.623"
              d:DesignHeight="598.922">
 
     <UserControl.Resources>

@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using LeagueSharp.Loader.Design;
 using LeagueSharp.Loader.Model.Service;
+using LeagueSharp.Loader.ViewModel.Settings;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LeagueSharp.Loader.ViewModel
@@ -26,32 +27,35 @@ namespace LeagueSharp.Loader.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<DatabaseViewModel>();
             SimpleIoc.Default.Register<AppBarViewModel>();
+            SimpleIoc.Default.Register<DatabaseViewModel>();
+            SimpleIoc.Default.Register<AssembliesViewModel>();
+            SimpleIoc.Default.Register<InstallerViewModel>();
+            SimpleIoc.Default.Register<UpdaterViewModel>();
+            SimpleIoc.Default.Register<GeneralViewModel>();
+            SimpleIoc.Default.Register<HotkeysViewModel>();
+            SimpleIoc.Default.Register<LogViewModel>();
+            SimpleIoc.Default.Register<MenuConfigViewModel>();
         }
 
-        /// <summary>
-        ///     Gets the AppBar property.
-        /// </summary>
+        public MainViewModel Main
+        {
+            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
+        }
+
         public AppBarViewModel AppBar
         {
             get { return ServiceLocator.Current.GetInstance<AppBarViewModel>(); }
         }
 
-        /// <summary>
-        ///     Gets the Database property.
-        /// </summary>
         public DatabaseViewModel Database
         {
             get { return ServiceLocator.Current.GetInstance<DatabaseViewModel>(); }
         }
 
-        /// <summary>
-        ///     Gets the Main property.
-        /// </summary>
-        public MainViewModel Main
+        public AssembliesViewModel Assemblies
         {
-            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
+            get { return ServiceLocator.Current.GetInstance<AssembliesViewModel>(); }
         }
 
         /// <summary>
