@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -17,52 +18,83 @@ namespace LeagueSharp.Loader.Core
     {
         public static void Log(LogLevel level, string message, [CallerMemberName] string source = "")
         {
-            Logs.Main.Items.Add(new LogItem {Level = level, Source = source, Message = message});
+            Logs.Main.Items.Add(new LogItem { Level = level, Source = source, Message = message });
+            Debug.WriteLine("LOG | {0} | {1} | {2}", level, source, message);
         }
 
-        public static void MapClassToXmlFile(Type type, object obj, string path)
+        public static void SaveToXml(Type type, object obj, string path)
         {
-            var serializer = new XmlSerializer(type);
-            using (var sw = new StreamWriter(path, false, Encoding.UTF8))
+            try
             {
-                serializer.Serialize(sw, obj);
+                var serializer = new XmlSerializer(type);
+                using (var sw = new StreamWriter(path, false, Encoding.UTF8))
+                {
+                    serializer.Serialize(sw, obj);
+                }
+            }
+            catch
+            {
+                Log(LogLevel.Warning, string.Format("Failed to Save {0} to {1}", type, path));
             }
         }
 
-        public static object MapXmlFileToClass(Type type, string path)
+        public static object LoadFromXml(Type type, string path)
         {
-            var serializer = new XmlSerializer(type);
-            using (var reader = new StreamReader(path, Encoding.UTF8))
+            try
             {
-                return serializer.Deserialize(reader);
+                var serializer = new XmlSerializer(type);
+                using (var reader = new StreamReader(path, Encoding.UTF8))
+                {
+                    return serializer.Deserialize(reader);
+                }
             }
+            catch
+            {
+                Log(LogLevel.Warning, string.Format("Failed to Load {0} from {1}", type, path));
+            }
+
+            return null;
         }
 
         public static string ReadResourceString(string resource)
         {
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
+            try
             {
-                if (stream != null)
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
                 {
-                    using (var reader = new StreamReader(stream))
+                    if (stream != null)
                     {
-                        return reader.ReadToEnd();
+                        using (var reader = new StreamReader(stream))
+                        {
+                            return reader.ReadToEnd();
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                Log(LogLevel.Warning, string.Format("Failed to Read {0}", resource));
+            }
+
             return string.Empty;
         }
 
         public static void CreateFileFromResource(string path, string resource, bool overwrite = false)
         {
-            if (!overwrite && File.Exists(path))
+            try
             {
-                return;
-            }
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
-            {
-                if (stream != null)
+                if (!overwrite && File.Exists(path))
                 {
+                    return;
+                }
+
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
+                {
+                    if (stream == null)
+                    {
+                        return;
+                    }
+
                     using (var reader = new StreamReader(stream))
                     {
                         using (var sw = new StreamWriter(path, false, Encoding.UTF8))
@@ -71,6 +103,10 @@ namespace LeagueSharp.Loader.Core
                         }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Log(LogLevel.Warning, string.Format("Failed to Create File {0} from {1}", path, resource));
             }
         }
 
@@ -84,6 +120,7 @@ namespace LeagueSharp.Loader.Core
                     fi.Attributes = FileAttributes.Normal;
                     fi.Delete();
                 }
+
                 foreach (var di in dir.GetDirectories())
                 {
                     di.Attributes = FileAttributes.Normal;
@@ -121,10 +158,12 @@ namespace LeagueSharp.Loader.Core
                         Directory.CreateDirectory(dir);
                     }
                 }
+
                 if (File.Exists(path))
                 {
                     File.Delete(path);
                 }
+
                 try
                 {
                     File.Move(file, path);
@@ -158,11 +197,13 @@ namespace LeagueSharp.Loader.Core
                     {
                         Directory.CreateDirectory(pathDirectory);
                     }
+
                     while (File.Exists(newPath))
                     {
                         var tmpFileName = string.Format("{0} ({1})", fileName, counter++);
                         newPath = Path.Combine(pathDirectory, tmpFileName + fileExtension);
                     }
+
                     File.Move(file, newPath);
                     return true;
                 }
@@ -203,7 +244,7 @@ namespace LeagueSharp.Loader.Core
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
                 return "-1";
             }
@@ -211,7 +252,8 @@ namespace LeagueSharp.Loader.Core
 
         public static string GetMultiLanguageText(string key)
         {
-            return Application.Current.FindResource(key).ToString();
+            var resource = Application.Current.FindResource(key);
+            return resource != null ? resource.ToString() : "KEY:" + key;
         }
 
         public static void CopyDirectory(string sourcePath, string targetPath)
@@ -236,7 +278,7 @@ namespace LeagueSharp.Loader.Core
                 var defaultProjectcsproj =
                     ReadResourceString("LeagueSharp.Loader.Resources.DefaultProject.DefaultProject.csproj");
                 var programcs = ReadResourceString("LeagueSharp.Loader.Resources.DefaultProject.Program.cs");
-                var targetPath = Path.Combine(Directories.LocalRepoDir,
+                var targetPath = Path.Combine(Directories.LocalRepositoryDirectory,
                     assemblyName + Environment.TickCount.GetHashCode().ToString("X"));
 
                 programcs = programcs.Replace("{ProjectName}", assemblyName);
@@ -283,11 +325,11 @@ namespace LeagueSharp.Loader.Core
                         var isVersion = Version.TryParse(Path.GetFileName(versionPath), out version);
                         if (isVersion)
                         {
-                            var test = version.Build*Math.Pow(600, 4) + version.Major*Math.Pow(600, 3) +
-                                       version.Minor*Math.Pow(600, 2) + version.Revision*Math.Pow(600, 1);
+                            var test = version.Build * Math.Pow(600, 4) + version.Major * Math.Pow(600, 3) +
+                                       version.Minor * Math.Pow(600, 2) + version.Revision * Math.Pow(600, 1);
                             if (test > greatestVersion)
                             {
-                                greatestVersion = (long) test;
+                                greatestVersion = (long)test;
                                 greatestVersionString = Path.GetFileName(versionPath);
                             }
                         }
@@ -311,7 +353,7 @@ namespace LeagueSharp.Loader.Core
 
         public static int VersionToInt(Version version)
         {
-            return version.Major*10000000 + version.Minor*10000 + version.Build*100 + version.Revision;
+            return version.Major * 10000000 + version.Minor * 10000 + version.Build * 100 + version.Revision;
         }
     }
 }

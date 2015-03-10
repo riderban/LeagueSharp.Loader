@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
+using System.IO.Compression;
 using System.Net;
 using System.Xml.Serialization;
 using LeagueSharp.Loader.Model.Log;
@@ -13,47 +12,75 @@ namespace LeagueSharp.Loader.Core.Compiler
     {
         public static void Resolve(string config)
         {
-            var serializer = new XmlSerializer(typeof(NuGetPackages));
-            var packages = (NuGetPackages)serializer.Deserialize(new FileStream(config, FileMode.Open));
-
-            //foreach (var package in packages.Packages.Select(package => !Directory.Exists(Path.Combine(Directories.NuGetDirectory, string.Format("{0}.{1}", package.Id, package.Version)))))
-            //{
-            //    using (var client = new WebClient())
-            //    {
-            //        client.DownloadFileAsync(new Uri(string.Format("https://www.nuget.org/api/v2/package/{0}/{1}", package.Id, package.Version)), Directories.NuGetDirectory);
-            //        client.DownloadFileCompleted += OnNuGetDownloadComplete;
-            //    }
-            //}
-        }
-
-        private static void OnNuGetDownloadComplete(object sender, AsyncCompletedEventArgs args)
-        {
-            if (args.Cancelled || args.Error != null)
+            try
             {
-                Utility.Log(LogLevel.Warning, "NuGet packet Download faild.");
-                return;
+                var serializer = new XmlSerializer(typeof(packages));
+                var packages = (packages)serializer.Deserialize(new FileStream(config, FileMode.Open));
+
+                foreach (var package in packages.package)
+                {
+                    if (!Directory.Exists(Path.Combine(Directories.NuGetDirectory, string.Format("{0}.{1}", package.id, package.version))))
+                    {
+                        ProcessPackage(package);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.Log(LogLevel.Warning, "NuGet Resolve failed. " + e);
             }
         }
 
-        [XmlType(AnonymousType = true)]
-        [XmlRootAttribute(Namespace = "", IsNullable = false, ElementName = "packages")]
-        private class NuGetPackages
+        private static void ProcessPackage(packagesPackage package)
         {
-            [XmlElementAttribute("package")]
-            public NuGetPackage[] Packages { get; set; }
+            var packageDir = Path.Combine(Directories.NuGetDirectory, string.Format("{0}.{1}", package.id, package.version));
+            var packageZip = Path.Combine(packageDir, "package.zip");
+            var packageUri = new Uri(string.Format("https://www.nuget.org/api/v2/package/{0}/{1}", package.id, package.version));
+
+            try
+            {
+                Directory.CreateDirectory(packageDir);
+
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(packageUri, packageZip);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.Log(LogLevel.Warning, string.Format("NuGet Download failed. | {0} | {1} | {2}", packageUri, packageZip, e));
+            }
+
+            try
+            {
+                ZipFile.ExtractToDirectory(packageZip, packageDir);
+                File.Delete(packageZip);
+            }
+            catch (Exception e)
+            {
+                Utility.Log(LogLevel.Warning, string.Format("NuGet Extraction failed. | {0} | {1} | {2}", packageUri, packageZip, e));
+            }
         }
+    }
 
-        [XmlTypeAttribute(AnonymousType = true, TypeName = "package")]
-        private class NuGetPackage
-        {
-            [XmlElement("id")]
-            public string Id { get; set; }
+    [XmlTypeAttribute(AnonymousType = true)]
+    [XmlRootAttribute(Namespace = "", IsNullable = false)]
+    public class packages
+    {
+        [XmlElementAttribute("package")]
+        public packagesPackage[] package { get; set; }
+    }
 
-            [XmlElement("version")]
-            public string Version { get; set; }
+    [XmlTypeAttribute(AnonymousType = true)]
+    public class packagesPackage
+    {
+        [XmlAttributeAttribute]
+        public string id { get; set; }
 
-            [XmlElement("targetFramework")]
-            public string TargetFramework { get; set; }
-        }
+        [XmlAttributeAttribute]
+        public string version { get; set; }
+
+        [XmlAttributeAttribute]
+        public string targetFramework { get; set; }
     }
 }

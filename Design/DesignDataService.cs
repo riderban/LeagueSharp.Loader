@@ -16,7 +16,6 @@ namespace LeagueSharp.Loader.Design
                     new LeagueSharpAssembly
                     {
                         Name = "Support is too Easy",
-                        Rating = 5,
                         Type = AssemblyType.Unknown,
                         Version = 0,
                         Author = "h3h3",

@@ -4,6 +4,7 @@ using System.Windows.Data;
 using GalaSoft.MvvmLight;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Service;
+using LeagueSharp.Loader.Model.Settings;
 
 namespace LeagueSharp.Loader.ViewModel
 {
@@ -26,6 +27,11 @@ namespace LeagueSharp.Loader.ViewModel
         {
             get { return _database; }
             set { Set(() => Database, ref _database, value); }
+        }
+
+        public Config Config
+        {
+            get { return Config.Instance; }
         }
     }
 }

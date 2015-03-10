@@ -78,7 +78,7 @@ namespace LeagueSharp.Loader.Core.Compiler
                 //            throw new NotSupportedException(assembly.OutputKind.ToString());
                 //    }
 
-                //    compilation.Emit(Path.Combine(Directories.AssembliesDir, outputFile), Directories.AssembliesDir);
+                //    compilation.Emit(Path.Combine(Directories.AssembliesDirectory, outputFile), Directories.AssembliesDirectory);
                 //}
             }
             catch (Exception e)

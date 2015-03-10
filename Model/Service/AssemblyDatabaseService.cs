@@ -10,11 +10,30 @@ using LeagueSharp.Loader.Model.Settings;
 using LeagueSharp.Loader.ViewModel;
 using LibGit2Sharp;
 using Microsoft.Practices.ServiceLocation;
+using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Model.Service
 {
     internal class AssemblyDatabaseService : IDataService
     {
+        public class DatabaseRepository
+        {
+            public DatabaseAssembly[] Assemblies { get; set; }
+        }
+
+        public class DatabaseAssembly
+        {
+            [JsonProperty(PropertyName = "githubFolder")]
+            public string GithubFolder { get; set; }
+
+            [JsonProperty(PropertyName = "name")]
+            public string Name { get; set; }
+
+            [JsonProperty(PropertyName = "count")]
+            public int Count { get; set; }
+        }
+
+
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
             // http://lsharpdb.com/api/votes?key=8UzzX1rdGuDR3XDq6DPbCo34Wx6T15scnti6AfvS8REDcI7Bq375YX3MgjOP154W
@@ -24,11 +43,11 @@ namespace LeagueSharp.Loader.Model.Service
             Task.Factory.StartNew(() =>
             {
                 var progress = ServiceLocator.Current.GetInstance<MainViewModel>().ProgressController;
-                if (progress.Start(0, 0, Directory.EnumerateFiles(Directories.RepositoryDir, "*.csproj", SearchOption.AllDirectories).Count()))
+                if (progress.Start(0, 0, Directory.EnumerateFiles(Directories.RepositoryDirectory, "*.csproj", SearchOption.AllDirectories).Count()))
                 {
-                    Parallel.ForEach(Directory.EnumerateDirectories(Directories.RepositoryDir), dir =>
+                    Parallel.ForEach(Directory.EnumerateDirectories(Directories.RepositoryDirectory), dir =>
                     {
-                        var asm = CreateAssembly(Path.Combine(dir, "trunk"));
+                        var asm = CreateAssembly(dir);
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
                             foreach (var assembly in asm)

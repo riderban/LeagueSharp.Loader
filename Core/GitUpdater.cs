@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LeagueSharp.Loader.Model.Assembly;
-using LeagueSharp.Loader.Model.Log;
 using LeagueSharp.Loader.Model.Settings;
 using LibGit2Sharp;
 using LogLevel = LeagueSharp.Loader.Model.Log.LogLevel;
@@ -231,7 +230,7 @@ namespace LeagueSharp.Loader.Core
         }
 
         [Obsolete("Use Update(LeagueSharpAssembly assembly) instead")]
-        internal static string Update(string url, Log log, string directory)
+        internal static string Update(string url, string directory)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
@@ -241,7 +240,7 @@ namespace LeagueSharp.Loader.Core
             {
                 try
                 {
-                    var dir = Path.Combine(directory, url.GetHashCode().ToString("X"), "trunk");
+                    var dir = Path.Combine(directory, url.GetHashCode().ToString("X"));
                     if (Repository.IsValid(dir))
                     {
                         using (var repo = new Repository(dir))
@@ -282,7 +281,7 @@ namespace LeagueSharp.Loader.Core
             try
             {
                 var usedRepos = assemblyList.Select(assembly => assembly.Location.GetHashCode().ToString("X")).ToList();
-                var dirs = new List<string>(Directory.EnumerateDirectories(Directories.RepositoryDir));
+                var dirs = new List<string>(Directory.EnumerateDirectories(Directories.RepositoryDirectory));
 
                 foreach (var dir in dirs.Where(dir => !usedRepos.Contains(Path.GetFileName(dir))))
                 {

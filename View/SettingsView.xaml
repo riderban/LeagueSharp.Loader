@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ignore="http://www.ignore.com"
              mc:Ignorable="d ignore"
-             DataContext="{Binding ViewModelName, Source={StaticResource Locator}}">
+             DataContext="{Binding Settings, Source={StaticResource Locator}}">
 
     <UserControl.Resources>
         <ResourceDictionary>

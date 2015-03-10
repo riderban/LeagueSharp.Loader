@@ -7,10 +7,6 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace LeagueSharp.Loader.ViewModel
 {
-    /// <summary>
-    ///     This class contains static references to all the view models in the
-    ///     application and provides an entry point for the bindings.
-    /// </summary>
     internal class ViewModelLocator
     {
         static ViewModelLocator()
@@ -32,10 +28,16 @@ namespace LeagueSharp.Loader.ViewModel
             SimpleIoc.Default.Register<AssembliesViewModel>();
             SimpleIoc.Default.Register<InstallerViewModel>();
             SimpleIoc.Default.Register<UpdaterViewModel>();
+
+            #region Settings
+
+            SimpleIoc.Default.Register<SettingsViewModel>();
             SimpleIoc.Default.Register<GeneralViewModel>();
             SimpleIoc.Default.Register<HotkeysViewModel>();
             SimpleIoc.Default.Register<LogViewModel>();
             SimpleIoc.Default.Register<MenuConfigViewModel>();
+
+            #endregion
         }
 
         public MainViewModel Main
@@ -58,9 +60,11 @@ namespace LeagueSharp.Loader.ViewModel
             get { return ServiceLocator.Current.GetInstance<AssembliesViewModel>(); }
         }
 
-        /// <summary>
-        ///     Cleans up all the resources.
-        /// </summary>
+        public SettingsViewModel Settings
+        {
+            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
+        }
+
         public static void Cleanup()
         {
         }

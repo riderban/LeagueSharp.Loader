@@ -4,13 +4,13 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using LeagueSharp.Loader.Model.Settings;
 using LeagueSharp.Loader.View;
+using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Core
 {
@@ -18,8 +18,8 @@ namespace LeagueSharp.Loader.Core
     {
         public delegate void RepositoriesUpdateDelegate(List<string> list);
 
-        public const string VersionCheckURL = "http://api.joduska.me/public/deploy/loader/version";
-        public const string CoreVersionCheckURL = "http://api.joduska.me/public/deploy/kernel/{0}";
+        public const string VersionCheckUrl = "http://api.joduska.me/public/deploy/loader/version";
+        public const string CoreVersionCheckUrl = "http://api.joduska.me/public/deploy/kernel/{0}";
         public static string UpdateZip = Path.Combine(Directories.CoreDirectory, "update.zip");
         public static string SetupFile = Path.Combine(Directories.CurrentDirectory, "LeagueSharp-update.exe");
         public static MainWindow MainWindow;
@@ -32,13 +32,13 @@ namespace LeagueSharp.Loader.Core
             {
                 using (var client = new WebClient())
                 {
-                    var data = client.DownloadData(VersionCheckURL);
-                    var ser = new DataContractJsonSerializer(typeof (UpdateInfo));
-                    var updateInfo = (UpdateInfo) ser.ReadObject(new MemoryStream(data));
-                    var v = Version.Parse(updateInfo.version);
+                    var data = client.DownloadString(VersionCheckUrl);
+                    var updateInfo = JsonConvert.DeserializeObject<UpdateInfo>(data);
+                    var v = Version.Parse(updateInfo.Version);
+
                     if (Utility.VersionToInt(Assembly.GetEntryAssembly().GetName().Version) < Utility.VersionToInt(v))
                     {
-                        return new Tuple<bool, string>(true, updateInfo.url);
+                        return new Tuple<bool, string>(true, updateInfo.Url);
                     }
                 }
             }
@@ -72,7 +72,7 @@ namespace LeagueSharp.Loader.Core
             try
             {
                 var leagueMd5 = Utility.Md5Checksum(leagueOfLegendsFilePath);
-                var wr = WebRequest.Create(string.Format(CoreVersionCheckURL, leagueMd5));
+                var wr = WebRequest.Create(string.Format(CoreVersionCheckUrl, leagueMd5));
                 wr.Timeout = 4000;
                 wr.Method = WebRequestMethods.Http.Get;
                 var response = wr.GetResponse();
@@ -80,9 +80,9 @@ namespace LeagueSharp.Loader.Core
                 {
                     if (stream != null)
                     {
-                        var ser = new DataContractJsonSerializer(typeof (UpdateInfo));
-                        var updateInfo = (UpdateInfo) ser.ReadObject(stream);
-                        if (updateInfo.version == "0")
+                        var ser = new DataContractJsonSerializer(typeof(UpdateInfo));
+                        var updateInfo = (UpdateInfo)ser.ReadObject(stream);
+                        if (updateInfo.Version == "0")
                         {
                             var message = Utility.GetMultiLanguageText("WrongVersion") + leagueMd5;
                             if (showMessages)
@@ -91,8 +91,8 @@ namespace LeagueSharp.Loader.Core
                             }
                             return new Tuple<bool, bool?, string>(false, false, message);
                         }
-                        if (updateInfo.version != Utility.Md5Checksum(Directories.CoreFilePath) &&
-                            updateInfo.url.StartsWith("https://github.com/joduskame/")) //Update needed
+                        if (updateInfo.Version != Utility.Md5Checksum(Directories.CoreFilePath) &&
+                            updateInfo.Url.StartsWith("https://github.com/joduskame/")) //Update needed
                         {
                             if (MainWindow != null)
                             {
@@ -110,7 +110,7 @@ namespace LeagueSharp.Loader.Core
                                 }
                                 using (var webClient = new WebClient())
                                 {
-                                    webClient.DownloadFile(updateInfo.url, UpdateZip);
+                                    webClient.DownloadFile(updateInfo.Url, UpdateZip);
                                     using (var archive = ZipFile.OpenRead(UpdateZip))
                                     {
                                         foreach (var entry in archive.Entries)
@@ -171,12 +171,13 @@ namespace LeagueSharp.Loader.Core
                     "https://raw.githubusercontent.com/LeagueSharp/LeagueSharpLoader/master/Updates/Repositories.txt"));
         }
 
-        [DataContract]
         internal class UpdateInfo
         {
-            [DataMember] internal string url;
-            [DataMember] internal bool valid;
-            [DataMember] internal string version;
+            [JsonProperty(PropertyName = "url")]
+            public string Url { get; set; }
+
+            [JsonProperty(PropertyName = "version")]
+            public string Version { get; set; }
         }
     }
 }
