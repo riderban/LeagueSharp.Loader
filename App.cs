@@ -1,4 +1,7 @@
-﻿using GalaSoft.MvvmLight.Threading;
+﻿using System.Linq;
+using GalaSoft.MvvmLight.Threading;
+using LeagueSharp.Loader.Core.Compiler;
+using MahApps.Metro;
 
 namespace LeagueSharp.Loader
 {
@@ -19,6 +22,8 @@ namespace LeagueSharp.Loader
         static App()
         {
             DispatcherHelper.Initialize();
+
+            //NuGetResolver.Resolve(@"D:\GitHub\LeagueSharp.Loader\packages.config");
         }
     }
 }

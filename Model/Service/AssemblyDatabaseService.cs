@@ -17,6 +17,7 @@ namespace LeagueSharp.Loader.Model.Service
     {
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
+            // http://lsharpdb.com/api/votes?key=8UzzX1rdGuDR3XDq6DPbCo34Wx6T15scnti6AfvS8REDcI7Bq375YX3MgjOP154W
             // TODO: call webservice & cache data <-------------------------------------------------- q.q.q.q.q.q.q.q.q.q.q.q.q
             var assemblies = new ObservableCollection<LeagueSharpAssembly>();
 

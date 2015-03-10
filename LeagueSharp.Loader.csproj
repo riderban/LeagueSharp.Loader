@@ -182,6 +182,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\AppUpdater.cs" />
     <Compile Include="Core\Auth.cs" />
+    <Compile Include="Core\Compiler\NuGetResolver.cs" />
     <Compile Include="Core\Compiler\Rewriter\GameObjectSyntaxRewriter.cs" />
     <Compile Include="Core\Compiler\Rewriter\WebRequestSyntaxRewriter.cs" />
     <Compile Include="Core\Compiler\RoslynCompiler.cs" />
@@ -387,7 +388,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <AppDesigner Include="Properties\" />
     <None Include="Properties\app.manifest" />
     <EmbeddedResource Include="Resources\DefaultProject\App.config" />

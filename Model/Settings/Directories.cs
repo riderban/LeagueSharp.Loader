@@ -10,6 +10,7 @@ namespace LeagueSharp.Loader.Model.Settings
         public static readonly string RepositoryDir = Path.Combine(AppDataDirectory, "Repositories");
         public static readonly string AssembliesDir = Path.Combine(AppDataDirectory, "Assemblies");
         public static readonly string CoreDirectory = Path.Combine(CurrentDirectory, "System");
+        public static readonly string NuGetDirectory = Path.Combine(CurrentDirectory, "NuGet");
         public static readonly string LogsDir = Path.Combine(CurrentDirectory, "Logs");
         public static readonly string LocalRepoDir = Path.Combine(CurrentDirectory, "LocalAssemblies");
         public static readonly string LoaderFilePath = Path.Combine(CurrentDirectory, "Leaguesharp.Loader.exe");

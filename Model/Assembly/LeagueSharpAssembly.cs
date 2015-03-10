@@ -17,7 +17,6 @@ namespace LeagueSharp.Loader.Model.Assembly
         private string _name;
         private string _pathToBinary;
         private string _project;
-        private int _rating;
         private AssemblyState _state;
         private AssemblyType _type;
         private OptimizationLevel _optimization = OptimizationLevel.Release;
@@ -32,6 +31,7 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Author, ref _author, value); }
         }
 
+        [XmlIgnore]
         public AssemblyVersion CurrentVersion
         {
             get { return Versions[Version]; }
@@ -42,6 +42,7 @@ namespace LeagueSharp.Loader.Model.Assembly
             }
         }
 
+        [XmlIgnore]
         public string ImageRating
         {
             get { return _imageRating; }
@@ -70,12 +71,6 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _project; }
             set { Set(() => Project, ref _project, value); }
-        }
-
-        public int Rating
-        {
-            get { return _rating; }
-            set { Set(() => Rating, ref _rating, value); }
         }
 
         public AssemblyState State
@@ -112,6 +107,7 @@ namespace LeagueSharp.Loader.Model.Assembly
             }
         }
 
+        [XmlIgnore]
         public List<AssemblyVersion> Versions
         {
             get { return _versions; }
