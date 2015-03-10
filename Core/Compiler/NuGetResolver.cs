@@ -14,12 +14,14 @@ namespace LeagueSharp.Loader.Core.Compiler
         {
             try
             {
-                var serializer = new XmlSerializer(typeof(packages));
-                var packages = (packages)serializer.Deserialize(new FileStream(config, FileMode.Open));
+                var serializer = new XmlSerializer(typeof (packages));
+                var packages = (packages) serializer.Deserialize(new FileStream(config, FileMode.Open));
 
                 foreach (var package in packages.package)
                 {
-                    if (!Directory.Exists(Path.Combine(Directories.NuGetDirectory, string.Format("{0}.{1}", package.id, package.version))))
+                    if (
+                        !Directory.Exists(Path.Combine(Directories.NuGetDirectory,
+                            string.Format("{0}.{1}", package.id, package.version))))
                     {
                         ProcessPackage(package);
                     }
@@ -33,9 +35,11 @@ namespace LeagueSharp.Loader.Core.Compiler
 
         private static void ProcessPackage(packagesPackage package)
         {
-            var packageDir = Path.Combine(Directories.NuGetDirectory, string.Format("{0}.{1}", package.id, package.version));
+            var packageDir = Path.Combine(Directories.NuGetDirectory,
+                string.Format("{0}.{1}", package.id, package.version));
             var packageZip = Path.Combine(packageDir, "package.zip");
-            var packageUri = new Uri(string.Format("https://www.nuget.org/api/v2/package/{0}/{1}", package.id, package.version));
+            var packageUri =
+                new Uri(string.Format("https://www.nuget.org/api/v2/package/{0}/{1}", package.id, package.version));
 
             try
             {
@@ -48,7 +52,8 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, string.Format("NuGet Download failed. | {0} | {1} | {2}", packageUri, packageZip, e));
+                Utility.Log(LogLevel.Warning,
+                    string.Format("NuGet Download failed. | {0} | {1} | {2}", packageUri, packageZip, e));
             }
 
             try
@@ -58,29 +63,30 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, string.Format("NuGet Extraction failed. | {0} | {1} | {2}", packageUri, packageZip, e));
+                Utility.Log(LogLevel.Warning,
+                    string.Format("NuGet Extraction failed. | {0} | {1} | {2}", packageUri, packageZip, e));
             }
         }
     }
 
-    [XmlTypeAttribute(AnonymousType = true)]
-    [XmlRootAttribute(Namespace = "", IsNullable = false)]
+    [XmlType(AnonymousType = true)]
+    [XmlRoot(Namespace = "", IsNullable = false)]
     public class packages
     {
-        [XmlElementAttribute("package")]
+        [XmlElement("package")]
         public packagesPackage[] package { get; set; }
     }
 
-    [XmlTypeAttribute(AnonymousType = true)]
+    [XmlType(AnonymousType = true)]
     public class packagesPackage
     {
-        [XmlAttributeAttribute]
+        [XmlAttribute]
         public string id { get; set; }
 
-        [XmlAttributeAttribute]
-        public string version { get; set; }
-
-        [XmlAttributeAttribute]
+        [XmlAttribute]
         public string targetFramework { get; set; }
+
+        [XmlAttribute]
+        public string version { get; set; }
     }
 }

@@ -11,8 +11,82 @@ namespace LeagueSharp.Loader.Core
 {
     internal class GitUpdater
     {
-        internal delegate void TransferHandler(string repository, TransferProgress progress);
         internal static event TransferHandler OnTransferProgress;
+
+        internal static bool Update(LeagueSharpAssembly assembly)
+        {
+            assembly.State = AssemblyState.Downloading;
+            assembly.State = AssemblyState.Ready;
+            return false;
+        }
+
+        [Obsolete("Use Update(LeagueSharpAssembly assembly) instead")]
+        internal static string Update(string url, string directory)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                Utility.Log(LogLevel.Warning, string.Format("Wrong Url specified - {0}", url));
+            }
+            else
+            {
+                try
+                {
+                    var dir = Path.Combine(directory, url.GetHashCode().ToString("X"));
+                    if (Repository.IsValid(dir))
+                    {
+                        using (var repo = new Repository(dir))
+                        {
+                            repo.Config.Set("user.name", Config.Instance.Username);
+                            repo.Config.Set("user.email", Config.Instance.Username + "@joduska.me");
+                            repo.Fetch("origin");
+                            repo.Checkout("origin/master",
+                                new CheckoutOptions {CheckoutModifiers = CheckoutModifiers.Force});
+                        }
+                    }
+                    else
+                    {
+                        var oldPath = Path.Combine(directory, url.GetHashCode().ToString("X"));
+                        if (Directory.Exists(oldPath))
+                        {
+                            Directory.Delete(oldPath, true);
+                        }
+                        Repository.Clone(url, dir, new CloneOptions {Checkout = true});
+                        using (var repo = new Repository(dir))
+                        {
+                            repo.Config.Set("user.name", Config.Instance.Username);
+                            repo.Config.Set("user.email", Config.Instance.Username + "@joduska.me");
+                        }
+                    }
+                    return dir;
+                }
+                catch (Exception ex)
+                {
+                    Utility.Log(LogLevel.Error, string.Format("{0} - {1}", ex.Message, url));
+                }
+            }
+            return string.Empty;
+        }
+
+        internal static void ClearUnusedRepos(List<LeagueSharpAssembly> assemblyList)
+        {
+            try
+            {
+                var usedRepos = assemblyList.Select(assembly => assembly.Location.GetHashCode().ToString("X")).ToList();
+                var dirs = new List<string>(Directory.EnumerateDirectories(Directories.RepositoryDirectory));
+
+                foreach (var dir in dirs.Where(dir => !usedRepos.Contains(Path.GetFileName(dir))))
+                {
+                    Utility.ClearDirectory(dir);
+                    Directory.Delete(dir);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.Log(LogLevel.Warning, e.Message);
+            }
+        }
+
+        internal delegate void TransferHandler(string repository, TransferProgress progress);
 
         #region Git Commands
 
@@ -83,11 +157,12 @@ namespace LeagueSharp.Loader.Core
                     if (IsValidBranch(repo.Branches[branch]))
                     {
                         repo.Merge(repo.Branches[branch],
-                            new Signature(Config.Instance.Username, Config.Instance.Username + "@joduska.me", DateTimeOffset.Now),
-                            new MergeOptions { FileConflictStrategy = CheckoutFileConflictStrategy.Theirs });
+                            new Signature(Config.Instance.Username, Config.Instance.Username + "@joduska.me",
+                                DateTimeOffset.Now),
+                            new MergeOptions {FileConflictStrategy = CheckoutFileConflictStrategy.Theirs});
 
                         repo.Checkout("head",
-                            new CheckoutOptions { CheckoutModifiers = mods });
+                            new CheckoutOptions {CheckoutModifiers = mods});
                     }
                     else
                     {
@@ -131,10 +206,7 @@ namespace LeagueSharp.Loader.Core
 
                         return repo.Diff.Compare<TreeChanges>(tree1, tree2);
                     }
-                    else
-                    {
-                        Utility.Log(LogLevel.Warning, "Branch not found");
-                    }
+                    Utility.Log(LogLevel.Warning, "Branch not found");
                 }
             }
             catch (Exception e)
@@ -221,78 +293,5 @@ namespace LeagueSharp.Loader.Core
         }
 
         #endregion
-
-        internal static bool Update(LeagueSharpAssembly assembly)
-        {
-            assembly.State = AssemblyState.Downloading;
-            assembly.State = AssemblyState.Ready;
-            return false;
-        }
-
-        [Obsolete("Use Update(LeagueSharpAssembly assembly) instead")]
-        internal static string Update(string url, string directory)
-        {
-            if (string.IsNullOrWhiteSpace(url))
-            {
-                Utility.Log(LogLevel.Warning, string.Format("Wrong Url specified - {0}", url));
-            }
-            else
-            {
-                try
-                {
-                    var dir = Path.Combine(directory, url.GetHashCode().ToString("X"));
-                    if (Repository.IsValid(dir))
-                    {
-                        using (var repo = new Repository(dir))
-                        {
-                            repo.Config.Set("user.name", Config.Instance.Username);
-                            repo.Config.Set("user.email", Config.Instance.Username + "@joduska.me");
-                            repo.Fetch("origin");
-                            repo.Checkout("origin/master",
-                                new CheckoutOptions {CheckoutModifiers = CheckoutModifiers.Force});
-                        }
-                    }
-                    else
-                    {
-                        var oldPath = Path.Combine(directory, url.GetHashCode().ToString("X"));
-                        if (Directory.Exists(oldPath))
-                        {
-                            Directory.Delete(oldPath, true);
-                        }
-                        Repository.Clone(url, dir, new CloneOptions {Checkout = true});
-                        using (var repo = new Repository(dir))
-                        {
-                            repo.Config.Set("user.name", Config.Instance.Username);
-                            repo.Config.Set("user.email", Config.Instance.Username + "@joduska.me");
-                        }
-                    }
-                    return dir;
-                }
-                catch (Exception ex)
-                {
-                    Utility.Log(LogLevel.Error, string.Format("{0} - {1}", ex.Message, url));
-                }
-            }
-            return string.Empty;
-        }
-
-        internal static void ClearUnusedRepos(List<LeagueSharpAssembly> assemblyList)
-        {
-            try
-            {
-                var usedRepos = assemblyList.Select(assembly => assembly.Location.GetHashCode().ToString("X")).ToList();
-                var dirs = new List<string>(Directory.EnumerateDirectories(Directories.RepositoryDirectory));
-
-                foreach (var dir in dirs.Where(dir => !usedRepos.Contains(Path.GetFileName(dir))))
-                {
-                    Utility.ClearDirectory(dir);
-                    Directory.Delete(dir);
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.Log(LogLevel.Warning, e.Message);
-            }
-        }
     }
 }

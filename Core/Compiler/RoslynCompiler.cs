@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Settings;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.MSBuild;
 
 namespace LeagueSharp.Loader.Core.Compiler
 {
@@ -17,7 +14,9 @@ namespace LeagueSharp.Loader.Core.Compiler
         {
             get
             {
-                return Directory.EnumerateFiles(Directories.CoreDirectory, "*.dll").Select(f => MetadataReference.CreateFromFile(f));
+                return
+                    Directory.EnumerateFiles(Directories.CoreDirectory, "*.dll")
+                        .Select(f => MetadataReference.CreateFromFile(f));
             }
         }
 

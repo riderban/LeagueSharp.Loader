@@ -53,7 +53,8 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
 
-            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}" CommandParameter="{Binding NewsView}">
+            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{Binding NewsView}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="14"
                                Height="16"
@@ -69,7 +70,8 @@
                 </StackPanel>
             </Button>
 
-            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}" CommandParameter="{Binding DatabaseView}">
+            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{Binding DatabaseView}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="14"
                                Height="14"
@@ -87,7 +89,8 @@
                 </StackPanel>
             </Button>
 
-            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}" CommandParameter="{Binding AssembliesView}">
+            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{Binding AssembliesView}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="18"
                                Height="15"
@@ -122,7 +125,8 @@
                 </StackPanel>
             </Button>
 
-            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}" CommandParameter="{Binding SettingsView}">
+            <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{Binding SettingsView}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="14"
                                Height="14"

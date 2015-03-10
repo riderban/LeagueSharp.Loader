@@ -10,40 +10,21 @@ using LeagueSharp.Loader.Model.Settings;
 using LeagueSharp.Loader.ViewModel;
 using LibGit2Sharp;
 using Microsoft.Practices.ServiceLocation;
-using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Model.Service
 {
-    internal class AssemblyDatabaseService : IDataService
+    internal class LeagueSharpAssemblyService : ILeagueSharpAssemblyService
     {
-        public class DatabaseRepository
-        {
-            public DatabaseAssembly[] Assemblies { get; set; }
-        }
-
-        public class DatabaseAssembly
-        {
-            [JsonProperty(PropertyName = "githubFolder")]
-            public string GithubFolder { get; set; }
-
-            [JsonProperty(PropertyName = "name")]
-            public string Name { get; set; }
-
-            [JsonProperty(PropertyName = "count")]
-            public int Count { get; set; }
-        }
-
-
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
-            // http://lsharpdb.com/api/votes?key=8UzzX1rdGuDR3XDq6DPbCo34Wx6T15scnti6AfvS8REDcI7Bq375YX3MgjOP154W
-            // TODO: call webservice & cache data <-------------------------------------------------- q.q.q.q.q.q.q.q.q.q.q.q.q
             var assemblies = new ObservableCollection<LeagueSharpAssembly>();
 
             Task.Factory.StartNew(() =>
             {
                 var progress = ServiceLocator.Current.GetInstance<MainViewModel>().ProgressController;
-                if (progress.Start(0, 0, Directory.EnumerateFiles(Directories.RepositoryDirectory, "*.csproj", SearchOption.AllDirectories).Count()))
+                if (progress.Start(0, 0,
+                    Directory.EnumerateFiles(Directories.RepositoryDirectory, "*.csproj", SearchOption.AllDirectories)
+                        .Count()))
                 {
                     Parallel.ForEach(Directory.EnumerateDirectories(Directories.RepositoryDirectory), dir =>
                     {

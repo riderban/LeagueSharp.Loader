@@ -10,11 +10,6 @@ namespace LeagueSharp.Loader.Model.Assembly
         private int _id;
         private string _message;
 
-        public AssemblyVersion()
-        {
-            Color = "Green";
-        }
-
         public string Color
         {
             get { return _color; }
@@ -37,6 +32,11 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _message; }
             set { Set(() => Message, ref _message, value); }
+        }
+
+        public AssemblyVersion()
+        {
+            Color = "Green";
         }
 
         public override string ToString()

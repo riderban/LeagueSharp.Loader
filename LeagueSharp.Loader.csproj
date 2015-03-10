@@ -202,11 +202,14 @@
     <Compile Include="Model\Assembly\AssemblyType.cs" />
     <Compile Include="Model\Assembly\AssemblyVersion.cs" />
     <Compile Include="Model\Log\Logs.cs" />
+    <Compile Include="Model\Service\ILeagueSharpAssemblyService.cs" />
+    <Compile Include="Model\Service\LSharpDB\ILSharpDb.cs" />
+    <Compile Include="Model\Service\LSharpDB\LSharpDbAssembly.cs" />
+    <Compile Include="Model\Service\LSharpDB\LSharpDbService.cs" />
     <Compile Include="Model\Settings\Config.cs" />
     <Compile Include="Model\Log\LogItem.cs" />
     <Compile Include="Model\Log\LogLevel.cs" />
-    <Compile Include="Model\Service\AssemblyDatabaseService.cs" />
-    <Compile Include="Model\Service\IDataService.cs" />
+    <Compile Include="Model\Service\LeagueSharpAssemblyService.cs" />
     <Compile Include="Model\Assembly\LeagueSharpAssembly.cs" />
     <Compile Include="Model\Log\Log.cs" />
     <Compile Include="Model\Settings\ConfigSettings.cs" />

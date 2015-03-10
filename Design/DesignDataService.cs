@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Service;
+using LeagueSharp.Loader.Model.Service.LSharpDB;
 
 namespace LeagueSharp.Loader.Design
 {
-    internal class DesignDataService : IDataService
+    internal class DesignServiceService : ILSharpDbService, ILeagueSharpAssemblyService
     {
+        public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>, Exception> callback)
+        {
+            throw new NotImplementedException();
+        }
+
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
             callback(

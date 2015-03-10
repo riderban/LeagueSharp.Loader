@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using LeagueSharp.Loader.Design;
 using LeagueSharp.Loader.Model.Service;
+using LeagueSharp.Loader.Model.Service.LSharpDB;
 using LeagueSharp.Loader.ViewModel.Settings;
 using Microsoft.Practices.ServiceLocation;
 
@@ -9,17 +10,44 @@ namespace LeagueSharp.Loader.ViewModel
 {
     internal class ViewModelLocator
     {
+        public AppBarViewModel AppBar
+        {
+            get { return ServiceLocator.Current.GetInstance<AppBarViewModel>(); }
+        }
+
+        public AssembliesViewModel Assemblies
+        {
+            get { return ServiceLocator.Current.GetInstance<AssembliesViewModel>(); }
+        }
+
+        public DatabaseViewModel Database
+        {
+            get { return ServiceLocator.Current.GetInstance<DatabaseViewModel>(); }
+        }
+
+        public MainViewModel Main
+        {
+            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
+        }
+
+        public SettingsViewModel Settings
+        {
+            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
+        }
+
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
-                SimpleIoc.Default.Register<IDataService, DesignDataService>();
+                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, DesignServiceService>();
+                SimpleIoc.Default.Register<ILSharpDbService, DesignServiceService>();
             }
             else
             {
-                SimpleIoc.Default.Register<IDataService, AssemblyDatabaseService>();
+                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, LeagueSharpAssemblyService>();
+                SimpleIoc.Default.Register<ILSharpDbService, IlSharpDbService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
@@ -38,31 +66,6 @@ namespace LeagueSharp.Loader.ViewModel
             SimpleIoc.Default.Register<MenuConfigViewModel>();
 
             #endregion
-        }
-
-        public MainViewModel Main
-        {
-            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
-        }
-
-        public AppBarViewModel AppBar
-        {
-            get { return ServiceLocator.Current.GetInstance<AppBarViewModel>(); }
-        }
-
-        public DatabaseViewModel Database
-        {
-            get { return ServiceLocator.Current.GetInstance<DatabaseViewModel>(); }
-        }
-
-        public AssembliesViewModel Assemblies
-        {
-            get { return ServiceLocator.Current.GetInstance<AssembliesViewModel>(); }
-        }
-
-        public SettingsViewModel Settings
-        {
-            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
         }
 
         public static void Cleanup()

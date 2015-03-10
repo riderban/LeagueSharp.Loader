@@ -13,17 +13,17 @@ namespace LeagueSharp.Loader.Model.Assembly
     {
         private string _author;
         private string _imageRating;
+        private bool _inject;
         private string _location;
         private string _name;
+        private OptimizationLevel _optimization = OptimizationLevel.Release;
+        private OutputKind _outputKind = OutputKind.ConsoleApplication;
         private string _pathToBinary;
         private string _project;
         private AssemblyState _state;
         private AssemblyType _type;
-        private OptimizationLevel _optimization = OptimizationLevel.Release;
         private int _version;
         private List<AssemblyVersion> _versions = new List<AssemblyVersion>();
-        private OutputKind _outputKind = OutputKind.ConsoleApplication;
-        private bool _inject;
 
         public string Author
         {
@@ -49,6 +49,12 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => ImageRating, ref _imageRating, value); }
         }
 
+        public bool Inject
+        {
+            get { return _inject; }
+            set { Set(() => Inject, ref _inject, value); }
+        }
+
         public string Location
         {
             get { return _location; }
@@ -59,6 +65,18 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _name; }
             set { Set(() => Name, ref _name, value); }
+        }
+
+        public OptimizationLevel Optimization
+        {
+            get { return _optimization; }
+            set { Set(() => Optimization, ref _optimization, value); }
+        }
+
+        public OutputKind OutputKind
+        {
+            get { return _outputKind; }
+            set { Set(() => OutputKind, ref _outputKind, value); }
         }
 
         public string PathToBinary
@@ -85,18 +103,6 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Type, ref _type, value); }
         }
 
-        public OptimizationLevel Optimization
-        {
-            get { return _optimization; }
-            set { Set(() => Optimization, ref _optimization, value); }
-        }
-
-        public bool Inject
-        {
-            get { return _inject; }
-            set { Set(() => Inject, ref _inject, value); }
-        }
-
         public int Version
         {
             get { return _version; }
@@ -112,12 +118,6 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _versions; }
             set { Set(() => Versions, ref _versions, value); }
-        }
-
-        public OutputKind OutputKind
-        {
-            get { return _outputKind; }
-            set { Set(() => OutputKind, ref _outputKind, value); }
         }
 
         public override bool Equals(object obj)

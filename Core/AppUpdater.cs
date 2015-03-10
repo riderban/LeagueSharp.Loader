@@ -80,8 +80,8 @@ namespace LeagueSharp.Loader.Core
                 {
                     if (stream != null)
                     {
-                        var ser = new DataContractJsonSerializer(typeof(UpdateInfo));
-                        var updateInfo = (UpdateInfo)ser.ReadObject(stream);
+                        var ser = new DataContractJsonSerializer(typeof (UpdateInfo));
+                        var updateInfo = (UpdateInfo) ser.ReadObject(stream);
                         if (updateInfo.Version == "0")
                         {
                             var message = Utility.GetMultiLanguageText("WrongVersion") + leagueMd5;

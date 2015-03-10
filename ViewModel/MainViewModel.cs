@@ -2,7 +2,6 @@
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using LeagueSharp.Loader.Core.Compiler;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Service;
 using LeagueSharp.Loader.View;
@@ -12,22 +11,30 @@ namespace LeagueSharp.Loader.ViewModel
 {
     internal class MainViewModel : ViewModelBase
     {
+        private FrameworkElement _assembliesView = new AssembliesView();
+        private RelayCommand<FrameworkElement> _changeViewCommand;
         private FrameworkElement _currentAppBarViewElement;
         private FrameworkElement _currentView;
-        private ProgressController _progressController;
-        private RelayCommand _updateCommand;
-        private RelayCommand<FrameworkElement> _changeViewCommand;
-
-        private FrameworkElement _newsView = new NewsView();
         private FrameworkElement _databaseView = new DatabaseView();
-        private FrameworkElement _assembliesView = new AssembliesView();
+        private FrameworkElement _newsView = new NewsView();
+        private ProgressController _progressController;
         private FrameworkElement _settingsView = new SettingsView();
+        private RelayCommand _updateCommand;
 
-        public MainViewModel()
+        public FrameworkElement AssembliesView
         {
-            CurrentView = AssembliesView;
-            CurrentAppBarView = new AppBarView();
-            ProgressController = new ProgressController();
+            get { return _assembliesView; }
+            set { Set(() => AssembliesView, ref _assembliesView, value); }
+        }
+
+        public RelayCommand<FrameworkElement> ChangeViewCommand
+        {
+            get
+            {
+                return _changeViewCommand
+                       ?? (_changeViewCommand = new RelayCommand<FrameworkElement>(
+                           p => { CurrentView = p; }));
+            }
         }
 
         public FrameworkElement CurrentAppBarView
@@ -42,28 +49,16 @@ namespace LeagueSharp.Loader.ViewModel
             set { Set(() => CurrentView, ref _currentView, value); }
         }
 
-        public FrameworkElement NewsView
-        {
-            get { return _newsView; }
-            set { Set(() => NewsView, ref _newsView, value); }
-        }
-
         public FrameworkElement DatabaseView
         {
             get { return _databaseView; }
             set { Set(() => DatabaseView, ref _databaseView, value); }
         }
 
-        public FrameworkElement AssembliesView
+        public FrameworkElement NewsView
         {
-            get { return _assembliesView; }
-            set { Set(() => AssembliesView, ref _assembliesView, value); }
-        }
-
-        public FrameworkElement SettingsView
-        {
-            get { return _settingsView; }
-            set { Set(() => SettingsView, ref _settingsView, value); }
+            get { return _newsView; }
+            set { Set(() => NewsView, ref _newsView, value); }
         }
 
         public ProgressController ProgressController
@@ -72,17 +67,10 @@ namespace LeagueSharp.Loader.ViewModel
             set { Set(() => ProgressController, ref _progressController, value); }
         }
 
-        public RelayCommand<FrameworkElement> ChangeViewCommand
+        public FrameworkElement SettingsView
         {
-            get
-            {
-                return _changeViewCommand
-                    ?? (_changeViewCommand = new RelayCommand<FrameworkElement>(
-                    p =>
-                    {
-                        CurrentView = p;
-                    }));
-            }
+            get { return _settingsView; }
+            set { Set(() => SettingsView, ref _settingsView, value); }
         }
 
         public RelayCommand UpdateCommand
@@ -95,7 +83,7 @@ namespace LeagueSharp.Loader.ViewModel
                            {
                                Task.Factory.StartNew(() =>
                                {
-                                   var assemblies = ServiceLocator.Current.GetInstance<DatabaseViewModel>().Database;
+                                   var assemblies = ServiceLocator.Current.GetInstance<AssembliesViewModel>().Database;
 
                                    if (ProgressController.Start(0, 0, assemblies.Count))
                                    {
@@ -117,6 +105,13 @@ namespace LeagueSharp.Loader.ViewModel
                                });
                            }));
             }
+        }
+
+        public MainViewModel()
+        {
+            CurrentView = AssembliesView;
+            CurrentAppBarView = new AppBarView();
+            ProgressController = new ProgressController();
         }
     }
 }

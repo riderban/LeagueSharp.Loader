@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Text.RegularExpressions;
-using LeagueSharp.Loader.Model.Assembly;
-using LeagueSharp.Loader.Model.Settings;
-using LeagueSharp.Loader.View;
 using MahApps.Metro.Controls;
 
 namespace LeagueSharp.Loader.Core
 {
     internal class UriScheme
     {
-
         public const string Name = "ls";
 
         public static string FullName
@@ -71,7 +65,6 @@ namespace LeagueSharp.Loader.Core
                 //        break;
                 //}
             }
-
         }
     }
 }

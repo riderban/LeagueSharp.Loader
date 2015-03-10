@@ -18,7 +18,7 @@ namespace LeagueSharp.Loader.Core
     {
         public static void Log(LogLevel level, string message, [CallerMemberName] string source = "")
         {
-            Logs.Main.Items.Add(new LogItem { Level = level, Source = source, Message = message });
+            Logs.Main.Items.Add(new LogItem {Level = level, Source = source, Message = message});
             Debug.WriteLine("LOG | {0} | {1} | {2}", level, source, message);
         }
 
@@ -325,11 +325,11 @@ namespace LeagueSharp.Loader.Core
                         var isVersion = Version.TryParse(Path.GetFileName(versionPath), out version);
                         if (isVersion)
                         {
-                            var test = version.Build * Math.Pow(600, 4) + version.Major * Math.Pow(600, 3) +
-                                       version.Minor * Math.Pow(600, 2) + version.Revision * Math.Pow(600, 1);
+                            var test = version.Build*Math.Pow(600, 4) + version.Major*Math.Pow(600, 3) +
+                                       version.Minor*Math.Pow(600, 2) + version.Revision*Math.Pow(600, 1);
                             if (test > greatestVersion)
                             {
-                                greatestVersion = (long)test;
+                                greatestVersion = (long) test;
                                 greatestVersionString = Path.GetFileName(versionPath);
                             }
                         }
@@ -353,7 +353,7 @@ namespace LeagueSharp.Loader.Core
 
         public static int VersionToInt(Version version)
         {
-            return version.Major * 10000000 + version.Minor * 10000 + version.Build * 100 + version.Revision;
+            return version.Major*10000000 + version.Minor*10000 + version.Build*100 + version.Revision;
         }
     }
 }

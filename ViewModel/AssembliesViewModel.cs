@@ -12,15 +12,9 @@ namespace LeagueSharp.Loader.ViewModel
     {
         private ObservableCollection<LeagueSharpAssembly> _database;
 
-        public AssembliesViewModel(IDataService dataService)
+        public Config Config
         {
-            dataService.GetAssemblyDatabase((list, exception) =>
-            {
-                Database = list;
-                CollectionViewSource.GetDefaultView(Database).SortDescriptions.Clear();
-                CollectionViewSource.GetDefaultView(Database)
-                    .SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-            });
+            get { return Config.Instance; }
         }
 
         public ObservableCollection<LeagueSharpAssembly> Database
@@ -29,9 +23,15 @@ namespace LeagueSharp.Loader.ViewModel
             set { Set(() => Database, ref _database, value); }
         }
 
-        public Config Config
+        public AssembliesViewModel(ILeagueSharpAssemblyService dataService)
         {
-            get { return Config.Instance; }
+            dataService.GetAssemblyDatabase((list, exception) =>
+            {
+                Database = list;
+                CollectionViewSource.GetDefaultView(Database).SortDescriptions.Clear();
+                CollectionViewSource.GetDefaultView(Database)
+                    .SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            });
         }
     }
 }

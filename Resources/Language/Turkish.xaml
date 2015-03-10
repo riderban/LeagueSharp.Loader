@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!-- MainWindow TopBar -->
     <system:String x:Key="Website">Web sitesi</system:String>
@@ -28,11 +28,11 @@
     <system:String x:Key="MenuShare">Paylaş</system:String>
     <system:String x:Key="MenuViewLog">Kayıt Görüntüle</system:String>
 
-	<!-- MainWindow Profiles Menu -->
+    <!-- MainWindow Profiles Menu -->
     <system:String x:Key="NewProfile">Yeni</system:String>
     <system:String x:Key="ChangeName">Yeniden Adlandır</system:String>
     <system:String x:Key="DeleteProfile">Sil</system:String>
-	
+
     <!-- MainWindow Buttons -->
     <system:String x:Key="UpdateAll">Hepsini Güncelle</system:String>
     <system:String x:Key="CompileAll">Hepsini Derle</system:String>
@@ -69,8 +69,8 @@
     <system:String x:Key="Inject">Enjekte Et</system:String>
     <system:String x:Key="Logout">Çıkış</system:String>
     <system:String x:Key="DefaultHotkeys">Geri Yükle</system:String>
-	<system:String x:Key="Language">Dil</system:String>
-	
+    <system:String x:Key="Language">Dil</system:String>
+
     <!-- Settings Hotkeys -->
     <system:String x:Key="Hotkeys">Kısayollar</system:String>
     <system:String x:Key="Hotkey">Kısayol</system:String>

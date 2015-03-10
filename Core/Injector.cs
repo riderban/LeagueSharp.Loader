@@ -13,50 +13,6 @@ namespace LeagueSharp.Loader.Core
 {
     internal class Injector
     {
-        #region Native
-
-        public delegate void OnInjectDelegate(IntPtr hwnd);
-
-        private static InjectDLLDelegate injectDLL;
-
-        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        private delegate bool InjectDLLDelegate(int processId, string path);
-
-        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
-        public struct COPYDATASTRUCT
-        {
-            public int cbData;
-            public int dwData;
-            [MarshalAs(UnmanagedType.LPWStr)] public string lpData;
-        }
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindow(IntPtr ZeroOnly, string lpWindowName);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetWindowTextLength(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        private static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
-
-        #endregion Native
-
         public static bool IsInjected
         {
             get { return LeagueProcess.Any(IsProcessInjected); }
@@ -132,7 +88,7 @@ namespace LeagueSharp.Loader.Core
                 return;
             }
             injectDLL =
-                Marshal.GetDelegateForFunctionPointer(procAddress, typeof(InjectDLLDelegate)) as InjectDLLDelegate;
+                Marshal.GetDelegateForFunctionPointer(procAddress, typeof (InjectDLLDelegate)) as InjectDLLDelegate;
         }
 
         public static void Pulse()
@@ -179,30 +135,33 @@ namespace LeagueSharp.Loader.Core
 
         public static void LoadExAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
         {
-            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library && assembly.State == AssemblyState.Ready)
+            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
+                assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("LOAD \"{0}\"", assembly.PathToBinary);
-                var lParam = new COPYDATASTRUCT { cbData = 1, dwData = str.Length * 2 + 2, lpData = str };
+                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
                 SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
             }
         }
 
         public static void LoadAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
         {
-            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library && assembly.State == AssemblyState.Ready)
+            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
+                assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("load \"{0}\"", assembly.PathToBinary);
-                var lParam = new COPYDATASTRUCT { cbData = 1, dwData = str.Length * 2 + 2, lpData = str };
+                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
                 SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
             }
         }
 
         public static void UnloadAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
         {
-            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library && assembly.State == AssemblyState.Ready)
+            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
+                assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
-                var lParam = new COPYDATASTRUCT { cbData = 1, dwData = str.Length * 2 + 2, lpData = str };
+                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
                 SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
             }
         }
@@ -210,7 +169,7 @@ namespace LeagueSharp.Loader.Core
         public static void SendLoginCredentials(IntPtr wnd, string user, string passwordHash)
         {
             var str = string.Format("LOGIN|{0}|{1}", user, passwordHash);
-            var lParam = new COPYDATASTRUCT { cbData = 2, dwData = str.Length * 2 + 2, lpData = str };
+            var lParam = new COPYDATASTRUCT {cbData = 2, dwData = str.Length*2 + 2, lpData = str};
             SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
         }
 
@@ -221,8 +180,52 @@ namespace LeagueSharp.Loader.Core
                 (Config.Instance.Settings.GameSettings[3].SelectedValue == "True") ? "1" : "0",
                 (Config.Instance.Settings.GameSettings[1].SelectedValue == "True") ? "1" : "0",
                 (Config.Instance.Settings.GameSettings[2].SelectedValue == "True") ? "2" : "0");
-            var lParam = new COPYDATASTRUCT { cbData = 2, dwData = str.Length * 2 + 2, lpData = str };
+            var lParam = new COPYDATASTRUCT {cbData = 2, dwData = str.Length*2 + 2, lpData = str};
             SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
         }
+
+        #region Native
+
+        public delegate void OnInjectDelegate(IntPtr hwnd);
+
+        private static InjectDLLDelegate injectDLL;
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        private delegate bool InjectDLLDelegate(int processId, string path);
+
+        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+        public struct COPYDATASTRUCT
+        {
+            public int cbData;
+            public int dwData;
+            [MarshalAs(UnmanagedType.LPWStr)] public string lpData;
+        }
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr LoadLibrary(string dllToLoad);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindow(IntPtr ZeroOnly, string lpWindowName);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern int GetWindowTextLength(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
+
+        #endregion Native
     }
 }

@@ -16,7 +16,5 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        
-    </Grid>
+    <Grid />
 </UserControl>
