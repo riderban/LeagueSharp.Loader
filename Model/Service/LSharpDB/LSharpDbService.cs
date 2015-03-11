@@ -8,8 +8,7 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
 {
     internal class IlSharpDbService : ILSharpDbService
     {
-        private const string Url =
-            "http://lsharpdb.com/api/votes?key=8UzzX1rdGuDR3XDq6DPbCo34Wx6T15scnti6AfvS8REDcI7Bq375YX3MgjOP154W";
+        private const string Url = "http://lsharpdb.com/api/votes";
 
         public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>, Exception> callback)
         {

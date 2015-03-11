@@ -21,9 +21,11 @@ namespace LeagueSharp.Loader.ViewModel
             serviceService.GetAssemblyDatabase((list, exception) =>
             {
                 Database = list;
-                CollectionViewSource.GetDefaultView(Database).SortDescriptions.Clear();
-                CollectionViewSource.GetDefaultView(Database)
-                    .SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+                var cv = CollectionViewSource.GetDefaultView(Database);
+                cv.SortDescriptions.Clear();
+                cv.GroupDescriptions.Clear();
+                cv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+                cv.GroupDescriptions.Add(new PropertyGroupDescription("Name"));
             });
         }
     }
