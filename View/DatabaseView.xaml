@@ -16,16 +16,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="grid">
+    <Grid>
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Margin="10,10,10,10">
-            <DataGrid AutoGenerateColumns="False" 
-                      ItemsSource="{Binding Database}" 
+            <DataGrid AutoGenerateColumns="False"
+                      ItemsSource="{Binding Database}"
                       CanUserAddRows="False"
-                      IsReadOnly="True">
-
-                <DataGrid.GroupStyle>
-                    <GroupStyle ContainerStyle="{StaticResource DatabaseGroupStyle}" />
-                </DataGrid.GroupStyle>
+                      IsReadOnly="True"
+                      EnableColumnVirtualization="True"
+                      EnableRowVirtualization="True">
 
                 <DataGrid.ContextMenu>
                     <ContextMenu>
@@ -56,10 +54,10 @@
                                         Width="SizeToCells" MinWidth="150" />
                     <DataGridTextColumn Header="Votes"
                                         Binding="{Binding Count}"
-                                        Width="SizeToCells" MinWidth="100" />
+                                        Width="SizeToCells" MinWidth="80" />
                     <DataGridTextColumn Header="Location"
                                         Binding="{Binding GithubFolder}"
-                                        Width="*" />
+                                        Width="*" MinWidth="200" />
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

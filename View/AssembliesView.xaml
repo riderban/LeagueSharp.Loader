@@ -96,9 +96,9 @@
                 HorizontalAlignment="Right" Width="181" Height="25" VerticalAlignment="Bottom" />
         <TextBox x:Name="SearchTextBox" Height="23" Margin="0,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top"
                  HorizontalAlignment="Right" Width="181" />
-        <Button Content="UpdateAll" Margin="0,10,311,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right"
+        <Button Content="{DynamicResource UpdateAll}" Margin="0,10,311,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right"
                 Width="108" />
-        <Button Content="CompileAll" Margin="0,10,196,0" Height="25" VerticalAlignment="Top"
+        <Button Content="{DynamicResource CompileAll}" Margin="0,10,196,0" Height="25" VerticalAlignment="Top"
                 HorizontalAlignment="Right" Width="110" />
 
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Margin="10,41,10,10">

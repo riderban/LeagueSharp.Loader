@@ -1,8 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace LeagueSharp.Loader.Model.Service.LSharpDB
 {
@@ -12,12 +17,15 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
 
         public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>, Exception> callback)
         {
-            using (var client = new WebClient())
+            Task.Factory.StartNew(() =>
             {
-                callback(
-                    new ObservableCollection<LSharpDbAssembly>(
-                        JsonConvert.DeserializeObject<List<LSharpDbAssembly>>(client.DownloadString(Url))), null);
-            }
+                using (var client = new WebClient())
+                {
+                    callback(
+                        new ObservableCollection<LSharpDbAssembly>(
+                            JsonConvert.DeserializeObject<List<LSharpDbAssembly>>(client.DownloadString(Url))), null);
+                }
+            });
         }
     }
 }
