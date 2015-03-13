@@ -51,11 +51,11 @@ namespace LeagueSharp.Loader.Core
 
         private static string GetWindowText(IntPtr hWnd)
         {
-            var size = GetWindowTextLength(hWnd);
+            var size = Interop.GetWindowTextLength(hWnd);
             if (size++ > 0)
             {
                 var builder = new StringBuilder(size);
-                GetWindowText(hWnd, builder, builder.Capacity);
+                Interop.GetWindowText(hWnd, builder, builder.Capacity);
                 return builder.ToString();
             }
             return String.Empty;
@@ -64,7 +64,7 @@ namespace LeagueSharp.Loader.Core
         private static List<IntPtr> FindWindows(string title)
         {
             var windows = new List<IntPtr>();
-            EnumWindows(delegate(IntPtr wnd, IntPtr param)
+            Interop.EnumWindows(delegate(IntPtr wnd, IntPtr param)
             {
                 if (GetWindowText(wnd).Contains(title))
                 {
@@ -75,14 +75,14 @@ namespace LeagueSharp.Loader.Core
             return windows;
         }
 
-        private static void ResolveInjectDLL()
+        private static void ResolveInjectDll()
         {
-            var hModule = LoadLibrary(Directories.BootstrapFilePath);
+            var hModule = Interop.LoadLibrary(Directories.BootstrapFilePath);
             if (!(hModule != IntPtr.Zero))
             {
                 return;
             }
-            var procAddress = GetProcAddress(hModule, "_InjectDLL@8");
+            var procAddress = Interop.GetProcAddress(hModule, "_InjectDLL@8");
             if (!(procAddress != IntPtr.Zero))
             {
                 return;
@@ -113,7 +113,7 @@ namespace LeagueSharp.Loader.Core
                     {
                         if (injectDLL == null)
                         {
-                            ResolveInjectDLL();
+                            ResolveInjectDll();
                         }
                         if (injectDLL != null &&
                             GetWindowText(instance.MainWindowHandle).Contains("League of Legends (TM) Client"))
@@ -133,25 +133,13 @@ namespace LeagueSharp.Loader.Core
             }
         }
 
-        public static void LoadExAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
-        {
-            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
-                assembly.State == AssemblyState.Ready)
-            {
-                var str = string.Format("LOAD \"{0}\"", assembly.PathToBinary);
-                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
-                SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
-            }
-        }
-
         public static void LoadAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
         {
             if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
                 assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("load \"{0}\"", assembly.PathToBinary);
-                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
-                SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
+                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomain, str);
             }
         }
 
@@ -161,16 +149,14 @@ namespace LeagueSharp.Loader.Core
                 assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
-                var lParam = new COPYDATASTRUCT {cbData = 1, dwData = str.Length*2 + 2, lpData = str};
-                SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
+                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomain, str);
             }
         }
 
         public static void SendLoginCredentials(IntPtr wnd, string user, string passwordHash)
         {
             var str = string.Format("LOGIN|{0}|{1}", user, passwordHash);
-            var lParam = new COPYDATASTRUCT {cbData = 2, dwData = str.Length*2 + 2, lpData = str};
-            SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
+            Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.Core, str);
         }
 
         public static void SendConfig(IntPtr wnd)
@@ -180,8 +166,8 @@ namespace LeagueSharp.Loader.Core
                 (Config.Instance.Settings.GameSettings[3].SelectedValue == "True") ? "1" : "0",
                 (Config.Instance.Settings.GameSettings[1].SelectedValue == "True") ? "1" : "0",
                 (Config.Instance.Settings.GameSettings[2].SelectedValue == "True") ? "2" : "0");
-            var lParam = new COPYDATASTRUCT {cbData = 2, dwData = str.Length*2 + 2, lpData = str};
-            SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
+
+            Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.Core, str);
         }
 
         #region Native
@@ -192,39 +178,6 @@ namespace LeagueSharp.Loader.Core
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
         private delegate bool InjectDLLDelegate(int processId, string path);
-
-        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
-        public struct COPYDATASTRUCT
-        {
-            public int cbData;
-            public int dwData;
-            [MarshalAs(UnmanagedType.LPWStr)] public string lpData;
-        }
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindow(IntPtr ZeroOnly, string lpWindowName);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetWindowTextLength(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        private static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
 
         #endregion Native
     }

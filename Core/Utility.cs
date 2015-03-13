@@ -6,54 +6,98 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Log;
 using LeagueSharp.Loader.Model.Settings;
+using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Core
 {
-    internal class Utility
+    internal static class Utility
     {
+        public static string UserNameHash
+        {
+            get { return Environment.UserName.GetHashCode().ToString("X"); }
+        }
+
+        static Utility()
+        {
+            JsonConvert.DefaultSettings =
+                () => new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore};
+        }
+
         public static void Log(LogLevel level, string message, [CallerMemberName] string source = "")
         {
             Logs.Main.Items.Add(new LogItem {Level = level, Source = source, Message = message});
             Debug.WriteLine("LOG | {0} | {1} | {2}", level, source, message);
+
+            if (level >= LogLevel.Warning) // TODO: change to Error after testing
+            {
+                // workaround to fix autoclose
+                Task.Factory.StartNew(
+                    () => { MessageBox.Show(message, source, MessageBoxButton.OK, MessageBoxImage.Error); }).Wait();
+            }
         }
 
-        public static void SaveToXml(Type type, object obj, string path)
+        public static void SaveToJson(object obj, string path)
         {
             try
             {
-                var serializer = new XmlSerializer(type);
+                File.WriteAllText(path, JsonConvert.SerializeObject(obj, Formatting.Indented));
+            }
+            catch (Exception e)
+            {
+                Log(LogLevel.Warning, string.Format("Failed to Save {0} to {1}\n{2}", obj.GetType(), path, e.Message));
+            }
+        }
+
+        public static T LoadFromJson<T>(string path)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
+            }
+            catch (Exception e)
+            {
+                Log(LogLevel.Warning, string.Format("Failed to Load {0} to {1}\n{2}", typeof (T), path, e.Message));
+            }
+
+            return default(T);
+        }
+
+        public static void SaveToXml<T>(object obj, string path)
+        {
+            try
+            {
                 using (var sw = new StreamWriter(path, false, Encoding.UTF8))
                 {
-                    serializer.Serialize(sw, obj);
+                    new XmlSerializer(typeof (T)).Serialize(sw, obj);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Save {0} to {1}", type, path));
+                Log(LogLevel.Warning, string.Format("Failed to Save {0} to {1}\n{2}", typeof (T), path, e.Message));
             }
         }
 
-        public static object LoadFromXml(Type type, string path)
+        public static T LoadFromXml<T>(string path)
         {
             try
             {
-                var serializer = new XmlSerializer(type);
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
-                    return serializer.Deserialize(reader);
+                    return (T) new XmlSerializer(typeof (T)).Deserialize(reader);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Load {0} from {1}", type, path));
+                Log(LogLevel.Warning, string.Format("Failed to Load {0} from {1}\n{2}", typeof (T), path, e.Message));
             }
 
-            return null;
+            return default(T);
         }
 
         public static string ReadResourceString(string resource)

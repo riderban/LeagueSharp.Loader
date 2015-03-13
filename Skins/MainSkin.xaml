@@ -8,7 +8,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-        <ResourceDictionary Source="../Resources/Language/English.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/Resources/Language/English.xaml" />
         <ResourceDictionary Source="LeagueSharpGreen.xaml" />
     </ResourceDictionary.MergedDictionaries>
 

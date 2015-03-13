@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
-    [XmlType(AnonymousType = true)]
-    [XmlRoot(Namespace = "", IsNullable = false)]
     internal class Config : ObservableObject
     {
         [XmlIgnore] public static Config Instance;
@@ -20,7 +19,7 @@ namespace LeagueSharp.Loader.Model.Settings
         private Profile _selectedProfile;
         private ConfigSettings _settings;
         private bool _showDevOptions;
-        private bool _updateOnLoad;
+        private bool _updateOnLoad = true;
         private string _username;
 
         public bool FirstRun
@@ -41,7 +40,6 @@ namespace LeagueSharp.Loader.Model.Settings
             set { Set(() => Install, ref _install, value); }
         }
 
-        [XmlArrayItem("KnownRepositories", IsNullable = true)]
         public ObservableCollection<string> KnownRepositories
         {
             get { return _knownRepositories; }
@@ -60,7 +58,6 @@ namespace LeagueSharp.Loader.Model.Settings
             set { Set(() => Password, ref _password, value); }
         }
 
-        [XmlArrayItem("Profiles", IsNullable = true)]
         public ObservableCollection<Profile> Profiles
         {
             get { return _profiles; }
@@ -101,6 +98,12 @@ namespace LeagueSharp.Loader.Model.Settings
         {
             get { return _username; }
             set { Set(() => Username, ref _username, value); }
+        }
+
+        [OnDeserializing]
+        internal void OnDeserializing(StreamingContext context)
+        {
+            Instance = this;
         }
     }
 }

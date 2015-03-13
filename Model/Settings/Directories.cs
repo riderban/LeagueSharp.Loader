@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using LeagueSharp.Loader.Core;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
@@ -20,7 +21,8 @@ namespace LeagueSharp.Loader.Model.Settings
         public static readonly string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
         public static readonly string AppDataDirectory =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueSharp");
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "LeagueSharp" + Utility.UserNameHash);
 
         public static readonly string RepositoryDirectory = Path.Combine(AppDataDirectory, "Repositories");
         public static readonly string AssembliesDirectory = Path.Combine(AppDataDirectory, "Assemblies");
@@ -30,7 +32,7 @@ namespace LeagueSharp.Loader.Model.Settings
         public static readonly string LogsDirectory = Path.Combine(AppDataDirectory, "Logs");
         public static readonly string LocalRepositoryDirectory = Path.Combine(AppDataDirectory, "LocalAssemblies");
         public static readonly string LoaderFilePath = Path.Combine(CurrentDirectory, "Leaguesharp.Loader.exe");
-        public static readonly string ConfigFilePath = Path.Combine(AppDataDirectory, "config.xml");
+        public static readonly string ConfigFilePath = Path.Combine(AppDataDirectory, "config.json");
         public static readonly string CoreFilePath = Path.Combine(CoreDirectory, "Leaguesharp.Core.dll");
         public static readonly string BootstrapFilePath = Path.Combine(CoreDirectory, "Leaguesharp.Bootstrap.dll");
     }

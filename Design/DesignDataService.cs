@@ -9,11 +9,6 @@ namespace LeagueSharp.Loader.Design
 {
     internal class DesignServiceService : ILSharpDbService, ILeagueSharpAssemblyService
     {
-        public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>, Exception> callback)
-        {
-            throw new NotImplementedException();
-        }
-
         public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
         {
             callback(
@@ -33,6 +28,11 @@ namespace LeagueSharp.Loader.Design
                             }
                     }
                 }, null);
+        }
+
+        public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>, Exception> callback)
+        {
+            throw new NotImplementedException();
         }
     }
 }
