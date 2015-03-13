@@ -9,7 +9,7 @@ namespace LeagueSharp.Loader.Design
 {
     internal class DesignServiceService : ILSharpDbService, ILeagueSharpAssemblyService
     {
-        public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
+        public void GetAssemblyData(Action<ObservableCollection<LeagueSharpAssembly>> callback, bool forceUpdate = false)
         {
             callback(
                 new ObservableCollection<LeagueSharpAssembly>
@@ -27,10 +27,11 @@ namespace LeagueSharp.Loader.Design
                                 new AssemblyVersion {Id = 1, Color = "Green", Date = DateTime.Now, Message = "Message"}
                             }
                     }
-                }, null);
+                });
         }
 
-        public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>, Exception> callback)
+        public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>> callback,
+            bool forceUpdate = false)
         {
             throw new NotImplementedException();
         }

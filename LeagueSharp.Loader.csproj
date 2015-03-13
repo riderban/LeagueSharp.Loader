@@ -86,6 +86,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\LibGit2Sharp.0.22.0-pre20150223185624\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.3.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\MahApps.Metro.1.1.3-ALPHA005\lib\net45\MahApps.Metro.dll</HintPath>
@@ -204,16 +207,17 @@
     <Compile Include="Model\Assembly\AssemblyType.cs" />
     <Compile Include="Model\Assembly\AssemblyVersion.cs" />
     <Compile Include="Model\Log\Logs.cs" />
+    <Compile Include="Model\Service\Github\GithubRepositoryService.cs" />
+    <Compile Include="Model\Service\Github\IGithubRepositoryService.cs" />
     <Compile Include="Model\Service\ILeagueSharpAssemblyService.cs" />
-    <Compile Include="Model\Service\LSharpDB\ILSharpDb.cs" />
+    <Compile Include="Model\Service\LSharpDB\ILSharpDbService.cs" />
     <Compile Include="Model\Service\LSharpDB\LSharpDbAssembly.cs" />
     <Compile Include="Model\Service\LSharpDB\LSharpDbService.cs" />
     <Compile Include="Model\Settings\Config.cs" />
     <Compile Include="Model\Log\LogItem.cs" />
-    <Compile Include="Model\Log\LogLevel.cs" />
     <Compile Include="Model\Service\LeagueSharpAssemblyService.cs" />
     <Compile Include="Model\Assembly\LeagueSharpAssembly.cs" />
-    <Compile Include="Model\Log\Log.cs" />
+    <Compile Include="Model\Log\UserLog.cs" />
     <Compile Include="Model\Settings\ConfigSettings.cs" />
     <Compile Include="Model\Settings\Directories.cs" />
     <Compile Include="Model\Settings\GameSettings.cs" />

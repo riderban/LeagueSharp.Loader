@@ -15,7 +15,7 @@ namespace LeagueSharp.Loader.Model.Service
 {
     internal class LeagueSharpAssemblyService : ILeagueSharpAssemblyService
     {
-        public void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback)
+        public void GetAssemblyData(Action<ObservableCollection<LeagueSharpAssembly>> callback, bool forceUpdate = false)
         {
             var assemblies = new ObservableCollection<LeagueSharpAssembly>();
 
@@ -43,7 +43,7 @@ namespace LeagueSharp.Loader.Model.Service
                 }
             });
 
-            callback(assemblies, null);
+            callback(assemblies);
         }
 
         private static IEnumerable<LeagueSharpAssembly> CreateAssembly(string repoPath)

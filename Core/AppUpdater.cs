@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using log4net;
 using LeagueSharp.Loader.Model.Settings;
 using LeagueSharp.Loader.View;
 using Newtonsoft.Json;
@@ -20,6 +21,7 @@ namespace LeagueSharp.Loader.Core
 
         public const string VersionCheckUrl = "http://api.joduska.me/public/deploy/loader/version";
         public const string CoreVersionCheckUrl = "http://api.joduska.me/public/deploy/kernel/{0}";
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static string UpdateZip = Path.Combine(Directories.CoreDirectory, "update.zip");
         public static string SetupFile = Path.Combine(Directories.CurrentDirectory, "LeagueSharp-update.exe");
         public static MainWindow MainWindow;

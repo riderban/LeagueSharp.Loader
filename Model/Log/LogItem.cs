@@ -1,14 +1,15 @@
 using GalaSoft.MvvmLight;
+using log4net.Core;
 
 namespace LeagueSharp.Loader.Model.Log
 {
     internal class LogItem : ObservableObject
     {
-        private LogLevel _level;
+        private Level _level;
         private string _message;
         private string _source;
 
-        public LogLevel Level
+        public Level Level
         {
             get { return _level; }
             set { Set(() => Level, ref _level, value); }

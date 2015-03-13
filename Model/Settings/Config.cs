@@ -1,17 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
     internal class Config : ObservableObject
     {
-        [XmlIgnore] public static Config Instance;
+        [JsonIgnore] public static Config Instance;
         private bool _firstRun = true;
         private Hotkeys _hotkeys;
         private bool _install = true;
-        private ObservableCollection<string> _knownRepositories;
         private string _leagueOfLegendsExePath;
         private string _password;
         private ObservableCollection<Profile> _profiles;
@@ -38,12 +37,6 @@ namespace LeagueSharp.Loader.Model.Settings
         {
             get { return _install; }
             set { Set(() => Install, ref _install, value); }
-        }
-
-        public ObservableCollection<string> KnownRepositories
-        {
-            get { return _knownRepositories; }
-            set { Set(() => KnownRepositories, ref _knownRepositories, value); }
         }
 
         public string LeagueOfLegendsExePath

@@ -2,14 +2,17 @@
 using System.IO;
 using System.IO.Compression;
 using System.Net;
+using System.Reflection;
 using System.Xml.Serialization;
-using LeagueSharp.Loader.Model.Log;
+using log4net;
 using LeagueSharp.Loader.Model.Settings;
 
 namespace LeagueSharp.Loader.Core.Compiler
 {
     internal class NuGetResolver
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static void Resolve(string config)
         {
             try
@@ -29,7 +32,7 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, "NuGet Resolve failed. " + e);
+                Log.Warn("NuGet Resolve failed", e);
             }
         }
 
@@ -52,8 +55,7 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn,
-                    string.Format("NuGet Download failed. | {0} | {1} | {2}", packageUri, packageZip, e));
+                Log.WarnFormat("NuGet Download failed. | {0} | {1} | {2}", packageUri, packageZip, e);
             }
 
             try
@@ -63,8 +65,7 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn,
-                    string.Format("NuGet Extraction failed. | {0} | {1} | {2}", packageUri, packageZip, e));
+                Log.WarnFormat("NuGet Extraction failed. | {0} | {1} | {2}", packageUri, packageZip, e);
             }
         }
     }

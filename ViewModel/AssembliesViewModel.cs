@@ -25,9 +25,9 @@ namespace LeagueSharp.Loader.ViewModel
 
         public AssembliesViewModel(ILeagueSharpAssemblyService dataService)
         {
-            dataService.GetAssemblyDatabase((list, exception) =>
+            dataService.GetAssemblyData(collection =>
             {
-                Database = list;
+                Database = collection;
                 CollectionViewSource.GetDefaultView(Database).SortDescriptions.Clear();
                 CollectionViewSource.GetDefaultView(Database)
                     .SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));

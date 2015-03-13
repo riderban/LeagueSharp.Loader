@@ -7,6 +7,19 @@ namespace LeagueSharp.Loader.Core
     internal static class Interop
     {
         [DllImport("user32.dll")]
+        internal static extern IntPtr SetWindowsHookEx(int idHook, KeyboardProc callback, IntPtr hInstance,
+            uint threadId);
+
+        [DllImport("user32.dll")]
+        internal static extern bool UnhookWindowsHookEx(IntPtr hInstance);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, int wParam, IntPtr lParam);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        internal static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        [DllImport("user32.dll")]
         internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
@@ -44,6 +57,8 @@ namespace LeagueSharp.Loader.Core
             SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
         }
 
+        internal delegate IntPtr KeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+
         internal delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
         internal struct COPYDATASTRUCT
@@ -55,7 +70,7 @@ namespace LeagueSharp.Loader.Core
 
         internal enum WindowMessageTarget
         {
-            AppDomain = 1,
+            AppDomainManager = 1,
             Core = 2
         }
     }

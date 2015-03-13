@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using LeagueSharp.Loader.Core;
+using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
@@ -25,6 +26,7 @@ namespace LeagueSharp.Loader.Model.Settings
             }
         }
 
+        [JsonIgnore]
         public string DisplayDescription
         {
             get { return Utility.GetMultiLanguageText(Description); }
@@ -45,6 +47,7 @@ namespace LeagueSharp.Loader.Model.Settings
             }
         }
 
+        [JsonIgnore]
         public byte HotkeyInt
         {
             get

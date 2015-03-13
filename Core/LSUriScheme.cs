@@ -1,5 +1,7 @@
 ﻿using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using log4net;
 using MahApps.Metro.Controls;
 
 namespace LeagueSharp.Loader.Core
@@ -7,6 +9,7 @@ namespace LeagueSharp.Loader.Core
     internal class UriScheme
     {
         public const string Name = "ls";
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static string FullName
         {

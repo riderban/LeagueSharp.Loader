@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using LeagueSharp.Loader.Core;
 using LeagueSharp.Loader.Core.Compiler;
 using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Model.Assembly
 {
-    [XmlType(AnonymousType = true), Serializable]
     internal class LeagueSharpAssembly : ObservableObject
     {
         private string _author;
@@ -31,7 +29,7 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Author, ref _author, value); }
         }
 
-        [XmlIgnore]
+        [JsonIgnore]
         public AssemblyVersion CurrentVersion
         {
             get { return Versions[Version]; }
@@ -40,13 +38,6 @@ namespace LeagueSharp.Loader.Model.Assembly
                 Version = Versions.IndexOf(value);
                 RaisePropertyChanged();
             }
-        }
-
-        [XmlIgnore]
-        public string ImageRating
-        {
-            get { return _imageRating; }
-            set { Set(() => ImageRating, ref _imageRating, value); }
         }
 
         public bool Inject
@@ -113,7 +104,7 @@ namespace LeagueSharp.Loader.Model.Assembly
             }
         }
 
-        [XmlIgnore]
+        [JsonIgnore]
         public List<AssemblyVersion> Versions
         {
             get { return _versions; }

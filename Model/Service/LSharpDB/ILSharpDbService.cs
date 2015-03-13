@@ -5,6 +5,6 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
 {
     internal interface ILSharpDbService
     {
-        void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>, Exception> callback);
+        void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>> callback, bool forceUpdate = false);
     }
 }

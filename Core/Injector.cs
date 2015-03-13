@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using log4net;
 using LeagueSharp.Loader.Model.Assembly;
-using LeagueSharp.Loader.Model.Log;
 using LeagueSharp.Loader.Model.Settings;
 
 namespace LeagueSharp.Loader.Core
 {
     internal class Injector
     {
+        public delegate void OnInjectDelegate(IntPtr hwnd);
+
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static InjectDLLDelegate injectDLL;
+
         public static bool IsInjected
         {
             get { return LeagueProcess.Any(IsProcessInjected); }
@@ -43,7 +49,7 @@ namespace LeagueSharp.Loader.Core
                 }
                 catch (Exception e)
                 {
-                    Utility.Log(LogLevel.Error, string.Format("Error - {0}", e));
+                    Log.Warn(e);
                 }
             }
             return false;
@@ -89,6 +95,7 @@ namespace LeagueSharp.Loader.Core
             }
             injectDLL =
                 Marshal.GetDelegateForFunctionPointer(procAddress, typeof (InjectDLLDelegate)) as InjectDLLDelegate;
+            Log.Info("Core injected " + hModule);
         }
 
         public static void Pulse()
@@ -139,7 +146,8 @@ namespace LeagueSharp.Loader.Core
                 assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("load \"{0}\"", assembly.PathToBinary);
-                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomain, str);
+                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomainManager, str);
+                Log.InfoFormat("load \"{0}\"", assembly.PathToBinary);
             }
         }
 
@@ -149,7 +157,8 @@ namespace LeagueSharp.Loader.Core
                 assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
-                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomain, str);
+                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomainManager, str);
+                Log.InfoFormat("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
             }
         }
 
@@ -157,6 +166,7 @@ namespace LeagueSharp.Loader.Core
         {
             var str = string.Format("LOGIN|{0}|{1}", user, passwordHash);
             Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.Core, str);
+            Log.InfoFormat("LOGIN|{0}", user);
         }
 
         public static void SendConfig(IntPtr wnd)
@@ -168,17 +178,10 @@ namespace LeagueSharp.Loader.Core
                 (Config.Instance.Settings.GameSettings[2].SelectedValue == "True") ? "2" : "0");
 
             Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.Core, str);
+            Log.InfoFormat("CONFIG|{0}", str);
         }
-
-        #region Native
-
-        public delegate void OnInjectDelegate(IntPtr hwnd);
-
-        private static InjectDLLDelegate injectDLL;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
         private delegate bool InjectDLLDelegate(int processId, string path);
-
-        #endregion Native
     }
 }

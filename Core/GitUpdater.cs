@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Settings;
 using LibGit2Sharp;
-using LogLevel = LeagueSharp.Loader.Model.Log.LogLevel;
 
 namespace LeagueSharp.Loader.Core
 {
     internal class GitUpdater
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         internal static event TransferHandler OnTransferProgress;
 
         internal static bool Update(LeagueSharpAssembly assembly)
@@ -25,7 +27,7 @@ namespace LeagueSharp.Loader.Core
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                Utility.Log(LogLevel.Warn, string.Format("Wrong Url specified - {0}", url));
+                Log.WarnFormat("Wrong Url specified - {0}", url);
             }
             else
             {
@@ -61,7 +63,7 @@ namespace LeagueSharp.Loader.Core
                 }
                 catch (Exception ex)
                 {
-                    Utility.Log(LogLevel.Error, string.Format("{0} - {1}", ex.Message, url));
+                    Log.WarnFormat("{0} - {1}", ex.Message, url);
                 }
             }
             return string.Empty;
@@ -82,7 +84,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
         }
 
@@ -112,7 +114,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
         }
 
@@ -138,13 +140,13 @@ namespace LeagueSharp.Loader.Core
                     }
                     else
                     {
-                        Utility.Log(LogLevel.Warn, string.Format("Remote[{0}] not found in {1}", remote, repository));
+                        Log.WarnFormat("Remote[{0}] not found in {1}", remote, repository);
                     }
                 }
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
         }
 
@@ -166,13 +168,13 @@ namespace LeagueSharp.Loader.Core
                     }
                     else
                     {
-                        Utility.Log(LogLevel.Warn, string.Format("Branch[{0}] not found in {1}", branch, repository));
+                        Log.WarnFormat("Branch[{0}] not found in {1}", branch, repository);
                     }
                 }
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
         }
 
@@ -187,7 +189,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
 
             return null;
@@ -206,12 +208,12 @@ namespace LeagueSharp.Loader.Core
 
                         return repo.Diff.Compare<TreeChanges>(tree1, tree2);
                     }
-                    Utility.Log(LogLevel.Warn, "Branch not found");
+                    Log.Warn("Branch not found");
                 }
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
 
             return null;
@@ -270,7 +272,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
         }
 
@@ -288,7 +290,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warn, e.Message);
+                Log.Warn(e);
             }
         }
 

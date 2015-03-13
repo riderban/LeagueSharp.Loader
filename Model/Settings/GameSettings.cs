@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 using LeagueSharp.Loader.Core;
+using Newtonsoft.Json;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
@@ -11,7 +11,7 @@ namespace LeagueSharp.Loader.Model.Settings
         private List<string> _posibleValues;
         private string _selectedValue;
 
-        [XmlIgnore]
+        [JsonIgnore]
         public string DisplayName
         {
             get { return Utility.GetMultiLanguageText(Name); }

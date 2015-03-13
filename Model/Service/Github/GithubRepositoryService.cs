@@ -1,26 +1,22 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
-using Newtonsoft.Json;
 
-#endregion
-
-namespace LeagueSharp.Loader.Model.Service.LSharpDB
+namespace LeagueSharp.Loader.Model.Service.Github
 {
-    internal class LSharpDbService : ILSharpDbService
+    internal class GithubRepositoryService : IGithubRepositoryService
     {
-        private const string Url = "http://lsharpdb.com/api/votes";
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly ObservableCollection<LSharpDbAssembly> _cache = new ObservableCollection<LSharpDbAssembly>();
+        private const string Url =
+            "https://raw.githubusercontent.com/LeagueSharp/LeagueSharpLoader/master/Updates/Repositories.txt";
 
-        public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>> callback,
-            bool forceUpdate = false)
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ObservableCollection<string> _cache = new ObservableCollection<string>();
+
+        public void GetKnownRepositories(Action<ObservableCollection<string>> callback, bool forceUpdate = false)
         {
             if (_cache.Count > 0 && !forceUpdate)
             {
@@ -28,20 +24,20 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
                 return;
             }
 
-            Log.Info("Update Assembly Database " + Url);
+            Log.Info("Update Known Repositories " + Url);
             Task.Factory.StartNew(() =>
             {
                 try
                 {
                     using (var client = new WebClient())
                     {
-                        var assemblies =
-                            JsonConvert.DeserializeObject<List<LSharpDbAssembly>>(client.DownloadString(Url));
+                        var repos = client.DownloadString(Url);
+                        var matches = Regex.Matches(repos, "<repo>(.*)</repo>");
 
                         _cache.Clear();
-                        foreach (var assembly in assemblies)
+                        foreach (Match match in matches)
                         {
-                            _cache.Add(assembly);
+                            _cache.Add(match.Groups[1].ToString());
                         }
 
                         callback(_cache);

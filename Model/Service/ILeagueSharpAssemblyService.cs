@@ -6,6 +6,6 @@ namespace LeagueSharp.Loader.Model.Service
 {
     internal interface ILeagueSharpAssemblyService
     {
-        void GetAssemblyDatabase(Action<ObservableCollection<LeagueSharpAssembly>, Exception> callback);
+        void GetAssemblyData(Action<ObservableCollection<LeagueSharpAssembly>> callback, bool forceUpdate = false);
     }
 }

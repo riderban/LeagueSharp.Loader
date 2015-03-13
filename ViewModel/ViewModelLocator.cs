@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using LeagueSharp.Loader.Design;
 using LeagueSharp.Loader.Model.Service;
+using LeagueSharp.Loader.Model.Service.Github;
 using LeagueSharp.Loader.Model.Service.LSharpDB;
 using LeagueSharp.Loader.ViewModel.Settings;
 using Microsoft.Practices.ServiceLocation;
@@ -46,8 +47,9 @@ namespace LeagueSharp.Loader.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, LeagueSharpAssemblyService>();
-                SimpleIoc.Default.Register<ILSharpDbService, IlSharpDbService>();
+                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, LeagueSharpAssemblyService>(true);
+                SimpleIoc.Default.Register<ILSharpDbService, LSharpDbService>(true);
+                SimpleIoc.Default.Register<IGithubRepositoryService, GithubRepositoryService>(true);
             }
 
             SimpleIoc.Default.Register<MainViewModel>();

@@ -18,12 +18,16 @@ namespace LeagueSharp.Loader.Model.Settings
             Directory.CreateDirectory(LocalRepositoryDirectory);
         }
 
-        public static readonly string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        public static string WithoutAppData(this string s)
+        {
+            return s.Replace(AppDataDirectory, "");
+        }
 
         public static readonly string AppDataDirectory =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "LeagueSharp" + Utility.UserNameHash);
 
+        public static readonly string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string RepositoryDirectory = Path.Combine(AppDataDirectory, "Repositories");
         public static readonly string AssembliesDirectory = Path.Combine(AppDataDirectory, "Assemblies");
         public static readonly string LibrariesDirectory = Path.Combine(AppDataDirectory, "Libraries");

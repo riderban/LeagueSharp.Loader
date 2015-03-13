@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Data;
 using GalaSoft.MvvmLight;
+using LeagueSharp.Loader.Model.Service.Github;
 using LeagueSharp.Loader.Model.Service.LSharpDB;
 
 namespace LeagueSharp.Loader.ViewModel
@@ -16,17 +17,19 @@ namespace LeagueSharp.Loader.ViewModel
             set { Set(() => Database, ref _database, value); }
         }
 
-        public DatabaseViewModel(ILSharpDbService serviceService)
+        public DatabaseViewModel(ILSharpDbService dbService, IGithubRepositoryService repoService)
         {
-            serviceService.GetAssemblyDatabase((list, exception) =>
+            dbService.GetAssemblyDatabase(collection =>
             {
-                Database = list;
+                Database = collection;
                 var cv = CollectionViewSource.GetDefaultView(Database);
                 cv.SortDescriptions.Clear();
                 cv.GroupDescriptions.Clear();
                 cv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
                 cv.GroupDescriptions.Add(new PropertyGroupDescription("Name"));
             });
+
+            repoService.GetKnownRepositories(collection => { });
         }
     }
 }

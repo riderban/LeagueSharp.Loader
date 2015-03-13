@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using log4net;
 
 namespace LeagueSharp.Loader.Core
 {
     internal class Auth
     {
         public const string AuthServer = "loader.joduska.me";
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static bool Authed { get; set; }
 
         public static Tuple<bool, string> Login(string user, string hash)

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using log4net;
 
 namespace LeagueSharp.Loader.Core
 {
@@ -15,15 +17,18 @@ namespace LeagueSharp.Loader.Core
         {
             using (var curModule = Process.GetCurrentProcess().MainModule)
             {
-                _hHook = SetWindowsHookEx(13, Proc, GetModuleHandle(curModule.ModuleName), 0);
+                _hHook = Interop.SetWindowsHookEx(13, Proc, Interop.GetModuleHandle(curModule.ModuleName), 0);
             }
+
+            Log.Info("Hook " + _hHook);
         }
 
         public static void UnHook()
         {
+            Log.Info("UnHook " + _hHook);
             if (_hHook != IntPtr.Zero)
             {
-                UnhookWindowsHookEx(_hHook);
+                Interop.UnhookWindowsHookEx(_hHook);
             }
         }
 
@@ -36,29 +41,12 @@ namespace LeagueSharp.Loader.Core
                     OnKeyUpTrigger(Marshal.ReadInt32(lParam));
                 }
             }
-            return CallNextHookEx(_hHook, code, (int) wParam, lParam);
+            return Interop.CallNextHookEx(_hHook, code, (int) wParam, lParam);
         }
 
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static List<int> HookedKeys = new List<int>();
-        private static readonly KeyboardProc Proc = HookProc;
+        private static readonly Interop.KeyboardProc Proc = HookProc;
         private static IntPtr _hHook = IntPtr.Zero;
-
-        #region Native
-
-        private delegate IntPtr KeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr SetWindowsHookEx(int idHook, KeyboardProc callback, IntPtr hInstance, uint threadId);
-
-        [DllImport("user32.dll")]
-        private static extern bool UnhookWindowsHookEx(IntPtr hInstance);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, int wParam, IntPtr lParam);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        #endregion
     }
 }
