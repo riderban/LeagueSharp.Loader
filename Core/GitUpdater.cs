@@ -25,7 +25,7 @@ namespace LeagueSharp.Loader.Core
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                Utility.Log(LogLevel.Warning, string.Format("Wrong Url specified - {0}", url));
+                Utility.Log(LogLevel.Warn, string.Format("Wrong Url specified - {0}", url));
             }
             else
             {
@@ -82,7 +82,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
         }
 
@@ -112,7 +112,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
         }
 
@@ -138,13 +138,13 @@ namespace LeagueSharp.Loader.Core
                     }
                     else
                     {
-                        Utility.Log(LogLevel.Warning, string.Format("Remote[{0}] not found in {1}", remote, repository));
+                        Utility.Log(LogLevel.Warn, string.Format("Remote[{0}] not found in {1}", remote, repository));
                     }
                 }
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
         }
 
@@ -166,13 +166,13 @@ namespace LeagueSharp.Loader.Core
                     }
                     else
                     {
-                        Utility.Log(LogLevel.Warning, string.Format("Branch[{0}] not found in {1}", branch, repository));
+                        Utility.Log(LogLevel.Warn, string.Format("Branch[{0}] not found in {1}", branch, repository));
                     }
                 }
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
         }
 
@@ -187,7 +187,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
 
             return null;
@@ -206,12 +206,12 @@ namespace LeagueSharp.Loader.Core
 
                         return repo.Diff.Compare<TreeChanges>(tree1, tree2);
                     }
-                    Utility.Log(LogLevel.Warning, "Branch not found");
+                    Utility.Log(LogLevel.Warn, "Branch not found");
                 }
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
 
             return null;
@@ -270,7 +270,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
         }
 
@@ -288,7 +288,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, e.Message);
+                Utility.Log(LogLevel.Warn, e.Message);
             }
         }
 

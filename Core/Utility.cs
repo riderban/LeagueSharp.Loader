@@ -34,11 +34,15 @@ namespace LeagueSharp.Loader.Core
             Logs.Main.Items.Add(new LogItem {Level = level, Source = source, Message = message});
             Debug.WriteLine("LOG | {0} | {1} | {2}", level, source, message);
 
-            if (level >= LogLevel.Warning) // TODO: change to Error after testing
+            if (level <= LogLevel.Warn) // TODO: change to Error after testing
             {
                 // workaround to fix autoclose
                 Task.Factory.StartNew(
-                    () => { MessageBox.Show(message, source, MessageBoxButton.OK, MessageBoxImage.Error); }).Wait();
+                    () =>
+                    {
+                        MessageBox.Show(message, level + " in " + source, MessageBoxButton.OK, MessageBoxImage.Error);
+                    })
+                    .Wait();
             }
         }
 
@@ -50,7 +54,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Save {0} to {1}\n{2}", obj.GetType(), path, e.Message));
+                Log(LogLevel.Warn, string.Format("Failed to Save {0} to {1}\n{2}", obj.GetType(), path, e.Message));
             }
         }
 
@@ -62,7 +66,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Load {0} to {1}\n{2}", typeof (T), path, e.Message));
+                Log(LogLevel.Warn, string.Format("Failed to Load {0} to {1}\n{2}", typeof (T), path, e.Message));
             }
 
             return default(T);
@@ -79,7 +83,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Save {0} to {1}\n{2}", typeof (T), path, e.Message));
+                Log(LogLevel.Warn, string.Format("Failed to Save {0} to {1}\n{2}", typeof (T), path, e.Message));
             }
         }
 
@@ -94,7 +98,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Load {0} from {1}\n{2}", typeof (T), path, e.Message));
+                Log(LogLevel.Warn, string.Format("Failed to Load {0} from {1}\n{2}", typeof (T), path, e.Message));
             }
 
             return default(T);
@@ -117,7 +121,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Read {0}", resource));
+                Log(LogLevel.Warn, string.Format("Failed to Read {0}", resource));
             }
 
             return string.Empty;
@@ -150,7 +154,7 @@ namespace LeagueSharp.Loader.Core
             }
             catch (Exception e)
             {
-                Log(LogLevel.Warning, string.Format("Failed to Create File {0} from {1}", path, resource));
+                Log(LogLevel.Warn, string.Format("Failed to Create File {0} from {1}", path, resource));
             }
         }
 

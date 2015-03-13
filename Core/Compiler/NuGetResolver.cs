@@ -29,7 +29,7 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning, "NuGet Resolve failed. " + e);
+                Utility.Log(LogLevel.Warn, "NuGet Resolve failed. " + e);
             }
         }
 
@@ -52,7 +52,7 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning,
+                Utility.Log(LogLevel.Warn,
                     string.Format("NuGet Download failed. | {0} | {1} | {2}", packageUri, packageZip, e));
             }
 
@@ -63,7 +63,7 @@ namespace LeagueSharp.Loader.Core.Compiler
             }
             catch (Exception e)
             {
-                Utility.Log(LogLevel.Warning,
+                Utility.Log(LogLevel.Warn,
                     string.Format("NuGet Extraction failed. | {0} | {1} | {2}", packageUri, packageZip, e));
             }
         }
