@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -238,6 +239,11 @@ namespace LeagueSharp.Loader
                     }
                 };
             }
+
+            var common =
+                Config.Instance.SelectedProfile.InstalledAssemblies.FirstOrDefault(a => a.Name == "LeagueSharp.Common");
+
+            GitUpdater.Checkout(Path.Combine(Directories.RepositoryDirectory, "Github", "LeagueSharp", ))
 
             #endregion
 

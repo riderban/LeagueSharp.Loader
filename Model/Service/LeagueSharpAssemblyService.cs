@@ -22,45 +22,33 @@ namespace LeagueSharp.Loader.Model.Service
             Task.Factory.StartNew(() =>
             {
                 var progress = ServiceLocator.Current.GetInstance<MainViewModel>().ProgressController;
-                if (progress.Start(0, 0,
-                    Directory.EnumerateFiles(Directories.RepositoryDirectory, "*.csproj", SearchOption.AllDirectories)
-                        .Count()))
+                if (progress.Start(0, 0, Config.Instance.SelectedProfile.InstalledAssemblies.Count))
                 {
-                    Parallel.ForEach(Directory.EnumerateDirectories(Directories.RepositoryDirectory), dir =>
+                    Parallel.ForEach(Config.Instance.SelectedProfile.InstalledAssemblies, assembly =>
                     {
-                        var asm = CreateAssembly(dir);
+                        UpdateAssembly(assembly);
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
-                            foreach (var assembly in asm)
-                            {
-                                assemblies.Add(assembly);
-                                progress.Value++;
-                            }
+                            assemblies.Add(assembly);
+                            progress.Value++;
                         });
                     });
 
                     progress.Stop();
                 }
-            });
 
-            callback(assemblies);
+                callback(assemblies);
+            });
         }
 
-        private static IEnumerable<LeagueSharpAssembly> CreateAssembly(string repoPath)
+        private static void UpdateAssembly(LeagueSharpAssembly assembly)
         {
-            var assemblies = new List<LeagueSharpAssembly>();
-
-            if (Repository.IsValid(repoPath))
+            if (Repository.IsValid(assembly.PathToRepository))
             {
-                var location = "";
-                var author = "";
                 var versions = new List<AssemblyVersion>();
 
-                using (var repo = new Repository(repoPath))
+                using (var repo = new Repository(assembly.PathToRepository))
                 {
-                    location = repo.Network.Remotes.First().Url;
-                    author = location.Split('/')[3];
-
                     var commits = repo.Head.Commits.ToList();
                     var id = commits.Count;
                     foreach (var commit in commits)
@@ -75,22 +63,8 @@ namespace LeagueSharp.Loader.Model.Service
                     }
                 }
 
-                foreach (var project in Directory.EnumerateFiles(repoPath, "*.csproj", SearchOption.AllDirectories))
-                {
-                    assemblies.Add(new LeagueSharpAssembly
-                    {
-                        Type = AssemblyType.Unknown,
-                        State = AssemblyState.Ready,
-                        Name = Path.GetFileNameWithoutExtension(project),
-                        Location = location,
-                        Author = author,
-                        Project = project,
-                        Versions = versions
-                    });
-                }
+                assembly.Versions = versions;
             }
-
-            return assemblies;
         }
     }
 }

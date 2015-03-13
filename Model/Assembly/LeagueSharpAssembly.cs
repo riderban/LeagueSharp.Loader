@@ -22,6 +22,7 @@ namespace LeagueSharp.Loader.Model.Assembly
         private AssemblyType _type;
         private int _version;
         private List<AssemblyVersion> _versions = new List<AssemblyVersion>();
+        private string _pathToRepository;
 
         public string Author
         {
@@ -109,6 +110,12 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _versions; }
             set { Set(() => Versions, ref _versions, value); }
+        }
+
+        public string PathToRepository
+        {
+            get { return _pathToRepository; }
+            set { Set(() => PathToRepository, ref _pathToRepository, value); }
         }
 
         public override bool Equals(object obj)

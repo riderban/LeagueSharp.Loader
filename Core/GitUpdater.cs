@@ -92,7 +92,7 @@ namespace LeagueSharp.Loader.Core
 
         #region Git Commands
 
-        private static void Clone(string url, string path, bool overrideExisting = true)
+        internal static void Clone(string url, string path, bool overrideExisting = true)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace LeagueSharp.Loader.Core
             }
         }
 
-        private static void Fetch(string repository, string remote)
+        internal static void Fetch(string repository, string remote)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace LeagueSharp.Loader.Core
             }
         }
 
-        private static void Checkout(string repository, string branch, CheckoutModifiers mods = CheckoutModifiers.Force)
+        internal static void Checkout(string repository, string branch, CheckoutModifiers mods = CheckoutModifiers.Force)
         {
             try
             {
@@ -178,7 +178,7 @@ namespace LeagueSharp.Loader.Core
             }
         }
 
-        private static TreeChanges Diff(string repository)
+        internal static TreeChanges Diff(string repository)
         {
             try
             {
@@ -195,7 +195,7 @@ namespace LeagueSharp.Loader.Core
             return null;
         }
 
-        private static TreeChanges Diff(string repository, string branch1, string branch2)
+        internal static TreeChanges Diff(string repository, string branch1, string branch2)
         {
             try
             {
@@ -229,7 +229,7 @@ namespace LeagueSharp.Loader.Core
                 OnTransferProgress(repository, progress);
         }
 
-        private static bool IsValidRepository(string path)
+        internal static bool IsValidRepository(string path)
         {
             try
             {
@@ -252,7 +252,7 @@ namespace LeagueSharp.Loader.Core
             return false;
         }
 
-        private static bool IsValidBranch(Branch branch)
+        internal static bool IsValidBranch(Branch branch)
         {
             return branch != null && branch.Tip != null && branch.Tip.Tree != null;
         }
@@ -276,7 +276,7 @@ namespace LeagueSharp.Loader.Core
             }
         }
 
-        private static void CleanRepository(string repository)
+        internal static void CleanRepository(string repository)
         {
             try
             {
