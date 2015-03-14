@@ -9,6 +9,7 @@ namespace LeagueSharp.Loader.Model.Assembly
         private DateTimeOffset _date;
         private int _id;
         private string _message;
+        private string _hash;
 
         public string Color
         {
@@ -20,6 +21,12 @@ namespace LeagueSharp.Loader.Model.Assembly
         {
             get { return _date; }
             set { Set(() => Date, ref _date, value); }
+        }
+
+        public string Hash
+        {
+            get { return _hash; }
+            set { Set(() => Hash, ref _hash, value); }
         }
 
         public int Id

@@ -3,10 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using log4net;
+using LeagueSharp.Loader.Core;
 using Newtonsoft.Json;
 
 #endregion
@@ -17,14 +18,14 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
     {
         private const string Url = "http://lsharpdb.com/api/votes";
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly ObservableCollection<LSharpDbAssembly> _cache = new ObservableCollection<LSharpDbAssembly>();
+        private readonly List<LSharpDbAssembly> _cache = new List<LSharpDbAssembly>();
 
         public void GetAssemblyDatabase(Action<ObservableCollection<LSharpDbAssembly>> callback,
             bool forceUpdate = false)
         {
             if (_cache.Count > 0 && !forceUpdate)
             {
-                callback(_cache);
+                callback(new ObservableCollection<LSharpDbAssembly>(_cache));
                 return;
             }
 
@@ -33,18 +34,29 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
             {
                 try
                 {
-                    using (var client = new WebClient())
+                    using (var client = new GZipWebClient())
                     {
-                        var assemblies =
-                            JsonConvert.DeserializeObject<List<LSharpDbAssembly>>(client.DownloadString(Url));
+                        var data =
+                            JsonConvert.DeserializeObject<List<LSharpDbAssemblyRepository>>(client.DownloadString(Url));
+                        var champions = data.SelectMany(c => c.Champions).Distinct().OrderBy(c => c);
 
                         _cache.Clear();
-                        foreach (var assembly in assemblies)
+                        foreach (var champion in champions)
                         {
-                            _cache.Add(assembly);
+                            var champ = champion;
+                            foreach (var assembly in data.Where(a => a.Champions.Contains(champ)))
+                            {
+                                _cache.Add(new LSharpDbAssembly
+                                {
+                                    Name = assembly.Name,
+                                    Champion = champ,
+                                    Count = assembly.Count,
+                                    GithubFolder = assembly.GithubFolder
+                                });
+                            }
                         }
 
-                        callback(_cache);
+                        callback(new ObservableCollection<LSharpDbAssembly>(_cache));
                     }
                 }
                 catch (Exception e)

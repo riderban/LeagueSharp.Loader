@@ -16,14 +16,6 @@
                    GlowBrush="{DynamicResource AccentColorBrush}"
                    DataContext="{Binding Main, Source={StaticResource Locator}}">
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Skins/MainSkin.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
 

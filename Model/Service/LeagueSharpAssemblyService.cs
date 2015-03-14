@@ -15,9 +15,15 @@ namespace LeagueSharp.Loader.Model.Service
 {
     internal class LeagueSharpAssemblyService : ILeagueSharpAssemblyService
     {
+        private readonly List<LeagueSharpAssembly> _cache = new List<LeagueSharpAssembly>();
+
         public void GetAssemblyData(Action<ObservableCollection<LeagueSharpAssembly>> callback, bool forceUpdate = false)
         {
-            var assemblies = new ObservableCollection<LeagueSharpAssembly>();
+            if (_cache.Count > 0 && !forceUpdate)
+            {
+                callback(new ObservableCollection<LeagueSharpAssembly>(_cache));
+                return;
+            }
 
             Task.Factory.StartNew(() =>
             {
@@ -27,17 +33,14 @@ namespace LeagueSharp.Loader.Model.Service
                     Parallel.ForEach(Config.Instance.SelectedProfile.InstalledAssemblies, assembly =>
                     {
                         UpdateAssembly(assembly);
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            assemblies.Add(assembly);
-                            progress.Value++;
-                        });
+                        _cache.Add(assembly);
+                        progress.Value++;
                     });
 
                     progress.Stop();
                 }
 
-                callback(assemblies);
+                callback(new ObservableCollection<LeagueSharpAssembly>(_cache));
             });
         }
 
@@ -58,7 +61,8 @@ namespace LeagueSharp.Loader.Model.Service
                             {
                                 Id = id--,
                                 Date = commit.Committer.When,
-                                Message = commit.MessageShort
+                                Message = commit.MessageShort,
+                                Hash = commit.Sha
                             });
                     }
                 }

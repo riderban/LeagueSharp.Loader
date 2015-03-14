@@ -8,14 +8,6 @@
              DataContext="{Binding AppBar, Source={StaticResource Locator}}" d:DesignWidth="839.414"
              d:DesignHeight="150">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Skins/MainSkin.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid>
         <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Margin="10,10,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Top">

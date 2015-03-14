@@ -25,7 +25,7 @@ namespace LeagueSharp.Loader.Model.Settings
 
         public static readonly string AppDataDirectory =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "LeagueSharp" + Utility.UserNameHash);
+                "LeagueSharp_" + Utility.UserNameHash);
 
         public static readonly string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string RepositoryDirectory = Path.Combine(AppDataDirectory, "Repositories");

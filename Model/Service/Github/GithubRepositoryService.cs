@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
+using LeagueSharp.Loader.Core;
 
 namespace LeagueSharp.Loader.Model.Service.Github
 {
@@ -14,13 +16,13 @@ namespace LeagueSharp.Loader.Model.Service.Github
             "https://raw.githubusercontent.com/LeagueSharp/LeagueSharpLoader/master/Updates/Repositories.txt";
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly ObservableCollection<string> _cache = new ObservableCollection<string>();
+        private readonly List<string> _cache = new List<string>();
 
         public void GetKnownRepositories(Action<ObservableCollection<string>> callback, bool forceUpdate = false)
         {
             if (_cache.Count > 0 && !forceUpdate)
             {
-                callback(_cache);
+                callback(new ObservableCollection<string>(_cache));
                 return;
             }
 
@@ -29,7 +31,7 @@ namespace LeagueSharp.Loader.Model.Service.Github
             {
                 try
                 {
-                    using (var client = new WebClient())
+                    using (var client = new GZipWebClient())
                     {
                         var repos = client.DownloadString(Url);
                         var matches = Regex.Matches(repos, "<repo>(.*)</repo>");
@@ -40,7 +42,7 @@ namespace LeagueSharp.Loader.Model.Service.Github
                             _cache.Add(match.Groups[1].ToString());
                         }
 
-                        callback(_cache);
+                        callback(new ObservableCollection<string>(_cache));
                     }
                 }
                 catch (Exception e)

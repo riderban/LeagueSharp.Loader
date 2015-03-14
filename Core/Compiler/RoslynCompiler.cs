@@ -44,11 +44,11 @@ namespace LeagueSharp.Loader.Core.Compiler
                 //        Console.WriteLine(reference.Display);
                 //    }
 
-                //    var compilation = project
-                //        .WithAssemblyName(assembly.Name)
-                //        .WithCompilationOptions(options)
-                //        //.WithMetadataReferences(LeagueSharpSystemReferences)
-                //        .GetCompilationAsync().Result;
+                //var compilation = project
+                //    .WithAssemblyName(assembly.CurrentVersion.Hash)
+                //    .WithCompilationOptions(options)
+                //    .WithMetadataReferences(LeagueSharpSystemReferences)
+                //    .GetCompilationAsync().Result;
 
                 //    var diag = compilation.GetDiagnostics();
 

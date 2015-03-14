@@ -47,9 +47,9 @@ namespace LeagueSharp.Loader.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, LeagueSharpAssemblyService>(true);
-                SimpleIoc.Default.Register<ILSharpDbService, LSharpDbService>(true);
-                SimpleIoc.Default.Register<IGithubRepositoryService, GithubRepositoryService>(true);
+                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, LeagueSharpAssemblyService>();
+                SimpleIoc.Default.Register<ILSharpDbService, LSharpDbService>();
+                SimpleIoc.Default.Register<IGithubRepositoryService, GithubRepositoryService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();

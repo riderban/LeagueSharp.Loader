@@ -85,12 +85,13 @@ namespace LeagueSharp.Loader
                 try
                 {
                     Log.Info("Backing up valid Config " + Directories.ConfigFilePath.WithoutAppData() + ".bak");
+                    File.SetAttributes(Directories.ConfigFilePath + ".bak", FileAttributes.Normal);
                     File.Copy(Directories.ConfigFilePath, Directories.ConfigFilePath + ".bak", true);
                     File.SetAttributes(Directories.ConfigFilePath + ".bak", FileAttributes.Hidden);
                 }
-                catch
+                catch(Exception ex)
                 {
-                    //ignore
+                    Log.Warn(ex);
                 }
             }
             else
@@ -158,20 +159,27 @@ namespace LeagueSharp.Loader
                             {
                                 Name = "Reload",
                                 Description = "Reload the assemblies",
-                                Hotkey = Key.F6,
-                                DefaultKey = Key.F6
+                                Hotkey = Key.F5,
+                                DefaultKey = Key.F5
                             },
                             new HotkeyEntry
                             {
                                 Name = "Unload",
                                 Description = "Unloads all assemblies",
-                                Hotkey = Key.F7,
-                                DefaultKey = Key.F7
+                                Hotkey = Key.F6,
+                                DefaultKey = Key.F6
                             },
                             new HotkeyEntry
                             {
                                 Name = "CompileAndReload",
                                 Description = "Recompile and reload the assemblies",
+                                Hotkey = Key.F7,
+                                DefaultKey = Key.F7
+                            },
+                            new HotkeyEntry
+                            {
+                                Name = "ShowMenuToggle",
+                                Description = "Shows the menu (Toggle)",
                                 Hotkey = Key.F8,
                                 DefaultKey = Key.F8
                             },
@@ -181,13 +189,6 @@ namespace LeagueSharp.Loader
                                 Description = "Shows the menu (Press)",
                                 Hotkey = Key.LeftShift,
                                 DefaultKey = Key.LeftShift
-                            },
-                            new HotkeyEntry
-                            {
-                                Name = "ShowMenuToggle",
-                                Description = "Shows the menu (Toggle)",
-                                Hotkey = Key.F9,
-                                DefaultKey = Key.F9
                             }
                         }
                     },
@@ -240,10 +241,11 @@ namespace LeagueSharp.Loader
                 };
             }
 
-            var common =
-                Config.Instance.SelectedProfile.InstalledAssemblies.FirstOrDefault(a => a.Name == "LeagueSharp.Common");
-
-            GitUpdater.Checkout(Path.Combine(Directories.RepositoryDirectory, "Github", "LeagueSharp", ))
+            // HACK: testing
+            Config.Instance.Username = "h3h3";
+            var common = Config.Instance.SelectedProfile.InstalledAssemblies.First(a => a.Name == "LeagueSharp.Common");
+            common.PathToRepository = Path.Combine(Directories.RepositoryDirectory, "Github", "LeagueSharp");
+            GitUpdater.Clone(common.Location, common.PathToRepository, false);
 
             #endregion
 

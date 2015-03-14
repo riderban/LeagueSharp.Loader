@@ -1,0 +1,4 @@
+- Compiler support for C# / VB / F# / CSharpScript
+- Fix DataGrid grouping, performance and width
+- AppData randomization / changeable path
+-

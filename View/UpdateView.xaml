@@ -7,13 +7,5 @@
              mc:Ignorable="d ignore"
              DataContext="{Binding ViewModelName, Source={StaticResource Locator}}">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Skins/MainSkin.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid />
 </UserControl>

@@ -1,4 +1,7 @@
-﻿namespace LeagueSharp.Loader.View
+﻿using System.Windows;
+using MahApps.Metro;
+
+namespace LeagueSharp.Loader.View
 {
     /// <summary>
     ///     Description for NewsView.
@@ -11,6 +14,13 @@
         public NewsView()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            var accent = ThemeManager.GetAccent("Red");
+            ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);
         }
     }
 }

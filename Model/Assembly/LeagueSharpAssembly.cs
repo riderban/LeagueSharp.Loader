@@ -10,7 +10,6 @@ namespace LeagueSharp.Loader.Model.Assembly
     internal class LeagueSharpAssembly : ObservableObject
     {
         private string _author;
-        private string _imageRating;
         private bool _inject;
         private string _location;
         private string _name;
@@ -130,7 +129,7 @@ namespace LeagueSharp.Loader.Model.Assembly
 
         public override int GetHashCode()
         {
-            return Project.GetHashCode();
+            return Project != null ? Project.GetHashCode() : Location.GetHashCode();
         }
 
         public void Update()

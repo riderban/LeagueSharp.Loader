@@ -9,14 +9,6 @@
              DataContext="{Binding Assemblies, Source={StaticResource Locator}}" d:DesignWidth="935.623"
              d:DesignHeight="598.922">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Skins/MainSkin.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid>
         <controls:SplitButton
             x:Name="ProfilesButton"
@@ -103,7 +95,7 @@
                 HorizontalAlignment="Right" Width="110" />
 
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Margin="10,41,10,10">
-            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Database}" CanUserAddRows="False">
+            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Assemblies}" CanUserAddRows="False" IsReadOnly="True">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource MenuUpdateAndCompile}">

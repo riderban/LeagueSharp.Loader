@@ -97,7 +97,10 @@ namespace LeagueSharp.Loader.Core
             try
             {
                 if (Directory.Exists(path) && overrideExisting)
+                {
+                    Utility.ClearDirectory(path);
                     Directory.Delete(path, true);
+                }
 
                 Repository.Clone(url, path,
                     new CloneOptions

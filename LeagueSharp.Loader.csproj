@@ -203,6 +203,9 @@
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Core\Interop.cs" />
+    <Compile Include="Core\GZipWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Model\Assembly\AssemblyState.cs" />
     <Compile Include="Model\Assembly\AssemblyType.cs" />
     <Compile Include="Model\Assembly\AssemblyVersion.cs" />
@@ -381,7 +384,7 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Skins\MainSkin.xaml">
+    <Page Include="Skins\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

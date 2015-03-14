@@ -83,7 +83,7 @@ namespace LeagueSharp.Loader.ViewModel
                            {
                                Task.Factory.StartNew(() =>
                                {
-                                   var assemblies = ServiceLocator.Current.GetInstance<AssembliesViewModel>().Database;
+                                   var assemblies = ServiceLocator.Current.GetInstance<AssembliesViewModel>().Assemblies;
 
                                    if (ProgressController.Start(0, 0, assemblies.Count))
                                    {
