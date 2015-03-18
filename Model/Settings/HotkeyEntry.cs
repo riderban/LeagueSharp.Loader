@@ -2,6 +2,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using LeagueSharp.Loader.Core;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace LeagueSharp.Loader.Model.Settings
 {
@@ -10,6 +11,8 @@ namespace LeagueSharp.Loader.Model.Settings
         private string _description;
         private Key _hotkey;
         private string _name;
+
+        [JsonConverter(typeof (StringEnumConverter))]
         public Key DefaultKey { get; set; }
 
         public string Description
@@ -32,6 +35,7 @@ namespace LeagueSharp.Loader.Model.Settings
             get { return Utility.GetMultiLanguageText(Description); }
         }
 
+        [JsonConverter(typeof (StringEnumConverter))]
         public Key Hotkey
         {
             get { return _hotkey; }
@@ -42,7 +46,6 @@ namespace LeagueSharp.Loader.Model.Settings
                     _hotkey = value;
                     RaisePropertyChanged();
                     RaisePropertyChanged("HotkeyInt");
-                    RaisePropertyChanged("HotkeyString");
                 }
             }
         }

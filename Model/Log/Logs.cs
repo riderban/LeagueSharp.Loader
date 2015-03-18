@@ -48,7 +48,7 @@ namespace LeagueSharp.Loader.Model.Log
             hierarchy.Root.Level = Level.Info;
             hierarchy.Configured = true;
 
-            Log.Info(MainLogFile.WithoutAppData());
+            Log.Info(MainLogFile);
         }
     }
 }

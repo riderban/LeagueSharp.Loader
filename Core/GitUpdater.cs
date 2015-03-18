@@ -96,6 +96,8 @@ namespace LeagueSharp.Loader.Core
         {
             try
             {
+                Log.InfoFormat("Clone {0} into {1} override:{2}", url, path, overrideExisting);
+
                 if (Directory.Exists(path) && overrideExisting)
                 {
                     Utility.ClearDirectory(path);

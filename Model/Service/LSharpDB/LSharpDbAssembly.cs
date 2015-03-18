@@ -5,6 +5,9 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
 {
     internal class LSharpDbAssemblyRepository
     {
+        [JsonProperty(PropertyName = "champions")]
+        public string[] Champions { get; set; }
+
         [JsonProperty(PropertyName = "count")]
         public int Count { get; set; }
 
@@ -13,16 +16,13 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "champions")]
-        public string[] Champions { get; set; }
     }
 
     internal class LSharpDbAssembly : ObservableObject
     {
+        public string Champion { get; set; }
         public int Count { get; set; }
         public string GithubFolder { get; set; }
         public string Name { get; set; }
-        public string Champion { get; set; }
     }
 }

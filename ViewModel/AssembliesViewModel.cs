@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using GalaSoft.MvvmLight;
@@ -13,15 +12,15 @@ namespace LeagueSharp.Loader.ViewModel
     {
         private ObservableCollection<LeagueSharpAssembly> _assemblies;
 
-        public Config Config
-        {
-            get { return Config.Instance; }
-        }
-
         public ObservableCollection<LeagueSharpAssembly> Assemblies
         {
             get { return _assemblies; }
             set { Set(() => Assemblies, ref _assemblies, value); }
+        }
+
+        public Config Config
+        {
+            get { return Config.Instance; }
         }
 
         public AssembliesViewModel(ILeagueSharpAssemblyService dataService)

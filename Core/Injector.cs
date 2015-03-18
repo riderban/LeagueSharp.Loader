@@ -172,10 +172,10 @@ namespace LeagueSharp.Loader.Core
         public static void SendConfig(IntPtr wnd)
         {
             var str = string.Format(
-                "{0}{1}{2}{3}", (Config.Instance.Settings.GameSettings[0].SelectedValue == "True") ? "1" : "0",
-                (Config.Instance.Settings.GameSettings[3].SelectedValue == "True") ? "1" : "0",
-                (Config.Instance.Settings.GameSettings[1].SelectedValue == "True") ? "1" : "0",
-                (Config.Instance.Settings.GameSettings[2].SelectedValue == "True") ? "2" : "0");
+                "{0}{1}{2}{3}", (Config.Instance.Settings.GameSettings[0].Value == "True") ? "1" : "0",
+                (Config.Instance.Settings.GameSettings[3].Value == "True") ? "1" : "0",
+                (Config.Instance.Settings.GameSettings[1].Value == "True") ? "1" : "0",
+                (Config.Instance.Settings.GameSettings[2].Value == "True") ? "2" : "0");
 
             Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.Core, str);
             Log.InfoFormat("CONFIG|{0}", str);
