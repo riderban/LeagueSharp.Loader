@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using LeagueSharp.Loader.Core;
 using LeagueSharp.Loader.Core.Compiler;
+using LeagueSharp.Loader.Model.Settings;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace LeagueSharp.Loader.Model.Assembly
 {
@@ -14,7 +18,7 @@ namespace LeagueSharp.Loader.Model.Assembly
         private string _location;
         private string _name;
         private OptimizationLevel _optimization = OptimizationLevel.Release;
-        private OutputKind _outputKind = OutputKind.ConsoleApplication;
+        private OutputKind _outputKind = OutputKind.DynamicallyLinkedLibrary;
         private string _pathToBinary;
         private string _pathToRepository;
         private string _project;
@@ -58,12 +62,14 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Name, ref _name, value); }
         }
 
+        [JsonConverter(typeof (StringEnumConverter))]
         public OptimizationLevel Optimization
         {
             get { return _optimization; }
             set { Set(() => Optimization, ref _optimization, value); }
         }
 
+        [JsonConverter(typeof (StringEnumConverter))]
         public OutputKind OutputKind
         {
             get { return _outputKind; }
@@ -78,7 +84,17 @@ namespace LeagueSharp.Loader.Model.Assembly
 
         public string PathToRepository
         {
-            get { return _pathToRepository; }
+            get
+            {
+                if (string.IsNullOrEmpty(_pathToRepository) && Location.StartsWith("http"))
+                {
+                    var match = Regex.Match(Location, @"^(http[s]?)://(?<host>.*?)/(?<author>.*?)/(?<repo>.*?)(/{1}|$)");
+                    PathToRepository = Path.Combine(Directories.RepositoryDirectory, match.Groups["host"].Value,
+                        match.Groups["author"].Value, match.Groups["repo"].Value);
+                }
+
+                return _pathToRepository;
+            }
             set { Set(() => PathToRepository, ref _pathToRepository, value); }
         }
 
@@ -88,12 +104,14 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Project, ref _project, value); }
         }
 
+        [JsonConverter(typeof (StringEnumConverter))]
         public AssemblyState State
         {
             get { return _state; }
             set { Set(() => State, ref _state, value); }
         }
 
+        [JsonConverter(typeof (StringEnumConverter))]
         public AssemblyType Type
         {
             get { return _type; }
@@ -145,13 +163,13 @@ namespace LeagueSharp.Loader.Model.Assembly
 
         public void Compile()
         {
-            //if (State == AssemblyState.Compiling)
-            //{
-            //    return;
-            //}
+            if (State == AssemblyState.Compiling)
+            {
+                return;
+            }
 
-            //State = AssemblyState.Compiling;
-            //State = RoslynCompiler.Compile(this) ? AssemblyState.Ready : AssemblyState.CompilingError;
+            State = AssemblyState.Compiling;
+            State = RoslynCompiler.Compile(this) ? AssemblyState.Ready : AssemblyState.CompilingError;
         }
     }
 }

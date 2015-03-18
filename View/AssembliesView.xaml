@@ -1,13 +1,23 @@
-﻿<UserControl x:Class="LeagueSharp.Loader.View.AssembliesView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ignore="http://www.ignore.com"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d ignore"
-             DataContext="{Binding Assemblies, Source={StaticResource Locator}}" d:DesignWidth="935.623"
-             d:DesignHeight="598.922">
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ignore="http://www.ignore.com"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:Converters="clr-namespace:LeagueSharp.Loader.Model.Converters"
+    x:Class="LeagueSharp.Loader.View.AssembliesView"
+    mc:Ignorable="d ignore"
+    d:DesignWidth="935.623"
+    d:DesignHeight="598.922">
+
+    <UserControl.Resources>
+        <Converters:IntToProfileConverter x:Key="IntToProfileConverter" />
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <Binding Path="Assemblies" Source="{StaticResource Locator}" />
+    </UserControl.DataContext>
 
     <Grid>
         <controls:SplitButton
@@ -15,8 +25,8 @@
             IsTextSearchEnabled="True"
             Width="171"
             Height="23"
-            SelectedItem="{Binding Config.SelectedProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ItemsSource="{Binding Config.Profiles, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding Config.SelectedProfileId, Converter={StaticResource IntToProfileConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Config.Profiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             DisplayMemberPath="Name"
             VerticalAlignment="Top" Margin="10,10,0,0" HorizontalAlignment="Left">
             <controls:SplitButton.Icon>

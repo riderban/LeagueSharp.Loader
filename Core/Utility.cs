@@ -1,15 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 using log4net;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Settings;
 using Newtonsoft.Json;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace LeagueSharp.Loader.Core
 {
@@ -28,24 +32,34 @@ namespace LeagueSharp.Loader.Core
                 () => new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore};
         }
 
-        //public static void Log(Level level, string message, [CallerMemberName] string source = "")
-        //{
-        //    Logs.Main.Items.Add(new LogItem {Level = level, Source = source, Message = message});
+        public static void CreateSupportZip()
+        {
+            if (MessageBox.Show(GetMultiLanguageText("SupportZipMessage"), "Support Zip", MessageBoxButton.OKCancel,
+                MessageBoxImage.Information) == MessageBoxResult.Cancel)
+            {
+                return;
+            }
 
-        //    Logs.Main.
-        //    Debug.WriteLine("LOG | {0} | {1} | {2}", level, source, message);
+            var dialog = new SaveFileDialog
+            {
+                Title = GetMultiLanguageText("SupportZipDialog"),
+                Filter = "zip files (*.zip)|*.txt|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
 
-        //    if (level <= LogLevel.Warn) // TODO: change to Error after testing
-        //    {
-        //        // workaround to fix autoclose
-        //        Task.Factory.StartNew(
-        //            () =>
-        //            {
-        //                MessageBox.Show(message, level + " in " + source, MessageBoxButton.OK, MessageBoxImage.Error);
-        //            })
-        //            .Wait();
-        //    }
-        //}
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                using (var zip = new ZipArchive(dialog.OpenFile(), ZipArchiveMode.Create))
+                {
+                    zip.CreateEntryFromFile(Path.GetFileName(Directories.ConfigFilePath), Directories.ConfigFilePath);
+
+                    foreach (var log in Directory.EnumerateFiles(Directories.LogsDirectory))
+                    {
+                        zip.CreateEntryFromFile(Path.GetFileName(log), log);
+                    }
+                }
+            }
+        }
 
         public static void SaveToJson(object obj, string path)
         {
@@ -120,7 +134,7 @@ namespace LeagueSharp.Loader.Core
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Log.WarnFormat("Failed to Read {0}", resource);
             }
@@ -153,7 +167,7 @@ namespace LeagueSharp.Loader.Core
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Log.WarnFormat("Failed to Create File {0} from {1}", path, resource);
             }
@@ -301,8 +315,14 @@ namespace LeagueSharp.Loader.Core
 
         public static string GetMultiLanguageText(string key)
         {
-            var resource = Application.Current.FindResource(key);
-            return resource != null ? resource.ToString() : "KEY:" + key;
+            try
+            {
+                return Application.Current.FindResource(key).ToString();
+            }
+            catch
+            {
+                return key;
+            }
         }
 
         public static void CopyDirectory(string sourceDirName, string destDirName, bool copySubDirs = false,

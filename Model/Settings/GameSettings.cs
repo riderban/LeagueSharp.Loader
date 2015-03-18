@@ -8,8 +8,8 @@ namespace LeagueSharp.Loader.Model.Settings
     internal class GameSettings : ObservableObject
     {
         private string _name;
-        private List<string> _posibleValues;
-        private string _selectedValue;
+        private string _value;
+        private List<string> _values;
 
         [JsonIgnore]
         public string DisplayName
@@ -31,16 +31,16 @@ namespace LeagueSharp.Loader.Model.Settings
             }
         }
 
-        public List<string> PosibleValues
+        public string Value
         {
-            get { return _posibleValues; }
-            set { Set(() => PosibleValues, ref _posibleValues, value); }
+            get { return _value; }
+            set { Set(() => Value, ref _value, value); }
         }
 
-        public string SelectedValue
+        public List<string> Values
         {
-            get { return _selectedValue; }
-            set { Set(() => SelectedValue, ref _selectedValue, value); }
+            get { return _values; }
+            set { Set(() => Values, ref _values, value); }
         }
     }
 }
