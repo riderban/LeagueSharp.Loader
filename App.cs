@@ -34,8 +34,7 @@ namespace LeagueSharp.Loader
             Log.Info(Assembly.GetExecutingAssembly().GetName().Name + " started");
 
             var mutexCreated = false;
-            var mutexName =
-                Utility.Md5Hash(Directories.LoaderFilePath + Environment.UserDomainName + Environment.UserName);
+            var mutexName = Utility.Md5Hash(Directories.LoaderFilePath + Environment.UserName);
             _mutex = new Mutex(true, mutexName, out mutexCreated);
 
             if (!mutexCreated)
@@ -62,9 +61,8 @@ namespace LeagueSharp.Loader
 
             // HACK: testing
             Config.Instance.Username = "h3h3";
-            foreach (
-                var assembly in
-                    Config.Instance.SelectedProfile.InstalledAssemblies.Where(a => a.Author == "LeagueSharp"))
+            foreach (var assembly in Config.Instance.SelectedProfile
+                .InstalledAssemblies.Where(a => a.Author == "LeagueSharp"))
             {
                 GitUpdater.Clone(assembly.Location, assembly.PathToRepository, false);
             }

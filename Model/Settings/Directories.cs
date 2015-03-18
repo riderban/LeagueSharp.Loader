@@ -72,11 +72,6 @@ namespace LeagueSharp.Loader.Model.Settings
             get { return Path.Combine(DataDirectory, "Repositories"); }
         }
 
-        public static string ToRelativePath(this string s)
-        {
-            return s.Replace(DataDirectory, "");
-        }
-
         public static void Initialize()
         {
             if (string.IsNullOrEmpty(Config.Instance.DataDirectory))

@@ -9,7 +9,7 @@ namespace LeagueSharp.Loader.Model.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Config.Instance.SelectedProfile;
+            return Config.Instance.Profiles[(int) value];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

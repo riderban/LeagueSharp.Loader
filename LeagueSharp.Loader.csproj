@@ -446,6 +446,9 @@
     <Resource Include="Resources\icon_64x64.ico" />
     <SplashScreen Include="Resources\splash.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

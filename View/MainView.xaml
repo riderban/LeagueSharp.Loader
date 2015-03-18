@@ -13,7 +13,8 @@
                    RightWindowCommandsOverlayBehavior="Always"
                    WindowButtonCommandsOverlayBehavior="Always"
                    GlowBrush="{DynamicResource AccentColorBrush}"
-                   DataContext="{Binding Main, Source={StaticResource Locator}}" Icon="/LeagueSharp.Loader;component/Resources/icon.png" ResizeMode="CanResizeWithGrip" Title="LeagueSharp" TitlebarHeight="35">
+                   DataContext="{Binding Main, Source={StaticResource Locator}}" ResizeMode="CanResizeWithGrip"
+                   Title="LeagueSharp" TitlebarHeight="35" Icon="/LeagueSharp.Loader;component/Resources/icon.png">
 
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>

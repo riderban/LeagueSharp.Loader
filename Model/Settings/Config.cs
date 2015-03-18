@@ -180,7 +180,7 @@ namespace LeagueSharp.Loader.Model.Settings
                     File.Delete(Directories.ConfigFilePath + ".bak");
                     File.Delete(Directories.ConfigFilePath);
                     Log.Fatal("Couldn't load config", ex);
-                    Environment.Exit(0);
+                    Environment.Exit(1);
                 }
             }
 

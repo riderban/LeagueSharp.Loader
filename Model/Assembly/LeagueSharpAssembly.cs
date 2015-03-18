@@ -135,20 +135,20 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Versions, ref _versions, value); }
         }
 
-        public override bool Equals(object obj)
-        {
-            var assembly = obj as LeagueSharpAssembly;
-            if (assembly != null)
-            {
-                return assembly.Project == Project;
-            }
-            return false;
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    var assembly = obj as LeagueSharpAssembly;
+        //    if (assembly != null)
+        //    {
+        //        return assembly.GetHashCode() == Project.GetHashCode();
+        //    }
+        //    return false;
+        //}
 
-        public override int GetHashCode()
-        {
-            return Project != null ? Project.GetHashCode() : Location.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return Project != null ? Project.GetHashCode() : (Name + Location).GetHashCode();
+        //}
 
         public void Update()
         {

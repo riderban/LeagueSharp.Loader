@@ -1,6 +1,9 @@
-- Compiler support for C# / VB / F# / CSharpScript
-- Fix DataGrid grouping, performance and width
-- AppData randomization / changeable path
+- Compiler support for C# / VB / F# / CSharpScript, fix needed
+- rewrite AppUpdater and get rid of tuple, decouple the window
+- rewrite injector sandbox specs????
+- Fix DataGrid grouping, performance and width, done
+- AppData randomization / changeable path, done
+- get rid of local assemblies folder
 - search/filter AssemblyType
-- shortcuts only if league is focused
-- 
+- shortcuts only if league is focused, done
+- d&d assemblies

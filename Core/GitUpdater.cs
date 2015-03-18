@@ -40,7 +40,7 @@ namespace LeagueSharp.Loader.Core
 
                 return true;
             }
-            
+
             return false;
         }
 
