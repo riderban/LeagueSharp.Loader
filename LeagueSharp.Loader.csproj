@@ -210,6 +210,7 @@
     <Compile Include="Model\Assembly\AssemblyState.cs" />
     <Compile Include="Model\Assembly\AssemblyType.cs" />
     <Compile Include="Model\Assembly\AssemblyVersion.cs" />
+    <Compile Include="Model\Converters\ArrayToStringConverter.cs" />
     <Compile Include="Model\Converters\IntToProfileConverter.cs" />
     <Compile Include="Model\Log\Logs.cs" />
     <Compile Include="Model\Service\Github\GithubRepositoryService.cs" />
