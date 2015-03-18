@@ -7,9 +7,9 @@ namespace LeagueSharp.Loader.Model.Assembly
     {
         private string _color;
         private DateTimeOffset _date;
+        private string _hash;
         private int _id;
         private string _message;
-        private string _hash;
 
         public string Color
         {

@@ -13,7 +13,7 @@ namespace LeagueSharp.Loader.Core
         {
             try
             {
-                var request = (HttpWebRequest)base.GetWebRequest(address);
+                var request = (HttpWebRequest) base.GetWebRequest(address);
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 return request;
             }

@@ -17,8 +17,30 @@ namespace LeagueSharp.Loader.Core
 
         internal static bool Update(LeagueSharpAssembly assembly)
         {
-            assembly.State = AssemblyState.Downloading;
-            assembly.State = AssemblyState.Ready;
+            if (Repository.IsValid(assembly.PathToRepository))
+            {
+                try
+                {
+                    Fetch(assembly.PathToRepository, "origin");
+                }
+                catch (Exception e)
+                {
+                    Log.WarnFormat("Download failed {0} - {1}\n{2}", assembly.Name, assembly.Location, e);
+                    return false;
+                }
+
+                try
+                {
+                    Checkout(assembly.PathToRepository, "origin/master");
+                }
+                catch (Exception e)
+                {
+                    Log.Warn(e);
+                }
+
+                return true;
+            }
+            
             return false;
         }
 
@@ -166,7 +188,7 @@ namespace LeagueSharp.Loader.Core
                                 DateTimeOffset.Now),
                             new MergeOptions {FileConflictStrategy = CheckoutFileConflictStrategy.Theirs});
 
-                        repo.Checkout("head",
+                        repo.Checkout(branch,
                             new CheckoutOptions {CheckoutModifiers = mods});
                     }
                     else

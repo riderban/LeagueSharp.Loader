@@ -16,12 +16,12 @@ namespace LeagueSharp.Loader.Model.Assembly
         private OptimizationLevel _optimization = OptimizationLevel.Release;
         private OutputKind _outputKind = OutputKind.ConsoleApplication;
         private string _pathToBinary;
+        private string _pathToRepository;
         private string _project;
         private AssemblyState _state;
         private AssemblyType _type;
         private int _version;
         private List<AssemblyVersion> _versions = new List<AssemblyVersion>();
-        private string _pathToRepository;
 
         public string Author
         {
@@ -76,6 +76,12 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => PathToBinary, ref _pathToBinary, value); }
         }
 
+        public string PathToRepository
+        {
+            get { return _pathToRepository; }
+            set { Set(() => PathToRepository, ref _pathToRepository, value); }
+        }
+
         public string Project
         {
             get { return _project; }
@@ -111,12 +117,6 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Versions, ref _versions, value); }
         }
 
-        public string PathToRepository
-        {
-            get { return _pathToRepository; }
-            set { Set(() => PathToRepository, ref _pathToRepository, value); }
-        }
-
         public override bool Equals(object obj)
         {
             var assembly = obj as LeagueSharpAssembly;
@@ -145,13 +145,13 @@ namespace LeagueSharp.Loader.Model.Assembly
 
         public void Compile()
         {
-            if (State == AssemblyState.Compiling)
-            {
-                return;
-            }
+            //if (State == AssemblyState.Compiling)
+            //{
+            //    return;
+            //}
 
-            State = AssemblyState.Compiling;
-            State = RoslynCompiler.Compile(this) ? AssemblyState.Ready : AssemblyState.CompilingError;
+            //State = AssemblyState.Compiling;
+            //State = RoslynCompiler.Compile(this) ? AssemblyState.Ready : AssemblyState.CompilingError;
         }
     }
 }

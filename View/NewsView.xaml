@@ -8,17 +8,24 @@
              DataContext="{Binding Database, Source={StaticResource Locator}}" d:DesignWidth="636.61"
              d:DesignHeight="388.379">
 
-    <Grid >
-        <TextBox x:Name="HighlightColor" HorizontalAlignment="Left" Height="23" Margin="162,50,0,0" TextWrapping="Wrap" Text="{Binding Mode=OneWay, Source={StaticResource HighlightColor}}" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="AccentColor" HorizontalAlignment="Left" Height="23" Margin="162,81,0,0" TextWrapping="Wrap" Text="{Binding Mode=OneWay, Source={StaticResource AccentColor}}" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="AccentColor2" HorizontalAlignment="Left" Height="23" Margin="162,112,0,0" TextWrapping="Wrap" Text="{Binding Mode=OneWay, Source={StaticResource AccentColor2}}" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="AccentColor3" HorizontalAlignment="Left" Height="23" Margin="162,143,0,0" TextWrapping="Wrap" Text="{Binding Mode=OneWay, Source={StaticResource AccentColor3}}" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="AccentColor4" HorizontalAlignment="Left" Height="23" Margin="162,174,0,0" TextWrapping="Wrap" Text="{Binding Mode=OneWay, Source={StaticResource AccentColor4}}" VerticalAlignment="Top" Width="120"/>
-        <Label Content="HighlightColor" HorizontalAlignment="Left" Margin="49,50,0,0" VerticalAlignment="Top"/>
-        <Label Content="AccentColor" HorizontalAlignment="Left" Margin="49,82,0,0" VerticalAlignment="Top"/>
-        <Label Content="AccentColor2" HorizontalAlignment="Left" Margin="49,113,0,0" VerticalAlignment="Top"/>
-        <Label Content="AccentColor3" HorizontalAlignment="Left" Margin="49,144,0,0" VerticalAlignment="Top"/>
-        <Label Content="AccentColor4" HorizontalAlignment="Left" Margin="49,174,0,0" VerticalAlignment="Top"/>
-        <Button Content="Update" HorizontalAlignment="Left" Margin="197,205,0,0" VerticalAlignment="Top" Width="85" Click="Button_Click"/>
+    <Grid>
+        <TextBox x:Name="HighlightColor" HorizontalAlignment="Left" Height="23" Margin="162,50,0,0" TextWrapping="Wrap"
+                 Text="{Binding Mode=OneWay, Source={StaticResource HighlightColor}}" VerticalAlignment="Top"
+                 Width="120" />
+        <TextBox x:Name="AccentColor" HorizontalAlignment="Left" Height="23" Margin="162,81,0,0" TextWrapping="Wrap"
+                 Text="{Binding Mode=OneWay, Source={StaticResource AccentColor}}" VerticalAlignment="Top" Width="120" />
+        <TextBox x:Name="AccentColor2" HorizontalAlignment="Left" Height="23" Margin="162,112,0,0" TextWrapping="Wrap"
+                 Text="{Binding Mode=OneWay, Source={StaticResource AccentColor2}}" VerticalAlignment="Top" Width="120" />
+        <TextBox x:Name="AccentColor3" HorizontalAlignment="Left" Height="23" Margin="162,143,0,0" TextWrapping="Wrap"
+                 Text="{Binding Mode=OneWay, Source={StaticResource AccentColor3}}" VerticalAlignment="Top" Width="120" />
+        <TextBox x:Name="AccentColor4" HorizontalAlignment="Left" Height="23" Margin="162,174,0,0" TextWrapping="Wrap"
+                 Text="{Binding Mode=OneWay, Source={StaticResource AccentColor4}}" VerticalAlignment="Top" Width="120" />
+        <Label Content="HighlightColor" HorizontalAlignment="Left" Margin="49,50,0,0" VerticalAlignment="Top" />
+        <Label Content="AccentColor" HorizontalAlignment="Left" Margin="49,82,0,0" VerticalAlignment="Top" />
+        <Label Content="AccentColor2" HorizontalAlignment="Left" Margin="49,113,0,0" VerticalAlignment="Top" />
+        <Label Content="AccentColor3" HorizontalAlignment="Left" Margin="49,144,0,0" VerticalAlignment="Top" />
+        <Label Content="AccentColor4" HorizontalAlignment="Left" Margin="49,174,0,0" VerticalAlignment="Top" />
+        <Button Content="Update" HorizontalAlignment="Left" Margin="197,205,0,0" VerticalAlignment="Top" Width="85"
+                Click="Button_Click" />
     </Grid>
 </UserControl>

@@ -209,6 +209,7 @@
     <Compile Include="Model\Assembly\AssemblyState.cs" />
     <Compile Include="Model\Assembly\AssemblyType.cs" />
     <Compile Include="Model\Assembly\AssemblyVersion.cs" />
+    <Compile Include="Model\Converters\ArrayToStringConverter.cs" />
     <Compile Include="Model\Log\Logs.cs" />
     <Compile Include="Model\Service\Github\GithubRepositoryService.cs" />
     <Compile Include="Model\Service\Github\IGithubRepositoryService.cs" />
@@ -443,6 +444,12 @@
     <Resource Include="Resources\icon_16x16.ico" />
     <Resource Include="Resources\icon_64x64.ico" />
     <SplashScreen Include="Resources\splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\spurdo_sparde_vector_by_kevinino-d6ehtjk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

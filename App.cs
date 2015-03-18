@@ -89,7 +89,7 @@ namespace LeagueSharp.Loader
                     File.Copy(Directories.ConfigFilePath, Directories.ConfigFilePath + ".bak", true);
                     File.SetAttributes(Directories.ConfigFilePath + ".bak", FileAttributes.Hidden);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.Warn(ex);
                 }

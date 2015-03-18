@@ -95,7 +95,8 @@
                 HorizontalAlignment="Right" Width="110" />
 
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Margin="10,41,10,10">
-            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Assemblies}" CanUserAddRows="False" IsReadOnly="True">
+            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Assemblies}" CanUserAddRows="False"
+                      IsReadOnly="True">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource MenuUpdateAndCompile}">

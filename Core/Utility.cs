@@ -305,7 +305,8 @@ namespace LeagueSharp.Loader.Core
             return resource != null ? resource.ToString() : "KEY:" + key;
         }
 
-        public static void CopyDirectory(string sourceDirName, string destDirName, bool copySubDirs = false, bool overrideFiles = false)
+        public static void CopyDirectory(string sourceDirName, string destDirName, bool copySubDirs = false,
+            bool overrideFiles = false)
         {
             try
             {
@@ -316,8 +317,8 @@ namespace LeagueSharp.Loader.Core
                 if (!dir.Exists)
                 {
                     throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
+                        "Source directory does not exist or could not be found: "
+                        + sourceDirName);
                 }
                 // If the destination directory doesn't exist, create it.
                 if (!Directory.Exists(destDirName))

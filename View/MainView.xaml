@@ -8,13 +8,12 @@
                    mc:Ignorable="d ignore"
                    Height="700"
                    Width="1000"
-                   Title="LeagueSharp"
                    SaveWindowPosition="True"
                    LeftWindowCommandsOverlayBehavior="Always"
                    RightWindowCommandsOverlayBehavior="Always"
                    WindowButtonCommandsOverlayBehavior="Always"
                    GlowBrush="{DynamicResource AccentColorBrush}"
-                   DataContext="{Binding Main, Source={StaticResource Locator}}">
+                   DataContext="{Binding Main, Source={StaticResource Locator}}" Icon="/LeagueSharp.Loader;component/Resources/icon.png" ResizeMode="CanResizeWithGrip" Title="LeagueSharp" TitlebarHeight="35">
 
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
@@ -48,8 +47,8 @@
             <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
                     CommandParameter="{Binding NewsView}">
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="14"
-                               Height="16"
+                    <Rectangle Width="16"
+                               Height="20"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
                         Path=Foreground}">
                         <Rectangle.OpacityMask>
@@ -65,8 +64,8 @@
             <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
                     CommandParameter="{Binding DatabaseView}">
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="14"
-                               Height="14"
+                    <Rectangle Width="16"
+                               Height="20"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
                             Path=Foreground}">
                         <Rectangle.OpacityMask>
@@ -84,8 +83,8 @@
             <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
                     CommandParameter="{Binding AssembliesView}">
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="18"
-                               Height="15"
+                    <Rectangle Width="20"
+                               Height="20"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
                             Path=Foreground}">
                         <Rectangle.OpacityMask>
@@ -100,28 +99,11 @@
                 </StackPanel>
             </Button>
 
-            <Button Cursor="Hand" Command="{Binding UpdateCommand, Mode=OneWay}">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="18"
-                               Height="14"
-                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, 
-                        Path=Foreground}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill"
-                                         Visual="{StaticResource appbar_social_twitter_retweet}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                    <TextBlock Margin="4 0 0 0"
-                               VerticalAlignment="Center"
-                               Text="Update" />
-                </StackPanel>
-            </Button>
-
             <Button Cursor="Hand" Command="{Binding ChangeViewCommand, Mode=OneWay}"
                     CommandParameter="{Binding SettingsView}">
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="14"
-                               Height="14"
+                    <Rectangle Width="18"
+                               Height="20"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, 
                         Path=Foreground}">
                         <Rectangle.OpacityMask>
@@ -132,6 +114,23 @@
                     <TextBlock Margin="4 0 0 0"
                                VerticalAlignment="Center"
                                Text="Settings" />
+                </StackPanel>
+            </Button>
+
+            <Button Cursor="Hand" Command="{Binding UpdateCommand, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="25"
+                               Height="20"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, 
+                        Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{StaticResource appbar_social_twitter_retweet}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Update" />
                 </StackPanel>
             </Button>
 
@@ -148,7 +147,7 @@
                      Minimum="{Binding Min, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      IsHitTestVisible="False" />
         <ContentControl Content="{Binding CurrentView}" />
-        <Border Margin="350,-70,350,0" Height="40" VerticalAlignment="Top"
+        <Border Margin="350,-80,350,0" Height="40" VerticalAlignment="Top"
                 BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
                 Background="{DynamicResource MenuBackgroundBrush}">
             <TextBox Margin="5" />

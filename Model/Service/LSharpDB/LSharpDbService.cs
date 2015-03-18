@@ -36,24 +36,12 @@ namespace LeagueSharp.Loader.Model.Service.LSharpDB
                 {
                     using (var client = new GZipWebClient())
                     {
-                        var data =
-                            JsonConvert.DeserializeObject<List<LSharpDbAssemblyRepository>>(client.DownloadString(Url));
-                        var champions = data.SelectMany(c => c.Champions).Distinct().OrderBy(c => c);
+                        var data = JsonConvert.DeserializeObject<List<LSharpDbAssembly>>(client.DownloadString(Url));
 
                         _cache.Clear();
-                        foreach (var champion in champions)
+                        foreach (var assembly in data)
                         {
-                            var champ = champion;
-                            foreach (var assembly in data.Where(a => a.Champions.Contains(champ)))
-                            {
-                                _cache.Add(new LSharpDbAssembly
-                                {
-                                    Name = assembly.Name,
-                                    Champion = champ,
-                                    Count = assembly.Count,
-                                    GithubFolder = assembly.GithubFolder
-                                });
-                            }
+                            _cache.Add(assembly);
                         }
 
                         callback(new ObservableCollection<LSharpDbAssembly>(_cache));
