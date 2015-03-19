@@ -192,11 +192,7 @@
     <Compile Include="Core\AppUpdater.cs" />
     <Compile Include="Core\Auth.cs" />
     <Compile Include="Core\Compiler\NuGetResolver.cs" />
-    <Compile Include="Core\Compiler\Rewriter\GameObjectSyntaxRewriter.cs" />
-    <Compile Include="Core\Compiler\Rewriter\WebRequestSyntaxRewriter.cs" />
     <Compile Include="Core\Compiler\RoslynCompiler.cs" />
-    <Compile Include="Core\Compiler\Walker\GameObjectSyntaxWalker.cs" />
-    <Compile Include="Core\Compiler\Walker\WebRequestSyntaxWalker.cs" />
     <Compile Include="Core\GitUpdater.cs" />
     <Compile Include="Core\Injector.cs" />
     <Compile Include="Core\KeyboardHook.cs" />
@@ -213,20 +209,24 @@
     <Compile Include="Model\Converters\ArrayToStringConverter.cs" />
     <Compile Include="Model\Converters\IntToProfileConverter.cs" />
     <Compile Include="Model\Log\Logs.cs" />
+    <Compile Include="Model\Messages\BalloonTipCoreUpdateMessage.cs" />
+    <Compile Include="Model\Messages\BalloonTipLoaderUpdateMessage.cs" />
     <Compile Include="Model\Service\Github\GithubRepositoryService.cs" />
     <Compile Include="Model\Service\Github\IGithubRepositoryService.cs" />
-    <Compile Include="Model\Service\Git\ILeagueSharpAssemblyService.cs" />
-    <Compile Include="Model\Service\LeagueSharp\Core\CoreUpdateResponse.cs" />
+    <Compile Include="Model\Service\Git\IGitVersionService.cs" />
+    <Compile Include="Model\Service\LeagueSharp\UpdateResponse.cs" />
     <Compile Include="Model\Service\LeagueSharp\Core\CoreUpdateService.cs" />
-    <Compile Include="Model\Service\LeagueSharp\Core\CoreUpdateState.cs" />
     <Compile Include="Model\Service\LeagueSharp\Core\ICoreUpdateService.cs" />
+    <Compile Include="Model\Service\LeagueSharp\Loader\LoaderUpdateService.cs" />
+    <Compile Include="Model\Service\LeagueSharp\UpdateState.cs" />
+    <Compile Include="Model\Service\LeagueSharp\Loader\ILoaderUpdateService.cs" />
     <Compile Include="Model\Service\LeagueSharp\UpdateInfo.cs" />
     <Compile Include="Model\Service\LSharpDB\ILSharpDbService.cs" />
     <Compile Include="Model\Service\LSharpDB\LSharpDbAssembly.cs" />
     <Compile Include="Model\Service\LSharpDB\LSharpDbService.cs" />
     <Compile Include="Model\Settings\Config.cs" />
     <Compile Include="Model\Log\LogItem.cs" />
-    <Compile Include="Model\Service\Git\LeagueSharpAssemblyService.cs" />
+    <Compile Include="Model\Service\Git\GitVersionService.cs" />
     <Compile Include="Model\Assembly\LeagueSharpAssembly.cs" />
     <Compile Include="Model\Log\UserLog.cs" />
     <Compile Include="Model\Settings\ConfigSettings.cs" />
@@ -455,9 +455,7 @@
   <ItemGroup>
     <Resource Include="Resources\icon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\Service\LeagueSharp\Loader\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

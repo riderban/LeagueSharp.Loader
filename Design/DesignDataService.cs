@@ -7,7 +7,7 @@ using LeagueSharp.Loader.Model.Service.LSharpDB;
 
 namespace LeagueSharp.Loader.Design
 {
-    internal class DesignServiceService : ILSharpDbService, ILeagueSharpAssemblyService
+    internal class DesignServiceService : ILSharpDbService, IGitVersionService
     {
         public void GetAssemblyData(Action<ObservableCollection<LeagueSharpAssembly>> callback, bool forceUpdate = false)
         {

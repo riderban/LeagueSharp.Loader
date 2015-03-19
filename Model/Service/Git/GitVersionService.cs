@@ -11,7 +11,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace LeagueSharp.Loader.Model.Service.Git
 {
-    internal class LeagueSharpAssemblyService : ILeagueSharpAssemblyService
+    internal class GitVersionService : IGitVersionService
     {
         private readonly List<LeagueSharpAssembly> _cache = new List<LeagueSharpAssembly>();
 

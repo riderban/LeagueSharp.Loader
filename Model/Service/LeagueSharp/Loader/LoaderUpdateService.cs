@@ -12,32 +12,30 @@ using LeagueSharp.Loader.Model.Messages;
 using LeagueSharp.Loader.Model.Settings;
 using Newtonsoft.Json;
 
-namespace LeagueSharp.Loader.Model.Service.LeagueSharp.Core
+namespace LeagueSharp.Loader.Model.Service.LeagueSharp.Loader
 {
-    internal class CoreUpdateService : ICoreUpdateService
+    internal class LoaderUpdateService : ILoaderUpdateService
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static readonly List<string> WhiteList = new List<string>
         {
-            "https://github.com/joduskame/"
+            "https://github.com/joduskame/",
+            "https://github.com/LeagueSharp/"
         };
 
-        private static string UpdateZip
+        private static string UpdateExe
         {
-            get { return Path.Combine(Directories.CoreDirectory, "update.zip"); }
+            get { return Path.Combine(Directories.CurrentDirectory, "LeagueSharp-update.exe"); }
         }
 
         private static string Url
         {
-            get { return "http://api.joduska.me/public/deploy/kernel/"; }
+            get { return "http://api.joduska.me/public/deploy/loader/version"; }
         }
 
         public void Update(Action<UpdateResponse> callback, UpdateInfo info = null)
         {
-            var leagueMd5 = Utility.Md5Checksum(Config.Instance.LeagueOfLegendsExePath);
-            var coreMd5 = Utility.Md5Checksum(Directories.CoreFilePath);
-
             Task.Factory.StartNew(() =>
             {
                 try
@@ -46,20 +44,23 @@ namespace LeagueSharp.Loader.Model.Service.LeagueSharp.Core
                     {
                         if (info == null)
                         {
-                            info = JsonConvert.DeserializeObject<UpdateInfo>(client.DownloadString(Url + leagueMd5));
+                            info = JsonConvert.DeserializeObject<UpdateInfo>(client.DownloadString(Url));
                         }
 
-                        if (info.Version != coreMd5 && WhiteList.Any(s => info.Url.StartsWith(s)))
+                        var loaderVersion = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+                        var updateVersion = Version.Parse(info.Version);
+
+                        if (updateVersion > loaderVersion && WhiteList.Any(s => info.Url.StartsWith(s)))
                         {
-                            Log.InfoFormat("Update Core from {0} to {1}", coreMd5, info.Version);
-                            Messenger.Default.Send(new BalloonTipCoreUpdateMessage());
+                            Log.InfoFormat("Update Loader from {0} to {1}", loaderVersion, updateVersion);
+                            Messenger.Default.Send(new BalloonTipLoaderUpdateMessage());
                             // TODO: implement balloontip service
 
                             try
                             {
-                                client.DownloadFile(info.Url, UpdateZip);
+                                client.DownloadFile(info.Url, UpdateExe);
 
-                                using (var archive = ZipFile.OpenRead(UpdateZip))
+                                using (var archive = ZipFile.OpenRead(UpdateExe))
                                 {
                                     foreach (var entry in archive.Entries)
                                     {
@@ -73,14 +74,14 @@ namespace LeagueSharp.Loader.Model.Service.LeagueSharp.Core
                             }
                             catch (Exception e)
                             {
-                                Log.Warn("Core Download failed", e);
+                                Log.Warn("Loader Download failed", e);
                                 callback(new UpdateResponse {State = UpdateState.DownloadError});
                             }
                             finally
                             {
-                                if (File.Exists(UpdateZip))
+                                if (File.Exists(UpdateExe))
                                 {
-                                    File.Delete(UpdateZip);
+                                    File.Delete(UpdateExe);
                                 }
                             }
                         }
@@ -96,39 +97,22 @@ namespace LeagueSharp.Loader.Model.Service.LeagueSharp.Core
 
         public void Check(Action<UpdateResponse> callback)
         {
-            var leagueMd5 = Utility.Md5Checksum(Config.Instance.LeagueOfLegendsExePath);
-            var coreMd5 = Utility.Md5Checksum(Directories.CoreFilePath);
-
-            if (Config.Instance.DeveloperSettings.IgnoreUpdate)
-            {
-                Log.Info("Ignore Update");
-                callback(new UpdateResponse {State = UpdateState.UpToDate});
-                return;
-            }
-
             Task.Factory.StartNew(() =>
             {
                 try
                 {
                     using (var client = new GZipWebClient {Timeout = 4000})
                     {
-                        var info = JsonConvert.DeserializeObject<UpdateInfo>(client.DownloadString(Url + leagueMd5));
+                        var info = JsonConvert.DeserializeObject<UpdateInfo>(client.DownloadString(Url));
+                        var loaderVersion = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+                        var updateVersion = Version.Parse(info.Version);
 
-                        if (info.Version == "0")
+                        if (updateVersion > loaderVersion && WhiteList.Any(s => info.Url.StartsWith(s)))
                         {
-                            Log.Info("League Version not Supported " + leagueMd5);
-                            callback(new UpdateResponse {State = UpdateState.VersionNotSupported});
-                            return;
-                        }
-
-                        if (info.Version != coreMd5 && WhiteList.Any(s => info.Url.StartsWith(s)))
-                        {
-                            Log.Info("Update available for " + leagueMd5);
                             callback(new UpdateResponse {State = UpdateState.UpdateAvailable, Info = info});
                             return;
                         }
 
-                        Log.Info("League Version is up to date " + leagueMd5);
                         callback(new UpdateResponse {State = UpdateState.UpToDate});
                     }
                 }

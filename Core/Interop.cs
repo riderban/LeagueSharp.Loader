@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace LeagueSharp.Loader.Core
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal static class Interop
     {
         [DllImport("user32.dll")]
@@ -45,8 +47,23 @@ namespace LeagueSharp.Loader.Core
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         internal static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
 
+        internal static string GetWindowText(IntPtr hWnd)
+        {
+            var size = GetWindowTextLength(hWnd);
+            if (size++ > 0)
+            {
+                var builder = new StringBuilder(size);
+                GetWindowText(hWnd, builder, builder.Capacity);
+                return builder.ToString();
+            }
+            return String.Empty;
+        }
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         internal static extern int GetWindowTextLength(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
         internal static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);

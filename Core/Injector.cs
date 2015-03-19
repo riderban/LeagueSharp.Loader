@@ -1,175 +1,238 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using log4net;
 using LeagueSharp.Loader.Model.Assembly;
 using LeagueSharp.Loader.Model.Settings;
 
 namespace LeagueSharp.Loader.Core
 {
-    internal class Injector
+    internal class LeagueInstance
     {
-        public delegate void OnInjectDelegate(IntPtr hwnd);
-
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static InjectDLLDelegate injectDLL;
 
-        public static bool IsInjected
+        public int Id
         {
-            get { return LeagueProcess.Any(IsProcessInjected); }
+            get { return Process.Id; }
         }
 
-        public static List<IntPtr> LeagueInstances
+        public bool IsInjected
         {
-            get { return FindWindows("League of Legends (TM) Client"); }
-        }
-
-        private static List<Process> LeagueProcess
-        {
-            get { return Process.GetProcessesByName("League of Legends").ToList(); }
-        }
-
-        public static event OnInjectDelegate OnInject;
-
-        private static bool IsProcessInjected(Process leagueProcess)
-        {
-            if (leagueProcess != null)
+            get
             {
+                if (Process == null || Process.HasExited)
+                {
+                    return false;
+                }
+
                 try
                 {
-                    return
-                        leagueProcess.Modules.Cast<ProcessModule>()
-                            .Any(
-                                processModule => processModule.ModuleName == Path.GetFileName(Directories.CoreFilePath));
+                    return Process.Modules.Cast<ProcessModule>()
+                        .Any(m => m.ModuleName == Path.GetFileName(Directories.CoreFilePath));
                 }
                 catch (Exception e)
                 {
                     Log.Warn(e);
+                    return false;
                 }
             }
+        }
+
+        public bool IsLoggedIn { get; set; }
+        public IntPtr MainWindowHandle { get; set; }
+        public Process Process { get; set; }
+
+        public LeagueInstance(Process process)
+        {
+            Process = process;
+            Process.Exited += Process_Exited;
+        }
+
+        public bool Inject()
+        {
+            if (IsInjected || !Interop.GetWindowText(MainWindowHandle).Contains("League of Legends (TM) Client"))
+            {
+                return false;
+            }
+
+            if (Injector.InjectDLL == null)
+            {
+                Injector.Bootstrap();
+            }
+
+            if (Injector.InjectDLL != null)
+            {
+                Injector.InjectDLL(Id, Directories.CoreFilePath);
+                Injector.RaiseOnInject(this);
+                return true;
+            }
+
             return false;
         }
 
-        private static string GetWindowText(IntPtr hWnd)
+        public void LoadAssembly(LeagueSharpAssembly assembly)
         {
-            var size = Interop.GetWindowTextLength(hWnd);
-            if (size++ > 0)
+            if (!IsInjected)
             {
-                var builder = new StringBuilder(size);
-                Interop.GetWindowText(hWnd, builder, builder.Capacity);
-                return builder.ToString();
+                return;
             }
-            return String.Empty;
+
+            Injector.LoadAssembly(MainWindowHandle, assembly);
         }
 
-        private static List<IntPtr> FindWindows(string title)
+        public void UnloadAll()
         {
-            var windows = new List<IntPtr>();
-            Interop.EnumWindows(delegate(IntPtr wnd, IntPtr param)
+            if (!IsInjected)
             {
-                if (GetWindowText(wnd).Contains(title))
-                {
-                    windows.Add(wnd);
-                }
-                return true;
-            }, IntPtr.Zero);
-            return windows;
+                return;
+            }
+
+            Injector.UnloadAll(MainWindowHandle);
         }
 
-        private static void ResolveInjectDll()
+        public void Login(string user, string password)
+        {
+            if (!IsInjected)
+            {
+                return;
+            }
+
+            if (!IsLoggedIn)
+            {
+                Injector.SendLoginCredentials(MainWindowHandle, user, password);
+                IsLoggedIn = true;
+            }
+        }
+
+        public void SendConfig()
+        {
+            Injector.SendConfig(MainWindowHandle);
+        }
+
+        private void Process_Exited(object sender, EventArgs e)
+        {
+            Process = null;
+        }
+    }
+
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    internal class Injector
+    {
+        public delegate void OnInjectDelegate(LeagueInstance instance);
+
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public static InjectDLLDelegate InjectDLL;
+        public static List<LeagueInstance> ActiveInstances = new List<LeagueInstance>();
+
+        private static List<Process> LeagueProcessList
+        {
+            get { return Process.GetProcessesByName("League of Legends").ToList(); }
+        }
+
+        static Injector()
+        {
+            OnInject += instance => Task.Factory.StartNew(
+                () =>
+                {
+                    instance.Login(Config.Instance.Username, Config.Instance.Password);
+                    instance.SendConfig();
+
+                    foreach (var assembly in Config.Instance.SelectedProfile.InstalledAssemblies.Where(a => a.Inject))
+                    {
+                        instance.LoadAssembly(assembly);
+                    }
+                });
+        }
+
+        public static event OnInjectDelegate OnInject;
+
+        public static void RaiseOnInject(LeagueInstance instance)
+        {
+            if (OnInject != null)
+            {
+                OnInject(instance);
+            }
+        }
+
+        public static void PulseTask()
+        {
+            Thread.CurrentThread.IsBackground = true;
+
+            while (true)
+            {
+                if (Config.Instance.Install)
+                {
+                }
+
+                Thread.Sleep(3000);
+            }
+        }
+
+        public static void Bootstrap()
         {
             var hModule = Interop.LoadLibrary(Directories.BootstrapFilePath);
+
             if (!(hModule != IntPtr.Zero))
             {
                 return;
             }
+
             var procAddress = Interop.GetProcAddress(hModule, "_InjectDLL@8");
+
             if (!(procAddress != IntPtr.Zero))
             {
                 return;
             }
-            injectDLL =
+
+            InjectDLL =
                 Marshal.GetDelegateForFunctionPointer(procAddress, typeof (InjectDLLDelegate)) as InjectDLLDelegate;
-            Log.Info("Core injected " + hModule);
+            Log.InfoFormat("{0} injected at {1}", Path.GetFileName(Directories.BootstrapFilePath), hModule);
         }
 
-        public static void Pulse()
-        {
-            if (LeagueProcess == null)
-            {
-                return;
-            }
-
-            //Don't inject untill we checked that there are not updates for the loader.
-            if (AppUpdater.Updating || !AppUpdater.CheckedForUpdates)
-            {
-                return;
-            }
-
-            foreach (var instance in LeagueProcess)
-            {
-                try
-                {
-                    Config.Instance.LeagueOfLegendsExePath = instance.Modules[0].FileName;
-                    if (!IsProcessInjected(instance) && AppUpdater.UpdateCore(instance.Modules[0].FileName, true).Item1)
-                    {
-                        if (injectDLL == null)
-                        {
-                            ResolveInjectDll();
-                        }
-                        if (injectDLL != null &&
-                            GetWindowText(instance.MainWindowHandle).Contains("League of Legends (TM) Client"))
-                        {
-                            injectDLL(instance.Id, Directories.CoreFilePath);
-                            if (OnInject != null)
-                            {
-                                OnInject(instance.MainWindowHandle);
-                            }
-                        }
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-        }
-
-        public static void LoadAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
+        public static void LoadAssembly(IntPtr hWnd, LeagueSharpAssembly assembly)
         {
             if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
                 assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("load \"{0}\"", assembly.PathToBinary);
-                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomainManager, str);
+                Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
                 Log.InfoFormat("load \"{0}\"", assembly.PathToBinary);
             }
         }
 
-        public static void UnloadAssembly(IntPtr wnd, LeagueSharpAssembly assembly)
+        public static void UnloadAll(IntPtr hWnd)
+        {
+            const string str = "unload \"all\"";
+            Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
+            Log.Info(str);
+        }
+
+        public static void UnloadAssembly(IntPtr hWnd, LeagueSharpAssembly assembly)
         {
             if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
                 assembly.State == AssemblyState.Ready)
             {
                 var str = string.Format("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
-                Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.AppDomainManager, str);
+                Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
                 Log.InfoFormat("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
             }
         }
 
-        public static void SendLoginCredentials(IntPtr wnd, string user, string passwordHash)
+        public static void SendLoginCredentials(IntPtr hWnd, string user, string password)
         {
-            var str = string.Format("LOGIN|{0}|{1}", user, passwordHash);
-            Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.Core, str);
+            var str = string.Format("LOGIN|{0}|{1}", user, password);
+            Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.Core, str);
             Log.InfoFormat("LOGIN|{0}", user);
         }
 
-        public static void SendConfig(IntPtr wnd)
+        public static void SendConfig(IntPtr hWnd)
         {
             var str = string.Format(
                 "{0}{1}{2}{3}", (Config.Instance.Settings.GameSettings[0].Value == "True") ? "1" : "0",
@@ -177,11 +240,11 @@ namespace LeagueSharp.Loader.Core
                 (Config.Instance.Settings.GameSettings[1].Value == "True") ? "1" : "0",
                 (Config.Instance.Settings.GameSettings[2].Value == "True") ? "2" : "0");
 
-            Interop.SendWindowMessage(wnd, Interop.WindowMessageTarget.Core, str);
+            Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.Core, str);
             Log.InfoFormat("CONFIG|{0}", str);
         }
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        private delegate bool InjectDLLDelegate(int processId, string path);
+        internal delegate bool InjectDLLDelegate(int processId, string path);
     }
 }

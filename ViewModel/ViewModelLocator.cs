@@ -42,12 +42,12 @@ namespace LeagueSharp.Loader.ViewModel
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
-                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, DesignServiceService>();
+                SimpleIoc.Default.Register<IGitVersionService, DesignServiceService>();
                 SimpleIoc.Default.Register<ILSharpDbService, DesignServiceService>();
             }
             else
             {
-                SimpleIoc.Default.Register<ILeagueSharpAssemblyService, LeagueSharpAssemblyService>();
+                SimpleIoc.Default.Register<IGitVersionService, GitVersionService>();
                 SimpleIoc.Default.Register<ILSharpDbService, LSharpDbService>();
                 SimpleIoc.Default.Register<IGithubRepositoryService, GithubRepositoryService>();
             }

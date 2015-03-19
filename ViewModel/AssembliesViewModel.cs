@@ -23,7 +23,7 @@ namespace LeagueSharp.Loader.ViewModel
             get { return Config.Instance; }
         }
 
-        public AssembliesViewModel(ILeagueSharpAssemblyService dataService)
+        public AssembliesViewModel(IGitVersionService dataService)
         {
             dataService.GetAssemblyData(collection =>
             {
