@@ -82,11 +82,6 @@ namespace LeagueSharp.Loader.Core
 
         public void LoadAssembly(LeagueSharpAssembly assembly)
         {
-            if (!IsInjected)
-            {
-                return;
-            }
-
             lock (Assemblies)
             {
                 if (!Assemblies.Contains(assembly))
@@ -102,11 +97,6 @@ namespace LeagueSharp.Loader.Core
 
         public void UnloadAssembly(LeagueSharpAssembly assembly)
         {
-            if (!IsInjected)
-            {
-                return;
-            }
-
             lock (Assemblies)
             {
                 if (Assemblies.Contains(assembly))
@@ -120,13 +110,33 @@ namespace LeagueSharp.Loader.Core
             Injector.UnloadAssembly(MainWindowHandle, assembly);
         }
 
-        public void UnloadAll()
+        public void ReloadAssemblies(bool update = false)
         {
-            if (!IsInjected)
+            List<LeagueSharpAssembly> loadedAssemblies;
+
+            if (update)
             {
-                return;
+                loadedAssemblies =
+                    Config.Instance.SelectedProfile.InstalledAssemblies.Where(
+                        a => a.Inject || a.Type == AssemblyType.Library).ToList();
+            }
+            else
+            {
+                lock (Assemblies)
+                {
+                    loadedAssemblies = Assemblies.ToList();
+                }
             }
 
+            UnloadAll();
+            foreach (var assembly in loadedAssemblies)
+            {
+                LoadAssembly(assembly);
+            }
+        }
+
+        public void UnloadAll()
+        {
             lock (Assemblies)
             {
                 Assemblies.Clear();
@@ -137,11 +147,6 @@ namespace LeagueSharp.Loader.Core
 
         public void Login(string user, string password)
         {
-            if (!IsInjected)
-            {
-                return;
-            }
-
             if (!IsLoggedIn)
             {
                 Injector.SendLoginCredentials(MainWindowHandle, user, password);
@@ -151,11 +156,6 @@ namespace LeagueSharp.Loader.Core
 
         public void SendConfig()
         {
-            if (!IsInjected)
-            {
-                return;
-            }
-
             Injector.SendConfig(MainWindowHandle);
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -63,7 +62,7 @@ namespace LeagueSharp.Loader
 
             // HACK: testing
             Task.Factory.StartNew(Injector.PulseTask);
-            Config.Instance.Username = "h3h3";
+            Config.Instance.Username = "JODUSKA.ME XD";
             foreach (var assembly in Config.Instance.SelectedProfile
                 .InstalledAssemblies.Where(a => a.Author == "LeagueSharp"))
             {
