@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using LeagueSharp.Loader.Design;
-using LeagueSharp.Loader.Model.Service;
+using LeagueSharp.Loader.Model.Service.Git;
 using LeagueSharp.Loader.Model.Service.Github;
 using LeagueSharp.Loader.Model.Service.LSharpDB;
 using LeagueSharp.Loader.ViewModel.Settings;

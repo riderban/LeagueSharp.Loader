@@ -215,16 +215,22 @@
     <Compile Include="Model\Log\Logs.cs" />
     <Compile Include="Model\Service\Github\GithubRepositoryService.cs" />
     <Compile Include="Model\Service\Github\IGithubRepositoryService.cs" />
-    <Compile Include="Model\Service\ILeagueSharpAssemblyService.cs" />
+    <Compile Include="Model\Service\Git\ILeagueSharpAssemblyService.cs" />
+    <Compile Include="Model\Service\LeagueSharp\Core\CoreUpdateResponse.cs" />
+    <Compile Include="Model\Service\LeagueSharp\Core\CoreUpdateService.cs" />
+    <Compile Include="Model\Service\LeagueSharp\Core\CoreUpdateState.cs" />
+    <Compile Include="Model\Service\LeagueSharp\Core\ICoreUpdateService.cs" />
+    <Compile Include="Model\Service\LeagueSharp\UpdateInfo.cs" />
     <Compile Include="Model\Service\LSharpDB\ILSharpDbService.cs" />
     <Compile Include="Model\Service\LSharpDB\LSharpDbAssembly.cs" />
     <Compile Include="Model\Service\LSharpDB\LSharpDbService.cs" />
     <Compile Include="Model\Settings\Config.cs" />
     <Compile Include="Model\Log\LogItem.cs" />
-    <Compile Include="Model\Service\LeagueSharpAssemblyService.cs" />
+    <Compile Include="Model\Service\Git\LeagueSharpAssemblyService.cs" />
     <Compile Include="Model\Assembly\LeagueSharpAssembly.cs" />
     <Compile Include="Model\Log\UserLog.cs" />
     <Compile Include="Model\Settings\ConfigSettings.cs" />
+    <Compile Include="Model\Settings\DeveloperSettings.cs" />
     <Compile Include="Model\Settings\Directories.cs" />
     <Compile Include="Model\Settings\GameSettings.cs" />
     <Compile Include="Model\Settings\HotkeyEntry.cs" />
@@ -448,6 +454,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\Service\LeagueSharp\Loader\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

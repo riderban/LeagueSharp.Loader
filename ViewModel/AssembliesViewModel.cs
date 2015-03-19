@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using GalaSoft.MvvmLight;
 using LeagueSharp.Loader.Model.Assembly;
-using LeagueSharp.Loader.Model.Service;
+using LeagueSharp.Loader.Model.Service.Git;
 using LeagueSharp.Loader.Model.Settings;
 
 namespace LeagueSharp.Loader.ViewModel

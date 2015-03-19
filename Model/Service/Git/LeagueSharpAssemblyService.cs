@@ -9,7 +9,7 @@ using LeagueSharp.Loader.ViewModel;
 using LibGit2Sharp;
 using Microsoft.Practices.ServiceLocation;
 
-namespace LeagueSharp.Loader.Model.Service
+namespace LeagueSharp.Loader.Model.Service.Git
 {
     internal class LeagueSharpAssemblyService : ILeagueSharpAssemblyService
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 
 namespace LeagueSharp.Loader.Model.Converters
@@ -13,7 +14,7 @@ namespace LeagueSharp.Loader.Model.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new string[0];
+            return value.ToString().Split(',').Select(s => s.Trim()).ToArray();
         }
     }
 }

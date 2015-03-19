@@ -19,6 +19,7 @@ namespace LeagueSharp.Loader.Model.Settings
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         [JsonIgnore] public static Config Instance;
         private string _dataDirectory;
+        private DeveloperSettings _devSettings;
         private bool _firstRun = true;
         private Hotkeys _hotkeys;
         private bool _install = true;
@@ -36,6 +37,12 @@ namespace LeagueSharp.Loader.Model.Settings
         {
             get { return _dataDirectory; }
             set { Set(() => DataDirectory, ref _dataDirectory, value); }
+        }
+
+        public DeveloperSettings DeveloperSettings
+        {
+            get { return _devSettings; }
+            set { Set(() => DeveloperSettings, ref _devSettings, value); }
         }
 
         public bool FirstRun

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization.Json;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using log4net;
@@ -17,8 +15,6 @@ namespace LeagueSharp.Loader.Core
 {
     internal class AppUpdater
     {
-        public delegate void RepositoriesUpdateDelegate(List<string> list);
-
         public const string VersionCheckUrl = "http://api.joduska.me/public/deploy/loader/version";
         public const string CoreVersionCheckUrl = "http://api.joduska.me/public/deploy/kernel/{0}";
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -71,10 +67,11 @@ namespace LeagueSharp.Loader.Core
             {
                 return new Tuple<bool, bool?, string>(true, true, Utility.GetMultiLanguageText("NotUpdateNeeded"));
             }
+
             try
             {
                 var leagueMd5 = Utility.Md5Checksum(leagueOfLegendsFilePath);
-                var wr = WebRequest.Create(string.Format(CoreVersionCheckUrl, leagueMd5));
+                var wr = WebRequest.Create(String.Format(CoreVersionCheckUrl, leagueMd5));
                 wr.Timeout = 4000;
                 wr.Method = WebRequestMethods.Http.Get;
                 var response = wr.GetResponse();
@@ -103,6 +100,7 @@ namespace LeagueSharp.Loader.Core
                                 //Utility.GetMultiLanguageText("Updating"),
                                 //"LeagueSharp.Core: " + Utility.GetMultiLanguageText("Updating"), BalloonIcon.Info);
                             }
+
                             try
                             {
                                 if (File.Exists(UpdateZip))
@@ -153,24 +151,6 @@ namespace LeagueSharp.Loader.Core
             }
             return new Tuple<bool, bool?, string>(
                 File.Exists(Directories.CoreFilePath), true, Utility.GetMultiLanguageText("NotUpdateNeeded"));
-        }
-
-        public static void GetRepositories(RepositoriesUpdateDelegate del)
-        {
-            var wb = new WebClient();
-            wb.DownloadStringCompleted += delegate(object sender, DownloadStringCompletedEventArgs args)
-            {
-                var result = new List<string>();
-                var matches = Regex.Matches(args.Result, "<repo>(.*)</repo>");
-                foreach (Match match in matches)
-                {
-                    result.Add(match.Groups[1].ToString());
-                }
-                del(result);
-            };
-            wb.DownloadStringAsync(
-                new Uri(
-                    "https://raw.githubusercontent.com/LeagueSharp/LeagueSharpLoader/master/Updates/Repositories.txt"));
         }
 
         internal class UpdateInfo

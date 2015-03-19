@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using LeagueSharp.Loader.Model.Assembly;
 
-namespace LeagueSharp.Loader.Model.Service
+namespace LeagueSharp.Loader.Model.Service.Git
 {
     internal interface ILeagueSharpAssemblyService
     {
