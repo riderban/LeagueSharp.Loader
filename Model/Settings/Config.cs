@@ -215,6 +215,7 @@ namespace LeagueSharp.Loader.Model.Settings
                                     Author = "LeagueSharp",
                                     Inject = true,
                                     Type = AssemblyType.Library,
+                                    State = AssemblyState.Ready,
                                     Location = "https://github.com/LeagueSharp/LeagueSharp.Common"
                                 },
                                 new LeagueSharpAssembly
@@ -223,7 +224,35 @@ namespace LeagueSharp.Loader.Model.Settings
                                     Author = "LeagueSharp",
                                     Inject = true,
                                     Type = AssemblyType.Library,
+                                    State = AssemblyState.Ready,
                                     Location = "https://github.com/LeagueSharp/LeagueSharp.CommonEx"
+                                },
+                                new LeagueSharpAssembly
+                                {
+                                    Name = "Tracker",
+                                    Author = "TC-Crew",
+                                    Inject = true,
+                                    Type = AssemblyType.Utility,
+                                    State = AssemblyState.Ready,
+                                    Location = "https://github.com/TC-Crew/L-Assemblies"
+                                },
+                                new LeagueSharpAssembly
+                                {
+                                    Name = "Evade",
+                                    Author = "Esk0r",
+                                    Inject = true,
+                                    Type = AssemblyType.Utility,
+                                    State = AssemblyState.Ready,
+                                    Location = "https://github.com/Esk0r/LeagueSharp"
+                                },
+                                new LeagueSharpAssembly
+                                {
+                                    Name = "Support is too Easy",
+                                    Author = "h3h3",
+                                    Inject = true,
+                                    Type = AssemblyType.Champion,
+                                    State = AssemblyState.Ready,
+                                    Location = "https://github.com/h3h3/LeagueSharp"
                                 }
                             }
                         }

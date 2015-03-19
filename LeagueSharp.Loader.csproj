@@ -61,7 +61,7 @@
     </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\spurdo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
@@ -162,6 +162,7 @@
       <HintPath>packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Reflection.Metadata">
@@ -195,11 +196,19 @@
     <Compile Include="Core\Compiler\RoslynCompiler.cs" />
     <Compile Include="Core\GitUpdater.cs" />
     <Compile Include="Core\Injector.cs" />
+    <Compile Include="Core\Interop\COPYDATASTRUCT.cs" />
+    <Compile Include="Core\Interop\FileMapProtection.cs" />
+    <Compile Include="Core\Interop\HookType.cs" />
+    <Compile Include="Core\Interop\KBDLLHOOKSTRUCT.cs" />
+    <Compile Include="Core\Interop\KBDLLHOOKSTRUCTFlags.cs" />
+    <Compile Include="Core\Interop\MSLLHOOKSTRUCT.cs" />
+    <Compile Include="Core\Interop\POINT.cs" />
+    <Compile Include="Core\Interop\WM.cs" />
     <Compile Include="Core\KeyboardHook.cs" />
     <Compile Include="Core\LSUriScheme.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Design\DesignDataService.cs" />
-    <Compile Include="Core\Interop.cs" />
+    <Compile Include="Core\Interop\Interop.cs" />
     <Compile Include="Core\GZipWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -457,6 +466,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\spurdo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\spurdo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

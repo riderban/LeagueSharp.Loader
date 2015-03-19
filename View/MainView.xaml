@@ -14,7 +14,7 @@
                    WindowButtonCommandsOverlayBehavior="Always"
                    GlowBrush="{DynamicResource AccentColorBrush}"
                    DataContext="{Binding Main, Source={StaticResource Locator}}" ResizeMode="CanResizeWithGrip"
-                   Title="LeagueSharp" TitlebarHeight="35" Icon="/LeagueSharp.Loader;component/Resources/icon.png">
+                   Title="LeagueSharp" TitlebarHeight="35" Icon="/LeagueSharp.Loader;component/Resources/spurdo.png">
 
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
@@ -140,7 +140,7 @@
 
     <Grid>
         <ProgressBar DataContext="{Binding ProgressController}"
-                     Margin="120,-23,520,0" VerticalAlignment="Top" Height="15"
+                     Margin="170,-28,525,0" VerticalAlignment="Top" Height="20"
                      Background="{DynamicResource ControlBackgroundBrush}"
                      Visibility="{Binding Visibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

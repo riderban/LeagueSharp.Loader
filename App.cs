@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
 using LeagueSharp.Loader.Core;
+using LeagueSharp.Loader.Core.Interop;
 using LeagueSharp.Loader.Model.Log;
 using LeagueSharp.Loader.Model.Settings;
 
@@ -63,8 +63,7 @@ namespace LeagueSharp.Loader
             // HACK: testing
             Task.Factory.StartNew(Injector.PulseTask);
             Config.Instance.Username = "JODUSKA.ME XD";
-            foreach (var assembly in Config.Instance.SelectedProfile
-                .InstalledAssemblies.Where(a => a.Author == "LeagueSharp"))
+            foreach (var assembly in Config.Instance.SelectedProfile.InstalledAssemblies)
             {
                 GitUpdater.Clone(assembly.Location, assembly.PathToRepository, false);
             }

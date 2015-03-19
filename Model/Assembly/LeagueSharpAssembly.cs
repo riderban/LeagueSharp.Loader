@@ -104,7 +104,7 @@ namespace LeagueSharp.Loader.Model.Assembly
             set { Set(() => Project, ref _project, value); }
         }
 
-        [JsonConverter(typeof (StringEnumConverter))]
+        [JsonIgnore]
         public AssemblyState State
         {
             get { return _state; }

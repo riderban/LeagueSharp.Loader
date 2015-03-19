@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using log4net;
+using LeagueSharp.Loader.Core.Interop;
 
 namespace LeagueSharp.Loader.Core
 {
@@ -17,7 +18,8 @@ namespace LeagueSharp.Loader.Core
         {
             using (var curModule = Process.GetCurrentProcess().MainModule)
             {
-                _hHook = Interop.SetWindowsHookEx(13, Proc, Interop.GetModuleHandle(curModule.ModuleName), 0);
+                _hHook = Interop.Interop.SetWindowsHookEx(HookType.WH_KEYBOARD, Proc,
+                    Interop.Interop.GetModuleHandle(curModule.ModuleName), 0);
             }
 
             Log.Info("Hook " + _hHook);
@@ -28,7 +30,7 @@ namespace LeagueSharp.Loader.Core
             Log.Info("UnHook " + _hHook);
             if (_hHook != IntPtr.Zero)
             {
-                Interop.UnhookWindowsHookEx(_hHook);
+                Interop.Interop.UnhookWindowsHookEx(_hHook);
             }
         }
 
@@ -41,12 +43,12 @@ namespace LeagueSharp.Loader.Core
                     OnKeyUpTrigger(Marshal.ReadInt32(lParam));
                 }
             }
-            return Interop.CallNextHookEx(_hHook, code, (int) wParam, lParam);
+            return Interop.Interop.CallNextHookEx(_hHook, code, wParam, lParam);
         }
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static List<int> HookedKeys = new List<int>();
-        private static readonly Interop.KeyboardProc Proc = HookProc;
+        private static readonly Interop.Interop.HookProc Proc = HookProc;
         private static IntPtr _hHook = IntPtr.Zero;
     }
 }

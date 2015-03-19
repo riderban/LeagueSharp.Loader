@@ -155,6 +155,8 @@ namespace LeagueSharp.Loader.Core
         {
             try
             {
+                Log.InfoFormat("Fetch[{0}] {1}", remote, repository);
+
                 using (var repo = new Repository(repository))
                 {
                     if (repo.Network.Remotes.Any(r => r.Name == remote))
@@ -187,6 +189,8 @@ namespace LeagueSharp.Loader.Core
         {
             try
             {
+                Log.InfoFormat("Checkout[{0}] {1}", branch, repository);
+
                 using (var repo = new Repository(repository))
                 {
                     if (IsValidBranch(repo.Branches[branch]))

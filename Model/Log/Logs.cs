@@ -21,7 +21,7 @@ namespace LeagueSharp.Loader.Model.Log
             var patternLayout = new PatternLayout
             {
                 ConversionPattern =
-                    "%date | %-5level | [%thread] %logger{1}.%method:%line | %message%newline%exception"
+                    "%date | %-5level | [%2thread] %logger{1}.%method:%line | %message%newline%exception"
             };
             patternLayout.ActivateOptions();
 

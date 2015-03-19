@@ -105,8 +105,7 @@
                 HorizontalAlignment="Right" Width="110" />
 
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Margin="10,41,10,10">
-            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Assemblies}" CanUserAddRows="False"
-                      IsReadOnly="True">
+            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Assemblies}" CanUserAddRows="False">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource MenuUpdateAndCompile}">
@@ -256,10 +255,12 @@
                                         Width="SizeToCells" MinWidth="150" />
                     <DataGridTextColumn Header="Type"
                                         Binding="{Binding Type}"
-                                        Width="SizeToCells" MinWidth="80" />
+                                        Width="SizeToCells" MinWidth="80"
+                                        IsReadOnly="True" />
                     <DataGridTextColumn Header="State"
                                         Binding="{Binding State}"
-                                        Width="SizeToCells" MinWidth="100" />
+                                        Width="SizeToCells" MinWidth="100"
+                                        IsReadOnly="True" />
                     <DataGridTemplateColumn Header="Version" MaxWidth="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -285,10 +286,12 @@
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Author"
                                         Binding="{Binding Author}"
-                                        Width="SizeToCells" MinWidth="100" />
+                                        Width="SizeToCells" MinWidth="100"
+                                        IsReadOnly="True" />
                     <DataGridTextColumn Header="Location"
                                         Binding="{Binding Location}"
-                                        Width="*" />
+                                        Width="*"
+                                        IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
