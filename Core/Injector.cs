@@ -17,6 +17,7 @@ namespace LeagueSharp.Loader.Core
     internal class LeagueInstance
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public readonly List<LeagueSharpAssembly> Assemblies = new List<LeagueSharpAssembly>();
 
         public int Id
         {
@@ -53,6 +54,8 @@ namespace LeagueSharp.Loader.Core
         {
             Process = process;
             Process.Exited += Process_Exited;
+            Injector.ActiveInstances.Add(this);
+            Log.InfoFormat("League Instance #{0} created", Id);
         }
 
         public bool Inject()
@@ -84,7 +87,37 @@ namespace LeagueSharp.Loader.Core
                 return;
             }
 
+            lock (Assemblies)
+            {
+                if (!Assemblies.Contains(assembly))
+                {
+                    return;
+                }
+
+                Assemblies.Add(assembly);
+            }
+
             Injector.LoadAssembly(MainWindowHandle, assembly);
+        }
+
+        public void UnloadAssembly(LeagueSharpAssembly assembly)
+        {
+            if (!IsInjected)
+            {
+                return;
+            }
+
+            lock (Assemblies)
+            {
+                if (Assemblies.Contains(assembly))
+                {
+                    return;
+                }
+
+                Assemblies.Remove(assembly);
+            }
+
+            Injector.UnloadAssembly(MainWindowHandle, assembly);
         }
 
         public void UnloadAll()
@@ -92,6 +125,11 @@ namespace LeagueSharp.Loader.Core
             if (!IsInjected)
             {
                 return;
+            }
+
+            lock (Assemblies)
+            {
+                Assemblies.Clear();
             }
 
             Injector.UnloadAll(MainWindowHandle);
@@ -113,6 +151,11 @@ namespace LeagueSharp.Loader.Core
 
         public void SendConfig()
         {
+            if (!IsInjected)
+            {
+                return;
+            }
+
             Injector.SendConfig(MainWindowHandle);
         }
 
@@ -120,9 +163,12 @@ namespace LeagueSharp.Loader.Core
         {
             Process = null;
 
-            if (Injector.ActiveInstances.Contains(this))
+            lock (Injector.ActiveInstances)
             {
-                Injector.ActiveInstances.Remove(this);
+                if (Injector.ActiveInstances.Contains(this))
+                {
+                    Injector.ActiveInstances.Remove(this);
+                }
             }
         }
     }
@@ -136,22 +182,25 @@ namespace LeagueSharp.Loader.Core
         public static InjectDLLDelegate InjectDLL;
         public static List<LeagueInstance> ActiveInstances = new List<LeagueInstance>();
 
-        private static List<Process> LeagueProcessList
-        {
-            get { return Process.GetProcessesByName("League of Legends").ToList(); }
-        }
-
         static Injector()
         {
             OnInject += instance => Task.Factory.StartNew(
                 () =>
                 {
-                    instance.Login(Config.Instance.Username, Config.Instance.Password);
-                    instance.SendConfig();
-
-                    foreach (var assembly in Config.Instance.SelectedProfile.InstalledAssemblies.Where(a => a.Inject))
+                    try
                     {
-                        instance.LoadAssembly(assembly);
+                        instance.Login(Config.Instance.Username, Config.Instance.Password);
+                        instance.SendConfig();
+
+                        foreach (
+                            var assembly in Config.Instance.SelectedProfile.InstalledAssemblies.Where(a => a.Inject))
+                        {
+                            instance.LoadAssembly(assembly);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn(e);
                     }
                 });
         }
@@ -170,11 +219,41 @@ namespace LeagueSharp.Loader.Core
         {
             Thread.CurrentThread.IsBackground = true;
 
+            Log.Info("Injection Task started");
+
             while (true)
             {
-                if (Config.Instance.Install)
+                try
                 {
-                    // TODO: create LeagueInstance on new process
+                    if (Config.Instance.Install)
+                    {
+                        var processList = Process.GetProcessesByName("League of Legends");
+
+                        lock (ActiveInstances)
+                        {
+                            foreach (var process in processList.Where(p => ActiveInstances.All(i => i.Id != p.Id)))
+                            {
+                                var instance = new LeagueInstance(process);
+
+                                if (instance.Inject())
+                                {
+                                    Log.InfoFormat("{0} injected into {1}", Path.GetFileName(Directories.CoreFilePath),
+                                        instance.Id);
+                                }
+                                else
+                                {
+                                    Log.WarnFormat("Injection failed {0} - Injection State:{1}", instance.Id,
+                                        instance.IsInjected);
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Warn(e);
                 }
 
                 Thread.Sleep(3000);
@@ -183,71 +262,116 @@ namespace LeagueSharp.Loader.Core
 
         public static void Bootstrap()
         {
-            var hModule = Interop.LoadLibrary(Directories.BootstrapFilePath);
-
-            if (!(hModule != IntPtr.Zero))
+            try
             {
-                return;
+                const string procedureName = "_InjectDLL@8";
+                var hModule = Interop.LoadLibrary(Directories.BootstrapFilePath);
+
+                if (hModule.IsZero())
+                {
+                    Log.WarnFormat("LoadLibrary failed {0}", Directories.BootstrapFilePath);
+                    return;
+                }
+
+                var proc = Interop.GetProcAddress(hModule, procedureName);
+
+                if (proc.IsZero())
+                {
+                    Log.WarnFormat("Procedure [{0}] not found at 0x{1}", procedureName, hModule.ToString("X"));
+                    return;
+                }
+
+                InjectDLL = Marshal.GetDelegateForFunctionPointer(proc, typeof (InjectDLLDelegate)) as InjectDLLDelegate;
+                Log.InfoFormat("{0} injected at 0x{1}", Path.GetFileName(Directories.BootstrapFilePath),
+                    hModule.ToString("X"));
             }
-
-            var procAddress = Interop.GetProcAddress(hModule, "_InjectDLL@8");
-
-            if (!(procAddress != IntPtr.Zero))
+            catch (Exception e)
             {
-                return;
+                Log.Warn(e);
             }
-
-            InjectDLL =
-                Marshal.GetDelegateForFunctionPointer(procAddress, typeof (InjectDLLDelegate)) as InjectDLLDelegate;
-            Log.InfoFormat("{0} injected at {1}", Path.GetFileName(Directories.BootstrapFilePath), hModule);
         }
 
         public static void LoadAssembly(IntPtr hWnd, LeagueSharpAssembly assembly)
         {
-            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
-                assembly.State == AssemblyState.Ready)
+            try
             {
-                var str = string.Format("load \"{0}\"", assembly.PathToBinary);
-                Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
-                Log.InfoFormat("load \"{0}\"", assembly.PathToBinary);
+                if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
+                    assembly.State == AssemblyState.Ready)
+                {
+                    var str = string.Format("load \"{0}\"", assembly.PathToBinary);
+                    Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
+                    Log.Info(str);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
             }
         }
 
         public static void UnloadAll(IntPtr hWnd)
         {
-            const string str = "unload \"all\"";
-            Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
-            Log.Info(str);
+            try
+            {
+                const string str = "unload \"all\"";
+                Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
+                Log.Info(str);
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
+            }
         }
 
         public static void UnloadAssembly(IntPtr hWnd, LeagueSharpAssembly assembly)
         {
-            if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
-                assembly.State == AssemblyState.Ready)
+            try
             {
-                var str = string.Format("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
-                Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
-                Log.InfoFormat("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
+                if (assembly.Type != AssemblyType.Unknown && assembly.Type != AssemblyType.Library &&
+                    assembly.State == AssemblyState.Ready)
+                {
+                    var str = string.Format("unload \"{0}\"", Path.GetFileName(assembly.PathToBinary));
+                    Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.AppDomainManager, str);
+                    Log.Info(str);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
             }
         }
 
         public static void SendLoginCredentials(IntPtr hWnd, string user, string password)
         {
-            var str = string.Format("LOGIN|{0}|{1}", user, password);
-            Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.Core, str);
-            Log.InfoFormat("LOGIN|{0}", user);
+            try
+            {
+                var str = string.Format("LOGIN|{0}|{1}", user, password);
+                Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.Core, str);
+                Log.InfoFormat("LOGIN|{0}", user);
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
+            }
         }
 
         public static void SendConfig(IntPtr hWnd)
         {
-            var str = string.Format(
-                "{0}{1}{2}{3}", (Config.Instance.Settings.GameSettings[0].Value == "True") ? "1" : "0",
-                (Config.Instance.Settings.GameSettings[3].Value == "True") ? "1" : "0",
-                (Config.Instance.Settings.GameSettings[1].Value == "True") ? "1" : "0",
-                (Config.Instance.Settings.GameSettings[2].Value == "True") ? "2" : "0");
+            try
+            {
+                var afk = (Config.Instance.Settings.GameSettings[0].Value == "True") ? "1" : "0";
+                var zoom = (Config.Instance.Settings.GameSettings[3].Value == "True") ? "1" : "0";
+                var console = (Config.Instance.Settings.GameSettings[1].Value == "True") ? "1" : "0";
+                var tower = (Config.Instance.Settings.GameSettings[2].Value == "True") ? "2" : "0";
 
-            Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.Core, str);
-            Log.InfoFormat("CONFIG|{0}", str);
+                var str = string.Format("{0}{1}{2}{3}", afk, zoom, console, tower);
+                Interop.SendWindowMessage(hWnd, Interop.WindowMessageTarget.Core, str);
+                Log.Info(str);
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
+            }
         }
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]

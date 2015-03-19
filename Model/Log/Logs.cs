@@ -21,7 +21,7 @@ namespace LeagueSharp.Loader.Model.Log
             var patternLayout = new PatternLayout
             {
                 ConversionPattern =
-                    "%date | %-5level | %logger{1}.%method:%line | %message%newline%exception"
+                    "%date | %-5level | [%thread] %logger{1}.%method:%line | %message%newline%exception"
             };
             patternLayout.ActivateOptions();
 
@@ -30,7 +30,7 @@ namespace LeagueSharp.Loader.Model.Log
                 AppendToFile = false,
                 File = MainLogFile,
                 Layout = patternLayout,
-                MaxSizeRollBackups = 10,
+                MaxSizeRollBackups = 50,
                 RollingStyle = RollingFileAppender.RollingMode.Once,
                 StaticLogFileName = true
             };

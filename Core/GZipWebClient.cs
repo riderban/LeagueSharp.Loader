@@ -10,6 +10,11 @@ namespace LeagueSharp.Loader.Core
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public int Timeout { get; set; }
 
+        public GZipWebClient()
+        {
+            Timeout = 30000;
+        }
+
         protected override WebRequest GetWebRequest(Uri address)
         {
             try

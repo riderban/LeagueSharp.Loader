@@ -74,6 +74,11 @@ namespace LeagueSharp.Loader.Core
             SendMessage(wnd, 74U, IntPtr.Zero, ref lParam);
         }
 
+        internal static bool IsZero(this IntPtr ptr)
+        {
+            return ptr == IntPtr.Zero;
+        }
+
         internal delegate IntPtr KeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         internal delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
