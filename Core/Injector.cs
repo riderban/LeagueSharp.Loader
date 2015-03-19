@@ -119,6 +119,11 @@ namespace LeagueSharp.Loader.Core
         private void Process_Exited(object sender, EventArgs e)
         {
             Process = null;
+
+            if (Injector.ActiveInstances.Contains(this))
+            {
+                Injector.ActiveInstances.Remove(this);
+            }
         }
     }
 
@@ -169,6 +174,7 @@ namespace LeagueSharp.Loader.Core
             {
                 if (Config.Instance.Install)
                 {
+                    // TODO: create LeagueInstance on new process
                 }
 
                 Thread.Sleep(3000);
