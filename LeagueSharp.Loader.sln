@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeagueSharp.Loader", "LeagueSharp.Loader.csproj", "{38606836-7925-4E9F-98F6-EFAC9D58E439}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeagueSharp.Loader", "LeagueSharp.Loader\LeagueSharp.Loader.csproj", "{38606836-7925-4E9F-98F6-EFAC9D58E439}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeagueSharp.Loader.Service", "LeagueSharp.Loader.Service\LeagueSharp.Loader.Service.csproj", "{BCF8E222-D54B-42A1-8667-9964CF454250}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{38606836-7925-4E9F-98F6-EFAC9D58E439}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38606836-7925-4E9F-98F6-EFAC9D58E439}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38606836-7925-4E9F-98F6-EFAC9D58E439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCF8E222-D54B-42A1-8667-9964CF454250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCF8E222-D54B-42A1-8667-9964CF454250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCF8E222-D54B-42A1-8667-9964CF454250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCF8E222-D54B-42A1-8667-9964CF454250}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

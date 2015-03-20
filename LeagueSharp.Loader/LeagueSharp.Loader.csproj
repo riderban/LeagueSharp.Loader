@@ -169,6 +169,7 @@
       <HintPath>packages\System.Reflection.Metadata.1.0.18-beta\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.1.1.3-ALPHA005\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -196,16 +197,9 @@
     <Compile Include="Core\Compiler\RoslynCompiler.cs" />
     <Compile Include="Core\GitUpdater.cs" />
     <Compile Include="Core\Injector.cs" />
-    <Compile Include="Core\Interop\COPYDATASTRUCT.cs" />
     <Compile Include="Core\Interop\FileMapProtection.cs" />
-    <Compile Include="Core\Interop\HookType.cs" />
-    <Compile Include="Core\Interop\KBDLLHOOKSTRUCT.cs" />
-    <Compile Include="Core\Interop\KBDLLHOOKSTRUCTFlags.cs" />
-    <Compile Include="Core\Interop\MSLLHOOKSTRUCT.cs" />
-    <Compile Include="Core\Interop\POINT.cs" />
-    <Compile Include="Core\Interop\WM.cs" />
-    <Compile Include="Core\KeyboardHook.cs" />
     <Compile Include="Core\LSUriScheme.cs" />
+    <Compile Include="Core\Service\LoaderService.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Core\Interop\Interop.cs" />
@@ -472,6 +466,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\spurdo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LeagueSharp.Loader.Service\LeagueSharp.Loader.Service.csproj">
+      <Project>{bcf8e222-d54b-42a1-8667-9964cf454250}</Project>
+      <Name>LeagueSharp.Loader.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
