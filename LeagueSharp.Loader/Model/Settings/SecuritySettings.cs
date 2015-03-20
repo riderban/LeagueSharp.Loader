@@ -23,6 +23,7 @@ namespace LeagueSharp.Loader.Model.Settings
 
         /// <summary>
         /// Default: None
+        /// Always: Git Location
         /// </summary>
         public WebPermission WebPermission
         {
@@ -61,7 +62,7 @@ namespace LeagueSharp.Loader.Model.Settings
             }
            
             FileIoPermission = new FileIOPermission(PermissionState.None);
-            FileIoPermission.AddPathList(FileIOPermissionAccess.AllAccess, Directories.DataDirectory);
+            FileIoPermission.AddPathList(FileIOPermissionAccess.Read | FileIOPermissionAccess.Write | FileIOPermissionAccess.Append, Directories.DataDirectory);
 
             MediaPermission = new MediaPermission(PermissionState.None);
         }
