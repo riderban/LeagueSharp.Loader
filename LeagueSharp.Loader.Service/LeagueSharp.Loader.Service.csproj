@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="ILoaderLogService.cs" />
     <Compile Include="ILoaderService.cs" />
     <Compile Include="LSharpAssembly.cs" />
     <Compile Include="ServiceFactory.cs" />
