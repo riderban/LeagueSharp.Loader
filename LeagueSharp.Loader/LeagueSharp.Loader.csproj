@@ -241,6 +241,7 @@
     <Compile Include="Model\Settings\Profile.cs" />
     <EmbeddedResource Include="Resources\DefaultProject\AssemblyInfo.cs" />
     <EmbeddedResource Include="Resources\DefaultProject\Program.cs" />
+    <Compile Include="Model\Settings\SecuritySettings.cs" />
     <Compile Include="ViewModel\AppBarViewModel.cs" />
     <Compile Include="ViewModel\AssembliesViewModel.cs" />
     <Compile Include="ViewModel\DatabaseViewModel.cs" />

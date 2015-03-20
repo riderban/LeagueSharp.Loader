@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -12,11 +13,12 @@ namespace LeagueSharp.Loader.Core.Service
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public List<string> GetAssemblyPathList(int pid)
+        public List<LSharpAssembly> GetAssemblyList(int pid)
         {
-            return
-                Config.Instance.SelectedProfile.InstalledAssemblies.Where(
-                    a => a.Inject && a.Type != AssemblyType.Library).Select(assembly => assembly.PathToBinary).ToList();
+            throw new NotImplementedException();
+            //return
+            //    Config.Instance.SelectedProfile.InstalledAssemblies.Where(
+            //        a => a.Inject && a.Type != AssemblyType.Library).Select(assembly => assembly.PathToBinary).ToList();
         }
 
         public LoginCredentials GetLoginCredentials(int pid)
