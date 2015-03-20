@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Security;
 
 namespace LeagueSharp.Loader.Service
 {
@@ -22,6 +23,9 @@ namespace LeagueSharp.Loader.Service
 
         [DataMember]
         public uint MenuToggleKey { get; set; }
+
+        [DataMember]
+        public PermissionSet Permissions { get; set; }
 
         [DataMember]
         public uint ReloadAndRecompileKey { get; set; }

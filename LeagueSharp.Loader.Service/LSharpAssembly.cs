@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace LeagueSharp.Loader.Service
 {
@@ -10,9 +9,9 @@ namespace LeagueSharp.Loader.Service
         public int Id { get; set; }
 
         [DataMember]
-        public string PathToBinary { get; set; }
+        public string Name { get; set; }
 
         [DataMember]
-        public PermissionState PermissionState { get; set; }
+        public string PathToBinary { get; set; }
     }
 }

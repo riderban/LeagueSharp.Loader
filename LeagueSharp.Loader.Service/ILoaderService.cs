@@ -7,7 +7,7 @@ namespace LeagueSharp.Loader.Service
     public interface ILoaderService
     {
         [OperationContract]
-        List<LSharpAssembly> GetAssemblyPathList(int pid);
+        List<LSharpAssembly> GetAssemblyList(int pid);
 
         [OperationContract]
         LoginCredentials GetLoginCredentials(int pid);
