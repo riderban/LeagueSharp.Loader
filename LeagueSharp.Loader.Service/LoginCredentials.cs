@@ -2,13 +2,13 @@
 
 namespace LeagueSharp.Loader.Service
 {
-    [DataContract(Name = "http://joduska.me/v1/LoaderService")]
+    [DataContract]
     public class LoginCredentials
     {
         [DataMember]
-        public string User { get; set; }
+        public string Password { get; set; }
 
         [DataMember]
-        public string Password { get; set; }
+        public string User { get; set; }
     }
 }

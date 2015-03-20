@@ -36,8 +36,9 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="ILoaderService.cs" />
+    <Compile Include="LSharpAssembly.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="LoginCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,20 +2,20 @@
 
 namespace LeagueSharp.Loader.Service
 {
-    [DataContract(Name = "http://joduska.me/v1/LoaderService")]
+    [DataContract]
     public class Configuration
     {
+        [DataMember]
+        public bool AntiAfk { get; set; }
+
+        [DataMember]
+        public bool Console { get; set; }
+
         [DataMember]
         public string DataDirectory { get; set; }
 
         [DataMember]
-        public uint ReloadKey { get; set; }
-
-        [DataMember]
-        public uint UnloadKey { get; set; }
-
-        [DataMember]
-        public uint ReloadAndRecompileKey { get; set; }
+        public bool ExtendedZoom { get; set; }
 
         [DataMember]
         public uint MenuKey { get; set; }
@@ -24,15 +24,15 @@ namespace LeagueSharp.Loader.Service
         public uint MenuToggleKey { get; set; }
 
         [DataMember]
-        public bool AntiAfk { get; set; }
+        public uint ReloadAndRecompileKey { get; set; }
 
         [DataMember]
-        public bool ExtendedZoom { get; set; }
+        public uint ReloadKey { get; set; }
 
         [DataMember]
         public bool TowerRange { get; set; }
 
         [DataMember]
-        public bool Console { get; set; }
+        public uint UnloadKey { get; set; }
     }
 }

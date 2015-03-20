@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
@@ -117,11 +116,12 @@ namespace LeagueSharp.Loader.Core
     internal class Injector
     {
         public delegate void OnInjectDelegate(LeagueInstance instance);
+
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static InjectDLLDelegate InjectDll;
         public static List<LeagueInstance> ActiveInstances = new List<LeagueInstance>();
-        public static event OnInjectDelegate OnInject;
         private static ServiceHost _serviceHost;
+        public static event OnInjectDelegate OnInject;
 
         public static void RaiseOnInject(LeagueInstance instance)
         {
@@ -194,13 +194,10 @@ namespace LeagueSharp.Loader.Core
                         Log.Warn(e);
                     }
 
-                    Task.Delay(500).ContinueWith(task =>
-                    {
-                        CreateServiceHost();
-                    });
+                    Task.Delay(500).ContinueWith(task => { CreateServiceHost(); });
                 };
 
-                Log.InfoFormat("Created Service Endpoint {0}{1}", _serviceHost.BaseAddresses, typeof(LoaderService));
+                Log.InfoFormat("Created Service Endpoint {0}{1}", _serviceHost.BaseAddresses, typeof (LoaderService));
             }
         }
 
@@ -211,20 +208,20 @@ namespace LeagueSharp.Loader.Core
                 CreateServiceHost();
 
                 var mmf = MemoryMappedFile.CreateNew("Local\\LeagueSharpBootstrap", 260*2,
-                    MemoryMappedFileAccess.ReadWrite);
+                    MemoryMappedFileAccess.Write);
 
                 using (var writer = mmf.CreateViewAccessor())
                 {
-                    var path = Directories.BootstrapFilePath.ToCharArray();
+                    var path = Directories.SandboxFilePath.ToCharArray();
                     writer.WriteArray(0, path, 0, path.Length);
                 }
 
                 const string procedureName = "_InjectDLL@8";
-                var hModule = Interop.Interop.LoadLibrary(Directories.BootstrapFilePath);
+                var hModule = Interop.Interop.LoadLibrary(Directories.SandboxFilePath); 
 
                 if (hModule.IsZero())
                 {
-                    Log.WarnFormat("LoadLibrary failed {0}", Directories.BootstrapFilePath);
+                    Log.WarnFormat("LoadLibrary failed {0}", Directories.SandboxFilePath);
                     return;
                 }
 
@@ -237,7 +234,7 @@ namespace LeagueSharp.Loader.Core
                 }
 
                 InjectDll = Marshal.GetDelegateForFunctionPointer(proc, typeof (InjectDLLDelegate)) as InjectDLLDelegate;
-                Log.InfoFormat("{0} injected at 0x{1}", Path.GetFileName(Directories.BootstrapFilePath),
+                Log.InfoFormat("{0} injected at 0x{1}", Path.GetFileName(Directories.SandboxFilePath),
                     hModule.ToString("X"));
             }
             catch (Exception e)

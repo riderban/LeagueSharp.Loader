@@ -3,11 +3,11 @@ using System.ServiceModel;
 
 namespace LeagueSharp.Loader.Service
 {
-    [ServiceContract(Name = "http://joduska.me/v1/LoaderService")]
+    [ServiceContract]
     public interface ILoaderService
     {
         [OperationContract]
-        List<string> GetAssemblyPathList(int pid);
+        List<LSharpAssembly> GetAssemblyPathList(int pid);
 
         [OperationContract]
         LoginCredentials GetLoginCredentials(int pid);

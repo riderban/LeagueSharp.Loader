@@ -12,8 +12,9 @@ namespace LeagueSharp.Loader.Model.Settings
             get { return Path.Combine(DataDirectory, "Assemblies"); }
         }
 
-        public static string BootstrapFilePath
+        public static string SandboxFilePath
         {
+            // TODO: change to Sandbox once done
             get { return Path.Combine(CoreDirectory, "Leaguesharp.Bootstrap.dll"); }
         }
 
